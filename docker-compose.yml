@@ -1,0 +1,594 @@
+version: "2.4"
+
+volumes:
+  mongo_data:
+    driver: local
+    driver_opts:
+      device: $PWD/data/mongo
+      o: bind
+  postgres_data:
+    driver: local
+    driver_opts:
+      device: $PWD/data/postgres
+      o: bind
+  clickhouse_data:
+    driver: local
+    driver_opts:
+      device: $PWD/data/clickhouse
+      o: bind
+  nsq_data:
+    driver: local
+    driver_opts:
+      device: $PWD/data/nsq
+      o: bind
+  redis_data:
+    driver: local
+    driver_opts:
+      device: $PWD/data/redis
+      o: bind
+  consul_data:
+    driver: local
+    driver_opts:
+      device: $PWD/data/consul
+      o: bind
+  nginx_ssl:
+    driver: local
+    driver_opts:
+      device: $PWD/data/nginx/ssl
+      o: bind
+
+services:
+  mongo:
+    image: "mongo:4.0"
+    command: --wiredTigerCacheSizeGB 1.5 --bind_ip_all --replSet noc --port 27017
+    restart: "no"
+    volumes:
+      - ./files/mongo-init.js:/docker-entrypoint-initdb.d/01mongo-init.js
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: noc
+      MONGO_INITDB_ROOT_USERNAME: noc
+      MONGO_INITDB_ROOT_PASSWORD: noc
+    labels:
+      traefik.enable: false
+
+  mongodb-repl-set-init:
+    image: "mongo:4.0"
+    restart: "no"
+    depends_on:
+      mongo:
+        condition: service_started
+    volumes:
+      - ./files/rs-init.sh:/rs-init.sh
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: noc
+      MONGO_INITDB_ROOT_PASSWORD: noc
+      MONGO_REPL_SET_NAME: noc
+      MONGO_REPL_SET_HOSTS: mongo
+    entrypoint: sh /rs-init.sh
+    labels:
+      traefik.enable: false
+
+  postgres:
+    image: "postgres:9.6"
+    restart: "no"
+    environment:
+      POSTGRES_USER: noc
+      POSTGRES_DB: noc
+      POSTGRES_PASSWORD: noc
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD", "su", "-", "postgres", "-c", "psql -U noc -l | grep noc"]
+      interval: 3s
+      timeout: 3s
+      retries: 100
+    labels:
+      traefik.enable: false
+
+  consul:
+    hostname: consul
+    image: consul:latest
+    restart: always
+    ports:
+      - 8500:8500
+    environment:
+      - CONSUL_LOCAL_CONFIG={"disable_update_check":true}
+    entrypoint:
+      - consul
+      - agent
+      - -server
+      - -bootstrap
+      - -data-dir=/data
+      - -bind={{ GetInterfaceIP "eth0" }}
+      - -client=0.0.0.0
+      - -ui
+    volumes:
+      - consul_data:/data
+    labels:
+      traefik.protocol: http
+      traefik.backend: consul
+      traefik.port: 8500
+      traefik.frontend.rule: "PathPrefix: /consul"
+      traefik.frontend.entryPoints: noc
+
+  migrate:
+    image: registry.getnoc.com/noc/noc/dev:19.2-dev
+    working_dir: /opt/noc
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb-repl-set-init:
+        condition: service_started
+      clickhouse:
+        condition: service_started
+    command: >
+      sh -c "set -xe
+      && /usr/bin/python ./commands/migrate.py
+      && ./noc ensure-indexes
+      && /usr/bin/python ./commands/migrate-ch.py
+      && /usr/bin/python ./scripts/deploy/install-packages requirements/collections.json
+      && ./noc collection sync
+      && ./noc sync-perm
+      && ./noc sync-mibs
+      && mkdir /opt/noc/etc
+      && echo 'cG9vbHM6CiAgZGVmYXVsdDoKICAgIGRlc2NyaXB0aW9uOiBkZWZhdWx0Cg==' |base64 -d > /opt/noc/etc/noc.yml
+      && cat /opt/noc/etc/noc.yml
+      && /usr/bin/python ./scripts/deploy/apply-pools
+      "
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  # @todo make logs avalaible
+  clickhouse:
+    image: yandex/clickhouse-server:latest
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+    labels:
+      traefik.enable: false
+
+  redis:
+    image: redis:5-alpine
+    labels:
+      traefik.enable: false
+
+  nsqlookupd:
+    image: nsqio/nsq:v1.1.0
+    command: /nsqlookupd
+    labels:
+      traefik.enable: false
+
+  nsqd:
+    image: nsqio/nsq:v1.1.0
+    depends_on:
+      - nsqlookupd
+    command: /nsqd --lookupd-tcp-address=nsqlookupd:4160 --mem-queue-size=10000
+    volumes:
+      - nsq_data:/data
+    labels:
+      traefik.enable: false
+
+  web:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    depends_on:
+      - mongo
+      - clickhouse
+      - redis
+      - nsqd
+      - nsqlookupd
+      - login
+      - migrate
+    command: /usr/bin/python /opt/noc/services/web/service.py
+    mem_limit: 120m
+    env_file:
+      - noc.conf
+    labels:
+      traefik.protocol: http
+      traefik.backend: web
+      traefik.port: 1200
+      traefik.frontend.rule: "PathPrefix: /"
+      traefik.frontend.entryPoints: noc
+
+  login:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    depends_on:
+      - mongo
+    command: /usr/bin/python /opt/noc/services/login/service.py
+    mem_limit: 75m
+    env_file:
+      - noc.conf
+    labels:
+      traefik.protocol: http
+      traefik.backend: login
+      traefik.port: 1200
+      traefik.auth.frontend.rule: "PathPrefix: /api/auth/"
+      traefik.login.frontend.rule: "PathPrefix: /api/login/"
+      traefik.frontend.entryPoints: noc
+
+  card:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    depends_on:
+      - mongo
+      - redis
+      - login
+    command: /usr/bin/python /opt/noc/services/card/service.py
+    mem_limit: 140m
+    env_file:
+      - noc.conf
+    labels:
+      traefik.protocol: http
+      traefik.backend: card
+      traefik.port: 1200
+      traefik.frontend.rule: "PathPrefix: /api/card/"
+      traefik.frontend.entryPoints: noc
+
+  mrt:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    depends_on:
+      - mongo
+    command: /usr/bin/python /opt/noc/services/mrt/service.py
+    mem_limit: 103m
+    env_file:
+      - noc.conf
+    labels:
+      traefik.protocol: http
+      traefik.backend: mrt
+      traefik.port: 1200
+      traefik.frontend.rule: "PathPrefix: /api/mrt/"
+      traefik.frontend.entryPoints: noc
+
+  grafanads:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    depends_on:
+      - mongo
+    command: /usr/bin/python /opt/noc/services/grafanads/service.py
+    mem_limit: 110m
+    env_file:
+      - noc.conf
+    labels:
+      traefik.protocol: http
+      traefik.backend: grafanads
+      traefik.port: 1200
+      traefik.frontend.rule: "PathPrefix: /api/grafanads/"
+      traefik.frontend.entryPoints: noc
+
+  bi:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    depends_on:
+      - mongo
+      - clickhouse
+    command: /usr/bin/python /opt/noc/services/bi/service.py
+    mem_limit: 100m
+    env_file:
+      - noc.conf
+    labels:
+      traefik.protocol: http
+      traefik.backend: bi
+      traefik.port: 1200
+      traefik.frontend.rule: "PathPrefix: /api/bi/"
+      traefik.frontend.entryPoints: noc
+
+  sae:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    depends_on:
+      - mongo
+      - redis
+    command: /usr/bin/python /opt/noc/services/sae/service.py
+    mem_limit: 85m
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  datasource:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    depends_on:
+      - mongo
+    command: /usr/bin/python /opt/noc/services/datasource/service.py
+    mem_limit: 300m
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  datastream:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    depends_on:
+      - mongo
+    command: /usr/bin/python /opt/noc/services/datastream/service.py
+    mem_limit: 110m
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  nbi:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    depends_on:
+      - mongo
+      - clickhouse
+      - login
+      - nsqd
+    command: /usr/bin/python /opt/noc/services/nbi/service.py
+    mem_limit: 100m
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  activator-default:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    command: /usr/bin/python /opt/noc/services/activator/service.py
+    mem_limit: 150m
+    depends_on:
+      - datastream
+    environment:
+      NOC_POOL: default
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  discovery-default:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    command: /usr/bin/python /opt/noc/services/discovery/service.py
+    mem_limit: 150m
+    environment:
+      NOC_POOL: default
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  ping-default:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    command: /usr/bin/python /opt/noc/services/ping/service.py
+    privileged: true
+    mem_limit: 50m
+    environment:
+      NOC_POOL: default
+    depends_on:
+      - datastream
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  scheduler:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    depends_on:
+      - mongo
+      - redis
+    command: /usr/bin/python /opt/noc/services/scheduler/service.py
+    mem_limit: 150m
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  classifier-default:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    mem_limit: 120m
+    depends_on:
+      - mongo
+      - redis
+      - nsqlookupd
+      - nsqd
+    command: /usr/bin/python /opt/noc/services/classifier/service.py
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  correlator-default:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    mem_limit: 120m
+    depends_on:
+      - mongo
+      - redis
+      - nsqlookupd
+      - nsqd
+    command: /usr/bin/python /opt/noc/services/correlator/service.py
+    environment:
+      NOC_POOL: default
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  chwriter:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    depends_on:
+      - clickhouse
+      - nsqlookupd
+      - nsqd
+    command: /usr/bin/python /opt/noc/services/chwriter/service.py
+    mem_limit: 90m
+    environment:
+      NOC_POOL: default
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  escalator:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    depends_on:
+      - nsqlookupd
+      - nsqd
+    command: /usr/bin/python /opt/noc/services/escalator/service.py
+    mem_limit: 90m
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  selfmon:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    mem_limit: 110m
+    depends_on:
+      - mongo
+      - nsqlookupd
+      - nsqd
+    command: /usr/bin/python /opt/noc/services/selfmon/service.py
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  mib:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    mem_limit: 100m
+    depends_on:
+      - mongo
+    command: /usr/bin/python /opt/noc/services/mib/service.py
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  mailsender:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    mem_limit: 52m
+    depends_on:
+      - mongo
+    command: /usr/bin/python /opt/noc/services/mailsender/service.py
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  tgsender:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    mem_limit: 52m
+    depends_on:
+      - mongo
+    command: /usr/bin/python /opt/noc/services/tgsender/service.py
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  syslogcollector-default:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    environment:
+      NOC_POOL: default
+    depends_on:
+      - nsqd
+      - datastream
+    command: /usr/bin/python /opt/noc/services/syslogcollector/service.py
+    mem_limit: 80m
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  trapcollector-default:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    environment:
+      NOC_POOL: default
+    depends_on:
+      - nsqd
+      - datastream
+    command: /usr/bin/python /opt/noc/services/trapcollector/service.py
+    mem_limit: 80m
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  nginx_openssl:
+    image: alpine:latest
+    restart: "no"
+    command: >
+      sh -c "set -xe;
+      if [ ! -f /etc/nginx/ssl/noc.crt ]; then
+        apk add --no-cache openssl;
+        openssl req \
+        -newkey rsa:2048 \
+        -nodes \
+        -keyout /etc/nginx/ssl/noc.key \
+        -out /etc/nginx/ssl/noc.crt \
+        -x509 \
+        -days 365 \
+        -subj "/C=US/ST=NOC/L=NOC/O=NOC/OU=NOC/CN=NOC/emailAddress=NOC@NOC";
+        #openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048 # currently unused
+      fi
+      "
+    volumes:
+      - nginx_ssl:/etc/nginx/ssl
+    labels:
+      traefik.enable: false
+
+  nginx:
+    image: registry.getnoc.com/noc/noc/static:19.2-dev
+    restart: "always"
+    mem_limit: 30m
+    ports:
+      - 8443:443
+    depends_on:
+      - nginx_openssl
+      - web
+      - login
+      - card
+      - datastream
+      - mrt
+      - bi
+      - grafanads
+    volumes:
+      - $PWD/data/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - nginx_ssl:/etc/nginx/ssl:ro
+    labels:
+      traefik.enable: false
+
+  traefik:
+    image: traefik:latest
+    command: >
+      - traefik
+      - --web
+      - --web.metrics.prometheus
+      - --web.metrics.prometheus.buckets="0.1,0.3,1.2,5.0"
+      - --docker
+      - --entryPoints='Name:noc Address::1200'
+      - --accesslog
+    ports:
+      - 8080:8080
+      - 1200:1200
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
+    labels:
+      traefik.protocol: http
+      traefik.port: "8080"
+      traefik.backend: manager
+      traefik.frontend.rule: Host:traefik
