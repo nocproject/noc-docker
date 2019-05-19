@@ -82,6 +82,6 @@ noc-dc_web_1                       /usr/bin/python /opt/noc/s ...   Up          
 
 Q: Can i setup my ssl certificate?
 
-A: Yes you can. you have to put it in data/nginx/ssl and call in the same way. 
+A: Yes you can. you have to put it in data/nginx/ssl and name it noc.crt and noc.key
 
 
