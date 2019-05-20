@@ -337,8 +337,6 @@ services:
     restart: "always"
     command: /usr/bin/python /opt/noc/services/activator/service.py
     mem_limit: 150m
-    depends_on:
-      - datastream
     environment:
       NOC_POOL: default
     env_file:
