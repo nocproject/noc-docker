@@ -84,4 +84,68 @@ Q: Can i setup my ssl certificate?
 
 A: Yes you can. you have to put it in data/nginx/ssl and name it noc.crt and noc.key
 
+Q: Can i use my own databases instead of new ? 
 
+A: Glad you asked. Of cause you can. Ensure that dockerized noc is not started
+```
+docker-compose down -v
+``` 
+Take a backup or shutdown your current noc and copy 
+```
+/var/lib/postgres -> data/postgres
+/var/lib/clickhouse -> data/clickhouse
+/var/lib/mongo -> data/mongo
+```
+and start noc with 
+```
+docker-compose up -d 
+```
+Thats it. Be aware that your copy will be doing same jobs. And that can lead to a extreme server load. But here is a tric.
+You can run 
+```
+docker-compose run migrate python commands/deactivate.py
+```
+It will unschedule all discovery jobs so you can run your copy without worries 
+
+Q: Can i change files in that NOC install ?
+
+A: Yes. Just add them as a volumes. For example you want to change script sa/profiles/MikroTik/RouterOS/get_version.py 
+You have to open with text editor file `docker-compose.yaml` and find `activator-default` section it will looks like
+```yaml
+  activator-default:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    command: /usr/bin/python /opt/noc/services/activator/service.py
+    mem_limit: 150m
+    environment:
+      NOC_POOL: default
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+``` 
+Copy existing script from container to custom/ with 
+```
+docker cp noc-dc_activator-default_1:/opt/noc/sa/profiles/MikroTik/RouterOS/get_version.py custom/
+```
+Change it with text editor and add to docker-compose file like that
+```yaml
+  activator-default:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    command: /usr/bin/python /opt/noc/services/activator/service.py
+    mem_limit: 150m
+    environment:
+      NOC_POOL: default
+    env_file:
+      - noc.conf
+    volumes:
+      - $PWD/custom/get_version.py:/opt/noc/sa/profiles/MikroTik/RouterOS/get_version.py
+    labels:
+      traefik.enable: false
+```
+and restart noc with 
+```
+docker-compose up -d 
+```
+Thats it. Be aware of if you need to add new script it has to be added to several services. Also you need discovery, sae and web.
