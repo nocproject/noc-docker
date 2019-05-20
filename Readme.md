@@ -97,7 +97,7 @@ Take a backup or shutdown your current noc and copy
 /var/lib/clickhouse -> data/clickhouse
 /var/lib/mongo -> data/mongo
 ```
-and start noc with 
+update passwords in `noc.conf` and start noc with 
 ```
 docker-compose up -d 
 ```
