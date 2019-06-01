@@ -371,19 +371,6 @@ services:
     labels:
       traefik.enable: false
 
-  scheduler:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
-    restart: "always"
-    depends_on:
-      - mongo
-      - redis
-    command: /usr/bin/python /opt/noc/services/scheduler/service.py
-    mem_limit: 150m
-    env_file:
-      - noc.conf
-    labels:
-      traefik.enable: false
-
   classifier-default:
     image: registry.getnoc.com/noc/noc/code:19.2-dev
     restart: "always"
@@ -394,6 +381,8 @@ services:
       - nsqlookupd
       - nsqd
     command: /usr/bin/python /opt/noc/services/classifier/service.py
+    environment:
+      NOC_POOL: default
     env_file:
       - noc.conf
     labels:
@@ -425,8 +414,6 @@ services:
       - nsqd
     command: /usr/bin/python /opt/noc/services/chwriter/service.py
     mem_limit: 90m
-    environment:
-      NOC_POOL: default
     env_file:
       - noc.conf
     labels:
@@ -440,6 +427,19 @@ services:
       - nsqd
     command: /usr/bin/python /opt/noc/services/escalator/service.py
     mem_limit: 90m
+    env_file:
+      - noc.conf
+    labels:
+      traefik.enable: false
+
+  scheduler:
+    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    restart: "always"
+    depends_on:
+      - mongo
+      - redis
+    command: /usr/bin/python /opt/noc/services/scheduler/service.py
+    mem_limit: 150m
     env_file:
       - noc.conf
     labels:
