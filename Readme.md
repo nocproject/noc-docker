@@ -87,7 +87,7 @@ A: Yes you can. you have to put it in data/nginx/ssl and name it noc.crt and noc
 
 Q: Can i use my own databases instead of new ? 
 
-A: Glad you asked. Of cause you can. Ensure that dockerized noc is not started
+A: Glad you asked. Of course you can. Ensure that dockerized noc is not started
 ```
 docker-compose down -v
 ``` 
