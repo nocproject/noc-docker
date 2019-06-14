@@ -30,6 +30,12 @@ Username: admin
 Password: admin
 ```
 
+# Limitations
+
+* Only single node. No way to scale noc daemons to multihost.
+* Databases in docker. That is known to be not the best option
+* Only single pool. No way to add equipment from different vrfs.
+
 
 FAQ:
 ----
