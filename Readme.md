@@ -95,7 +95,7 @@ Q: Can i use my own databases instead of new ?
 
 A: Glad you asked. Of course you can. Ensure that dockerized noc is not started
 ```
-docker-compose down -v
+docker-compose down
 ``` 
 Take a backup or shutdown your current noc and copy 
 ```
