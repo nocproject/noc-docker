@@ -35,7 +35,7 @@ Password: admin
 * Only single node. No way to scale noc daemons to multihost.
 * Databases in docker. That is known to be not the best option
 * Only single pool. No way to add equipment from different vrfs.
-
+* need 10G+ free space on block device
 
 FAQ:
 ----
