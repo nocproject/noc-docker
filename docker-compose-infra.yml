@@ -1,0 +1,68 @@
+---
+version: '2'
+services:
+
+  prom:
+    image: prom/prometheus:v2.11.1
+    restart: always
+    hostname: prom
+    volumes:
+      - "$PWD/data/prometeus/etc:/etc/prometheus"
+      - "$PWD/data/prometeus/metrics:/prometheus-data"
+    command: 
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus-data
+      - --storage.tsdb.retention.time=12h
+      - --web.external-url=https://prom:9090
+      - --query.max-concurrency=40
+      - --query.timeout=20s
+      - --log.level=debug
+    ports:
+      - "9090:9090"
+
+
+
+  promgrafana:
+    image: grafana/grafana:latest
+    restart: always
+    hostname: prometheusgrafana
+    volumes:
+      - $PWD/data/grafana/etc/:/etc/grafana
+      - $PWD/data/grafana/var/db/grafana:/var/db/grafana
+      - $PWD/data/grafana/var/log/grafana:/var/log/grafana
+      - $PWD/data/grafana/var/lib/grafana/plugins:/var/lib/grafana/plugins
+      - $PWD/data/grafana/etc/dashboards:/var/lib/grafana/dashboards
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prom
+    environment:
+      GF_PATHS_DATA: /var/db/grafana
+      GF_PATHS_LOGS: /var/log/grafana
+      GF_PATHS_PLUGINS: /var/lib/grafana/plugins
+      GF_SERVER_ROOT_URL: https://promgrafana
+
+# for use dashboards do
+# mkdir -p /opt/noc-dc/data/grafana/etc && cd /opt/noc-dc/data/grafana/etc && git  clone https://code.getnoc.com/e_zombie/grafana-dashboard-import.git .
+# login to grafana, go to setup datasources and setup default  
+
+  promvm:
+    container_name: vm
+    hostname: vm
+    restart: always
+    image: victoriametrics/victoria-metrics:v1.27.0
+    volumes:
+      - $PWD/data/vm:/storage
+    labels:
+      - traefik.enable=false
+    command:
+      - '-storageDataPath=/storage'
+      - '-retentionPeriod=3'
+      - '-httpListenAddr=:8428'
+
+  promclickhouse:
+    image: f1yegor/clickhouse-exporter
+    restart: always
+    command: -scrape_uri=http://default:@clickhouse:8123/
+    labels:
+      - traefik.enable=false
