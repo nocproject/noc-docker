@@ -564,7 +564,7 @@ services:
       traefik.enable: false
 
   traefik:
-    image: traefik:latest
+    image: traefik:1.7-alpine
     depends_on:
       - web
       - login
