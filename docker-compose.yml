@@ -113,7 +113,7 @@ services:
       traefik.frontend.entryPoints: noc
 
   migrate:
-    image: registry.getnoc.com/noc/noc/dev:19.2-dev
+    image: registry.getnoc.com/noc/noc/dev:19.3.1
     working_dir: /opt/noc
     depends_on:
       postgres:
@@ -175,7 +175,7 @@ services:
       traefik.enable: false
 
   web:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     depends_on:
       - mongo
@@ -197,7 +197,7 @@ services:
       traefik.frontend.entryPoints: noc
 
   login:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     depends_on:
       - mongo
@@ -214,7 +214,7 @@ services:
       traefik.frontend.entryPoints: noc
 
   card:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     depends_on:
       - mongo
@@ -232,7 +232,7 @@ services:
       traefik.frontend.entryPoints: noc
 
   mrt:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     depends_on:
       - mongo
@@ -248,7 +248,7 @@ services:
       traefik.frontend.entryPoints: noc
 
   grafanads:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     depends_on:
       - mongo
@@ -264,7 +264,7 @@ services:
       traefik.frontend.entryPoints: noc
 
   bi:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     depends_on:
       - mongo
@@ -281,7 +281,7 @@ services:
       traefik.frontend.entryPoints: noc
 
   sae:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     depends_on:
       - mongo
@@ -294,7 +294,7 @@ services:
       traefik.enable: false
 
   datasource:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     depends_on:
       - mongo
@@ -306,7 +306,7 @@ services:
       traefik.enable: false
 
   datastream:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     depends_on:
       - mongo
@@ -318,7 +318,7 @@ services:
       traefik.enable: false
 
   nbi:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     depends_on:
       - mongo
@@ -333,7 +333,7 @@ services:
       traefik.enable: false
 
   activator-default:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     command: /usr/bin/python /opt/noc/services/activator/service.py
     mem_limit: 150m
@@ -345,7 +345,7 @@ services:
       traefik.enable: false
 
   discovery-default:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     command: /usr/bin/python /opt/noc/services/discovery/service.py
     mem_limit: 150m
@@ -357,7 +357,7 @@ services:
       traefik.enable: false
 
   ping-default:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     command: /usr/bin/python /opt/noc/services/ping/service.py
     privileged: true
@@ -372,7 +372,7 @@ services:
       traefik.enable: false
 
   classifier-default:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     mem_limit: 120m
     depends_on:
@@ -389,7 +389,7 @@ services:
       traefik.enable: false
 
   correlator-default:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     mem_limit: 120m
     depends_on:
@@ -406,7 +406,7 @@ services:
       traefik.enable: false
 
   chwriter:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     depends_on:
       - clickhouse
@@ -420,7 +420,7 @@ services:
       traefik.enable: false
 
   escalator:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     depends_on:
       - nsqlookupd
@@ -433,7 +433,7 @@ services:
       traefik.enable: false
 
   scheduler:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     depends_on:
       - mongo
@@ -446,7 +446,7 @@ services:
       traefik.enable: false
 
   selfmon:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     mem_limit: 110m
     depends_on:
@@ -460,7 +460,7 @@ services:
       traefik.enable: false
 
   mib:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     mem_limit: 100m
     depends_on:
@@ -472,7 +472,7 @@ services:
       traefik.enable: false
 
   mailsender:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     mem_limit: 52m
     depends_on:
@@ -484,7 +484,7 @@ services:
       traefik.enable: false
 
   tgsender:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     mem_limit: 52m
     depends_on:
@@ -496,7 +496,7 @@ services:
       traefik.enable: false
 
   syslogcollector-default:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     environment:
       NOC_POOL: default
@@ -511,7 +511,7 @@ services:
       traefik.enable: false
 
   trapcollector-default:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
+    image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
     environment:
       NOC_POOL: default
@@ -549,7 +549,7 @@ services:
       traefik.enable: false
 
   nginx:
-    image: registry.getnoc.com/noc/noc/static:19.2-dev
+    image: registry.getnoc.com/noc/noc/static:19.3.1
     restart: "always"
     mem_limit: 30m
     ports:
