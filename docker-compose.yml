@@ -11,6 +11,7 @@ volumes:
     driver_opts:
       device: $PWD/data/postgres
       o: bind
+      type: none
   clickhouse_data:
     driver: local
     driver_opts:
