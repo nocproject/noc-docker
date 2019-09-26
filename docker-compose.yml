@@ -6,36 +6,43 @@ volumes:
     driver_opts:
       device: $PWD/data/mongo
       o: bind
+      type: bind
   postgres_data:
     driver: local
     driver_opts:
       device: $PWD/data/postgres
       o: bind
+      type: bind
   clickhouse_data:
     driver: local
     driver_opts:
       device: $PWD/data/clickhouse
       o: bind
+      type: bind
   nsq_data:
     driver: local
     driver_opts:
       device: $PWD/data/nsq
       o: bind
+      type: bind
   redis_data:
     driver: local
     driver_opts:
       device: $PWD/data/redis
       o: bind
+      type: bind
   consul_data:
     driver: local
     driver_opts:
       device: $PWD/data/consul
       o: bind
+      type: bind
   nginx_ssl:
     driver: local
     driver_opts:
       device: $PWD/data/nginx/ssl
       o: bind
+      type: bind
 
 services:
   mongo:
@@ -77,7 +84,7 @@ services:
       POSTGRES_DB: noc
       POSTGRES_PASSWORD: noc
     volumes:
-      - postgres_data:/var/lib/postgresql
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "su", "-", "postgres", "-c", "psql -U noc -l | grep noc"]
       interval: 3s
