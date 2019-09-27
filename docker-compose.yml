@@ -69,6 +69,12 @@ services:
     labels:
       traefik.enable: false
 
+  # create './data/postgres' directory to store pg db files
+  pgfix:
+    image: alpine:latest
+    volumes:
+      - $PWD/data/postgres:/tmp
+
   postgres:
     image: "postgres:9.6"
     restart: "no"
@@ -77,7 +83,9 @@ services:
       POSTGRES_DB: noc
       POSTGRES_PASSWORD: noc
     volumes:
-      - postgres_data:/var/lib/postgresql
+      - postgres_data:/var/lib/postgresql/data
+    depends_on:
+      - pgfix
     healthcheck:
       test: ["CMD", "su", "-", "postgres", "-c", "psql -U noc -l | grep noc"]
       interval: 3s
