@@ -14,7 +14,12 @@ volumes:
   clickhouse_data:
     driver: local
     driver_opts:
-      device: $PWD/data/clickhouse
+      device: $PWD/data/clickhouse/data
+      o: bind
+  clickhouse_etc:
+    driver: local
+    driver_opts:
+      device: $PWD/data/clickhouse/etc
       o: bind
   nsq_data:
     driver: local
@@ -36,10 +41,27 @@ volumes:
     driver_opts:
       device: $PWD/data/nginx/ssl
       o: bind
+  grafana_data:
+    driver: local
+    driver_opts:
+      device: $PWD/data/grafana/data
+      o: bind
+
+  grafana_etc:
+    driver: local
+    driver_opts:
+      device: $PWD/data/grafana/etc
+      o: bind
+
+  grafana_dashboards:
+    driver: local
+    driver_opts:
+      device: $PWD/data/grafana/dashboards
+      o: bind
 
 services:
   mongo:
-    image: "mongo:4.0"
+    image: mongo:4.0
     command: --wiredTigerCacheSizeGB 1.5 --bind_ip_all --replSet noc --port 27017
     restart: "no"
     volumes:
@@ -53,7 +75,7 @@ services:
       traefik.enable: false
 
   mongodb-repl-set-init:
-    image: "mongo:4.0"
+    image: mongo:4.0
     restart: "no"
     depends_on:
       mongo:
@@ -69,14 +91,9 @@ services:
     labels:
       traefik.enable: false
 
-  # create './data/postgres' directory to store pg db files
-  pgfix:
-    image: alpine:latest
-    volumes:
-      - $PWD/data/postgres:/tmp
 
   postgres:
-    image: "postgres:9.6"
+    image: postgres:9.6
     restart: "no"
     environment:
       POSTGRES_USER: noc
@@ -84,8 +101,6 @@ services:
       POSTGRES_PASSWORD: noc
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    depends_on:
-      - pgfix
     healthcheck:
       test: ["CMD", "su", "-", "postgres", "-c", "psql -U noc -l | grep noc"]
       interval: 3s
@@ -93,6 +108,9 @@ services:
       retries: 100
     labels:
       traefik.enable: false
+#    command: >
+#      su - postgres -c '/usr/lib/postgresql/9.6/bin/postgres -D && createuser -e -U noc -w -d grafana'
+
 
   consul:
     hostname: consul
@@ -158,6 +176,8 @@ services:
         hard: 262144
     volumes:
       - clickhouse_data:/var/lib/clickhouse
+      - clickhouse_etc:/etc/clickhouse-server
+
     labels:
       traefik.enable: false
 
@@ -573,6 +593,7 @@ services:
 
   traefik:
     image: traefik:1.7-alpine
+    restart: "always"
     depends_on:
       - web
       - login
@@ -600,3 +621,15 @@ services:
       traefik.port: "8080"
       traefik.backend: manager
       traefik.frontend.rule: Host:traefik
+
+# WIP
+# В файл необходимо прописать внешний IP системы /opt/noc-dc/data/grafana/dashboards/noc.js
+# setup url: "https://<IP>:<PORT>/pm/ddash/?" + $.param(args)
+  grafana:
+    image: grafana/grafana:5.0.3
+    restart: always
+    volumes:
+      - grafana_etc:/etc/grafana
+      - grafana_data:/var/lib/grafana
+      - grafana_dashboards:/usr/share/grafana/public/dashboards
+
