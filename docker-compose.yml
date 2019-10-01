@@ -81,7 +81,7 @@ services:
       - $PWD/data/postgres:/tmp
 
   postgres:
-    image: "postgres:9.6"
+    image: postgres:9.6
     restart: "no"
     environment:
       POSTGRES_USER: noc
