@@ -18,7 +18,7 @@ return function(callback) {
     // Get dashboard configuration. Change to your address if you want
     $.ajax({
         method: "GET",
-        url: "https://0.0.0.0:8443/pm/ddash/?" + $.param(args)
+        url: "https://0.0.0.0/pm/ddash/?" + $.param(args)
     }).done(function(result) {
         callback(result);
     });
