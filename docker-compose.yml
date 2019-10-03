@@ -41,11 +41,6 @@ volumes:
     driver_opts:
       device: $PWD/data/nginx/ssl
       o: bind
-  grafana_data:
-    driver: local
-    driver_opts:
-      device: $PWD/data/grafana/data
-      o: bind
   grafana_etc:
     driver: local
     driver_opts:
@@ -629,15 +624,8 @@ services:
     restart: always
     volumes:
       - grafana_etc:/etc/grafana
-      - grafana_data:/var/lib/grafana
       - grafana_dashboards:/usr/share/grafana/public/dashboards
     # comment "environment" if node doesn't have access to internet
     environment:
       GF_INSTALL_PLUGINS: grafana-simple-json-datasource,vertamedia-clickhouse-datasource
-    labels:
-      traefik.protocol: http
-      traefik.backend: grafana
-      traefik.port: 3000
-      traefik.frontend.rule: "PathPrefix: /ui/grafana/"
-      traefik.frontend.entryPoints: noc
 
