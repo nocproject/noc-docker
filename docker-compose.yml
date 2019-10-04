@@ -41,6 +41,16 @@ volumes:
     driver_opts:
       device: $PWD/data/nginx/ssl
       o: bind
+  grafana_etc:
+    driver: local
+    driver_opts:
+      device: $PWD/data/grafana/etc
+      o: bind
+  grafana_dashboards:
+    driver: local
+    driver_opts:
+      device: $PWD/data/grafana/dashboards
+      o: bind
 
 services:
   mongo:
@@ -568,7 +578,7 @@ services:
     restart: "always"
     mem_limit: 30m
     ports:
-      - 8443:443
+      - 443:443
     depends_on:
       - nginx_openssl
       - traefik
@@ -608,4 +618,14 @@ services:
       traefik.port: "8080"
       traefik.backend: manager
       traefik.frontend.rule: Host:traefik
+
+  grafana:
+    image: grafana/grafana:6.3.6
+    restart: always
+    volumes:
+      - grafana_etc:/etc/grafana
+      - grafana_dashboards:/usr/share/grafana/public/dashboards
+    # comment "environment" if node doesn't have access to internet
+    environment:
+      GF_INSTALL_PLUGINS: grafana-simple-json-datasource,vertamedia-clickhouse-datasource
 
