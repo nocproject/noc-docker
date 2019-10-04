@@ -23,7 +23,7 @@ docker-compose up -d
 Be aware that command will run lots of noc daemons and intended to be pretty slow. 
 On my laptops it took at about 2 minutes to get everything started
 
-Go to https://0.0.0.0:8443 default credentials
+Go to https://0.0.0.0 default credentials
 
 ```
 Username: admin
