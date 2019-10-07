@@ -27,6 +27,12 @@ volumes:
     driver_opts:
       device: $PWD/data/promgrafana/db
       o: bind
+  alertmanager_etc:
+    driver: local
+    driver_opts:
+      device: $PWD/data/alertmanager/etc
+      o: bind
+
 
 services:
 
@@ -88,5 +94,19 @@ services:
     image: f1yegor/clickhouse-exporter
     restart: always
     command: -scrape_uri=http://default:@clickhouse:8123/
+    labels:
+      - traefik.enable=false
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    restart: always
+    hostname: alertmanager
+    volumes:
+      - alertmanager_etc:/etc/alertmanager
+    ports:
+      - "9093:9093"
+    command:
+      - --config.file=/etc/alertmanager/alertmanager.conf
+      - --log.level=info
     labels:
       - traefik.enable=false
