@@ -37,7 +37,7 @@ services:
     volumes:
       - prometheus_etc:/etc/prometheus
       - prometheus_metrics:/prometheus-data
-    command:.
+    command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.path=/prometheus-data
       - --storage.tsdb.retention.time=12h
