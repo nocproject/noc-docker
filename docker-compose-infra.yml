@@ -97,6 +97,7 @@ services:
     labels:
       - traefik.enable=false
 
+  # read ./data/alertmanager/etc/Readme.md before start container
   alertmanager:
     image: prom/alertmanager:latest
     restart: always
