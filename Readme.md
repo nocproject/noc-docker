@@ -156,3 +156,9 @@ and restart noc with
 docker-compose up -d 
 ```
 Thats it. Be aware of if you need to add new script it has to be added to several services. Also you need discovery, sae and web.
+
+Q: How to make \ restore a backup.
+
+A: Use *backup.sh* and *restore.sh* scripts from ./backup directory. Read ./backup/Readme.md first!
+
+
