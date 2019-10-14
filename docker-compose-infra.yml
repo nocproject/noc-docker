@@ -1,5 +1,33 @@
 ---
 version: '2'
+
+volumes:
+  prometheus_metrics:
+    driver: local
+    driver_opts:
+      device: $PWD/data/prometheus/metrics
+      o: bind
+  prometheus_etc:
+    driver: local
+    driver_opts:
+      device: $PWD/data/prometheus/etc
+      o: bind
+  promvm_data:
+    driver: local
+    driver_opts:
+      device: $PWD/data/promvm
+      o: bind
+  promgrafana_etc:
+    driver: local
+    driver_opts:
+      device: $PWD/data/promgrafana/etc
+      o: bind
+  promgrafana_db:
+    driver: local
+    driver_opts:
+      device: $PWD/data/promgrafana/db
+      o: bind
+
 services:
 
   prom:
@@ -7,9 +35,9 @@ services:
     restart: always
     hostname: prom
     volumes:
-      - "$PWD/data/prometeus/etc:/etc/prometheus"
-      - "$PWD/data/prometeus/metrics:/prometheus-data"
-    command: 
+      - prometheus_etc:/etc/prometheus
+      - prometheus_metrics:/prometheus-data
+    command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.path=/prometheus-data
       - --storage.tsdb.retention.time=12h
@@ -20,15 +48,13 @@ services:
     ports:
       - "9090:9090"
 
-
-
   promgrafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:6.3.5
     restart: always
     hostname: prometheusgrafana
     volumes:
-      - $PWD/data/grafana/etc/:/etc/grafana
-      - $PWD/data/grafana/var/db/grafana:/var/db/grafana
+      - promgrafana_etc/:/etc/grafana
+      - promgrafana_db:/var/db/grafana
       - $PWD/data/grafana/var/log/grafana:/var/log/grafana
       - $PWD/data/grafana/var/lib/grafana/plugins:/var/lib/grafana/plugins
       - $PWD/data/grafana/etc/dashboards:/var/lib/grafana/dashboards
@@ -37,10 +63,8 @@ services:
     depends_on:
       - prom
     environment:
-      GF_PATHS_DATA: /var/db/grafana
-      GF_PATHS_LOGS: /var/log/grafana
-      GF_PATHS_PLUGINS: /var/lib/grafana/plugins
       GF_SERVER_ROOT_URL: https://promgrafana
+      GF_INSTALL_PLUGINS: grafana-simple-json-datasource,vertamedia-clickhouse-datasource
 
 # for use dashboards do
 # mkdir -p /opt/noc-dc/data/grafana/etc && cd /opt/noc-dc/data/grafana/etc && git  clone https://code.getnoc.com/e_zombie/grafana-dashboard-import.git .
@@ -52,7 +76,7 @@ services:
     restart: always
     image: victoriametrics/victoria-metrics:v1.27.0
     volumes:
-      - $PWD/data/vm:/storage
+      - promvm_data:/storage
     labels:
       - traefik.enable=false
     command:
