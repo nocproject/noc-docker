@@ -54,7 +54,7 @@ volumes:
   grafana_db:
     driver: local
     driver_opts:
-      device: $PWD/data/rafana/db
+      device: $PWD/data/grafana/db
       o: bind
 
 services:
@@ -634,7 +634,7 @@ services:
     volumes:
       - grafana_etc:/etc/grafana
       - grafana_dashboards:/usr/share/grafana/public/dashboards
-      - rafana_db:/var/lib/grafana/
+      - grafana_db:/var/lib/grafana/
     # comment "environment" if node doesn't have access to internet
     environment:
       GF_INSTALL_PLUGINS: grafana-simple-json-datasource,vertamedia-clickhouse-datasource
