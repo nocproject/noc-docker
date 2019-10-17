@@ -27,12 +27,22 @@ volumes:
     driver_opts:
       device: $PWD/data/promgrafana/db
       o: bind
+  promgrafana_plugins:
+    driver: local
+    driver_opts:
+      device: $PWD/data/promgrafana/plugins
+      o: bind
+  promgrafana_dashboards:
+    driver: local
+    driver_opts:
+      device: $PWD/data/promgrafana/etc/dashboards
+      o: bind
+
   alertmanager_etc:
     driver: local
     driver_opts:
       device: $PWD/data/alertmanager/etc
       o: bind
-
 
 services:
 
@@ -61,16 +71,16 @@ services:
     hostname: prometheusgrafana
     volumes:
       - promgrafana_etc/:/etc/grafana
-      - promgrafana_db:/var/db/grafana
-      - $PWD/data/grafana/var/log/grafana:/var/log/grafana
-      - $PWD/data/grafana/var/lib/grafana/plugins:/var/lib/grafana/plugins
-      - $PWD/data/grafana/etc/dashboards:/var/lib/grafana/dashboards
+      - promgrafana_db:/var/lib/grafana/
+      - promgrafana_plugins:/var/lib/grafana/plugins
+      - promgrafana_dashboards:/var/lib/grafana/dashboards
     ports:
       - "3000:3000"
     depends_on:
       - prom
     environment:
       GF_SERVER_ROOT_URL: https://promgrafana
+      GF_PATHS_PROVISIONING: /etc/grafana/provisioning
       GF_INSTALL_PLUGINS: grafana-simple-json-datasource,vertamedia-clickhouse-datasource
     labels:
       - traefik.enable=false
