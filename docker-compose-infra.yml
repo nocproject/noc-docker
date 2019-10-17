@@ -50,9 +50,10 @@ services:
       - --web.external-url=https://prom:9090
       - --query.max-concurrency=40
       - --query.timeout=20s
-      - --log.level=debug
     ports:
       - "9090:9090"
+    labels:
+      - traefik.enable=false
 
   promgrafana:
     image: grafana/grafana:6.3.5
@@ -71,9 +72,11 @@ services:
     environment:
       GF_SERVER_ROOT_URL: https://promgrafana
       GF_INSTALL_PLUGINS: grafana-simple-json-datasource,vertamedia-clickhouse-datasource
+    labels:
+      - traefik.enable=false
 
 # for use dashboards do
-# mkdir -p /opt/noc-dc/data/grafana/etc && cd /opt/noc-dc/data/grafana/etc && git  clone https://code.getnoc.com/e_zombie/grafana-dashboard-import.git .
+# mkdir -p /opt/noc-dc/data/promgrafana/etc && cd /opt/noc-dc/data/promgrafana/etc && git  clone https://code.getnoc.com/e_zombie/grafana-dashboard-import.git .
 # login to grafana, go to setup datasources and setup default  
 
   promvm:
