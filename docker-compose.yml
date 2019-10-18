@@ -51,6 +51,10 @@ volumes:
     driver_opts:
       device: $PWD/data/grafana/dashboards
       o: bind
+  grafana_db:
+    driver: local
+    driver_opts:
+      device: $PWD/data/grafana/db
   grafana_plugins:
     driver: local
     driver_opts:
@@ -634,6 +638,7 @@ services:
     volumes:
       - grafana_etc:/etc/grafana
       - grafana_dashboards:/usr/share/grafana/public/dashboards
+      - grafana_db:/var/lib/grafana/
       - grafana_plugins:/var/lib/grafana/plugins
     # comment "environment" if node doesn't have access to internet
     environment:
