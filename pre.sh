@@ -4,9 +4,10 @@
 # setup promgrafana dashboards\sources
 
 INSTALLPATH=/opt/noc-dc
+TMPPATH=/tmp/$(date +%s)
+
 
 function SETPERMISSION {
-    echo "1"
     chmod 777 -R $INSTALLPATH/data/clickhouse/data
     chmod 777 -R $INSTALLPATH/data/grafana/plugins
     chmod 777 -R $INSTALLPATH/data/prometheus/metrics
@@ -15,7 +16,9 @@ function SETPERMISSION {
 }
 
 function SETUPPROMGRAFANA {
-    echo "2"
+    git clone https://code.getnoc.com/e_zombie/grafana-dashboard-import.git "$TMPPATH"
+    cp -f -r "$TMPPATH"/dashboards/* "$INSTALLPATH"/data/promgrafana/etc/dashboards
+    cp -f -r "$TMPPATH"/provisioning/* "$INSTALLPATH"/data/promgrafana/etc/provisioning
 }
 
 if [ -n "$1" ]
