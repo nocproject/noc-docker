@@ -11,10 +11,9 @@ function SETPERMISSION {
     chmod 777 -R $INSTALLPATH/data/clickhouse/data
     chmod 777 -R $INSTALLPATH/data/postgres
     chmod 777 -R $INSTALLPATH/data/mongo
-    chmod 777 -R $INSTALLPATH/data/grafana/plugins
+    chown 472 -R $INSTALLPATH/data/grafana/
     chmod 777 -R $INSTALLPATH/data/prometheus/metrics
-    chmod 777 -R $INSTALLPATH/data/promgrafana/plugins
-    chmod 777 -R $INSTALLPATH/data/promgrafana/db
+    chown 472 -R $INSTALLPATH/data/promgrafana/plugins
 }
 
 function SETUPPROMGRAFANA {
