@@ -67,9 +67,8 @@ if [ -n "$1" ]
                 SETUPPROMGRAFANA
         elif [ "$1" = "promrules" ]
             then
+                CREATEDIR
                 SETUPPROMRULES
-                
-
         else
             echo "Unknown parameter.  Use: all, perm, grafana, promrules"
         fi
