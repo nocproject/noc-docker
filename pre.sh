@@ -54,16 +54,17 @@ if [ -n "$1" ]
     then
         if [ "$1" = "all" ]
             then
-		CREATEDIR
+		        CREATEDIR
                 SETPERMISSION
                 SETUPPROMGRAFANA
+                SETUPPROMRULES
         elif [ "$1" = "perm" ]
             then
-		CREATEDIR
+		        CREATEDIR
                 SETPERMISSION
         elif [ "$1" = "grafana" ]
             then
-		CREATEDIR
+		        CREATEDIR
                 SETUPPROMGRAFANA
         elif [ "$1" = "promrules" ]
             then
