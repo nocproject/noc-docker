@@ -4,7 +4,7 @@
 # setup promgrafana dashboards\sources
 
 INSTALLPATH=/opt/noc-dc
-TMPPATH=/tmp/$(date +%s)
+TMPPATH=$(mktemp -d -p /tmp)
 
 function CREATEDIR {
     mkdir -p $INSTALLPATH/data/promgrafana/etc/provisioning/datasources
@@ -37,7 +37,7 @@ function SETPERMISSION {
 }
 
 function SETUPPROMGRAFANA {
-    git clone https://code.getnoc.com/e_zombie/grafana-dashboard-import.git "$TMPPATH"
+    cd "$TMPPATH" && git clone https://code.getnoc.com/e_zombie/grafana-dashboard-import.git .
     cp -f -r "$TMPPATH"/dashboards/* "$INSTALLPATH"/data/promgrafana/etc/dashboards
     cp -f -r "$TMPPATH"/provisioning/* "$INSTALLPATH"/data/promgrafana/etc/provisioning
 }
