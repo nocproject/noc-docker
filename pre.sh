@@ -33,7 +33,7 @@ function SETPERMISSION {
     chown 472 -R $INSTALLPATH/data/grafana/
     chown 65534 -R $INSTALLPATH/data/prometheus/metrics
     chown 472 -R $INSTALLPATH/data/promgrafana/plugins
-    chmod 777 -R $INSTALLPATH/data/sentry/redis
+    chown 999 -R $INSTALLPATH/data/sentry/redis
 }
 
 function SETUPPROMGRAFANA {
