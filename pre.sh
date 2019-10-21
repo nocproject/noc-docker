@@ -12,6 +12,7 @@ function CREATEDIR {
     mkdir -p $INSTALLPATH/data/promgrafana/etc/provisioning/dashboards
     mkdir -p $INSTALLPATH/data/promgrafana/etc/dashboards
     mkdir -p $INSTALLPATH/data/promgrafana/plugins
+    mkdir -p $INSTALLPATH/data/promgrafana/db
     mkdir -p $INSTALLPATH/data/consul
     mkdir -p $INSTALLPATH/data/nsq
     mkdir -p $INSTALLPATH/data/promvm
