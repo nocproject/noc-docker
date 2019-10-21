@@ -28,7 +28,7 @@ function CREATEDIR {
 
 function SETPERMISSION {
     chown 101 -R $INSTALLPATH/data/clickhouse/data
-    chmod 777 -R $INSTALLPATH/data/postgres
+    chown 999 -R $INSTALLPATH/data/postgres
     chown 999 -R $INSTALLPATH/data/mongo
     chown 472 -R $INSTALLPATH/data/grafana/
     chown 65534 -R $INSTALLPATH/data/prometheus/metrics
