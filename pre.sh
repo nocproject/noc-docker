@@ -27,11 +27,11 @@ function CREATEDIR {
 }
 
 function SETPERMISSION {
-    chmod 777 -R $INSTALLPATH/data/clickhouse/data
+    chown 101 -R $INSTALLPATH/data/clickhouse/data
     chmod 777 -R $INSTALLPATH/data/postgres
-    chmod 777 -R $INSTALLPATH/data/mongo
+    chown 999 -R $INSTALLPATH/data/mongo
     chown 472 -R $INSTALLPATH/data/grafana/
-    chmod 777 -R $INSTALLPATH/data/prometheus/metrics
+    chown 65534 -R $INSTALLPATH/data/prometheus/metrics
     chown 472 -R $INSTALLPATH/data/promgrafana/plugins
     chmod 777 -R $INSTALLPATH/data/sentry/redis
 }
