@@ -13,15 +13,17 @@ function CREATEDIR {
     mkdir -p $INSTALLPATH/data/promgrafana/etc/dashboards
     mkdir -p $INSTALLPATH/data/promgrafana/plugins
     mkdir -p $INSTALLPATH/data/promgrafana/db
-    mkdir -p $INSTALLPATH/data/consul
-    mkdir -p $INSTALLPATH/data/nsq
     mkdir -p $INSTALLPATH/data/promvm
     mkdir -p $INSTALLPATH/data/prometheus/metrics
+    mkdir -p $INSTALLPATH/data/consul
+    mkdir -p $INSTALLPATH/data/clickhouse/data
+    mkdir -p $INSTALLPATH/data/nsq
     mkdir -p $INSTALLPATH/data/mongo
     mkdir -p $INSTALLPATH/data/postgres
     mkdir -p $INSTALLPATH/data/nginx/ssl
-    mkdir -p $INSTALLPATH/data/clickhouse/data
     mkdir -p $INSTALLPATH/data/grafana/plugins
+    mkdir -p $INSTALLPATH/data/sentry/redis
+    mkdir -p $INSTALLPATH/data/sentry/pg
 }
 
 function SETPERMISSION {
@@ -31,6 +33,7 @@ function SETPERMISSION {
     chown 472 -R $INSTALLPATH/data/grafana/
     chmod 777 -R $INSTALLPATH/data/prometheus/metrics
     chown 472 -R $INSTALLPATH/data/promgrafana/plugins
+    chmod 777 -R $INSTALLPATH/data/sentry/redis
 }
 
 function SETUPPROMGRAFANA {
