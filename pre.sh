@@ -5,6 +5,7 @@
 
 INSTALLPATH=/opt/noc-dc
 TMPPATH=$(mktemp -d -p /tmp)
+TMPPATH1=$(mktemp -d -p /tmp)
 
 function CREATEDIR {
     mkdir -p $INSTALLPATH/data/promgrafana/etc/provisioning/datasources
@@ -43,6 +44,12 @@ function SETUPPROMGRAFANA {
     cp -f -r "$TMPPATH"/provisioning/* "$INSTALLPATH"/data/promgrafana/etc/provisioning
 }
 
+function SETUPPROMRULES {
+   cd "$TMPPATH1" && git clone https://code.getnoc.com/noc/noc-prometheus-alerts.git .
+   cp -f "$TMPPATH1"/*.yml "$INSTALLPATH"/data/prometheus/etc/rules.d
+}
+
+
 if [ -n "$1" ]
     then
         if [ "$1" = "all" ]
@@ -58,9 +65,14 @@ if [ -n "$1" ]
             then
 		CREATEDIR
                 SETUPPROMGRAFANA
+        elif [ "$1" = "promrules" ]
+            then
+                SETUPPROMRULES
+                
+
         else
-            echo "Unknown parameter.  Use: all, perm, grafana"
+            echo "Unknown parameter.  Use: all, perm, grafana, promrules"
         fi
 else
-    echo "No  parameters found. Use: all, perm, grafana" 
+    echo "No  parameters found. Use: all, perm, grafana, promrules" 
 fi
