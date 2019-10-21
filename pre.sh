@@ -15,6 +15,7 @@ function CREATEDIR {
     mkdir -p $INSTALLPATH/data/promgrafana/db
     mkdir -p $INSTALLPATH/data/promvm
     mkdir -p $INSTALLPATH/data/prometheus/metrics
+    mkdir -p $INSTALLPATH/data/prometheus/etc/rules.d
     mkdir -p $INSTALLPATH/data/consul
     mkdir -p $INSTALLPATH/data/clickhouse/data
     mkdir -p $INSTALLPATH/data/nsq
