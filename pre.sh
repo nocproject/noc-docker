@@ -21,8 +21,6 @@ function CREATEDIR {
     mkdir -p $INSTALLPATH/data/nginx/ssl
     mkdir -p $INSTALLPATH/data/clickhouse/data
     mkdir -p $INSTALLPATH/data/grafana/plugins
-
-
 }
 
 function SETPERMISSION {
