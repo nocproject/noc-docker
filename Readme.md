@@ -10,6 +10,10 @@ git clone https://code.getnoc.com/noc/noc-dc.git /opt/noc-dc
 
 cd /opt/noc-dc
 ```
+Check *$INSTALLPATH* and run *pre.sh* script for make dirs\permissions
+```
+pre.sh
+```
 
 Run initial db init and migrations
 ```
