@@ -165,7 +165,7 @@ Q: Sentry not work after first run.
 
 A: You need run 
 ```
-docker exec -ti sentry_sentry_1 sentry upgrade
+docker exec -ti noc_sentry_1 sentry upgrade
 ```
 Setup admin user and password.
 
