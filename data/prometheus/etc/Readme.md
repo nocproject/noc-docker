@@ -1,6 +1,8 @@
-1. Install end configure Telegraf on localhost
+1. Install end configure *Telegraf* on localhost
 
+Use search for doc
 
+>  @google telegtaf install %%name of you linux distro%%
 
 See https://github.com/influxdata/telegraf
 
