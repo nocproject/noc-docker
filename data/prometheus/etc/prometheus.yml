@@ -18,7 +18,14 @@ scrape_configs:
         labels:
            env: 'infrastructure'
 
-    # need install 'telegraf' https://github.com/influxdata/telegraf
+    # see Readme.md
+  - job_name: 'docker'
+    static_configs:
+      - targets: ['127.0.0.1:9323']
+        labels:
+           env: 'infrastructure'
+
+    # see Readme.md
   - job_name: 'dockerhost'
     static_configs:
       - targets: ['127.0.0.1:9273']
