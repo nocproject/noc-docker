@@ -25,6 +25,12 @@ scrape_configs:
         labels:
            env: 'infrastructure'
 
+  - job_name: 'vm'
+    static_configs:
+      - targets: ['vm:8428']
+        labels:
+           env: 'infrastructure'
+
   - job_name: 'prod_consul'
     consul_sd_configs:
       - server: 'consul:8500'
