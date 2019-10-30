@@ -1,12 +1,13 @@
-1. Install end configure *Telegraf* on localhost
-
+Install end configure *Telegraf* on localhost
+------
 Use search for doc
 
 >  @google telegtaf install %%name of you linux distro%%
 
 See https://github.com/influxdata/telegraf
 
-2. Enable export Docker daemon metrics to Prometheus
+Enable export Docker daemon metrics to Prometheus
+------
 
 Edit */etc/docker/daemon.json*
 ```
