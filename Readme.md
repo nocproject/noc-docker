@@ -14,6 +14,11 @@ Check *$INSTALLPATH* and run *pre.sh* script for make dirs\permissions
 ```
 pre.sh
 ```
+Check *data/noc/etc/noc.conf.example* and make you config
+```
+cp ./data/noc/etc/noc.conf.example ./data/noc/etc/noc.conf
+```
+
 
 Run initial db init and migrations
 ```
