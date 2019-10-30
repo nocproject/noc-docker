@@ -18,6 +18,13 @@ scrape_configs:
         labels:
            env: 'infrastructure'
 
+    # need install 'telegraf' https://github.com/influxdata/telegraf
+  - job_name: 'dockerhost'
+    static_configs:
+      - targets: ['127.0.0.1:9273']
+        labels:
+           env: 'infrastructure'
+
   - job_name: 'prod_consul'
     consul_sd_configs:
       - server: 'consul:8500'
@@ -32,10 +39,9 @@ scrape_configs:
         replacement: "prod"
 
   - job_name: 'ch'
-    scrape_interval:     30s
+    scrape_interval: 30s
     static_configs:
-      - targets:
-        - promclickhouse:9116
+      - targets: ['promclickhouse:9116']
         labels:
            env: 'prod'
 
