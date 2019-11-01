@@ -19,6 +19,12 @@ Check *data/noc/etc/noc.conf.example* and make you config
 cp ./data/noc/etc/noc.conf.example ./data/noc/etc/noc.conf
 ```
 
+Preparing to launch containers:
+```
+export DOCKER_CLIENT_TIMEOUT=120
+export COMPOSE_HTTP_TIMEOUT=120
+docker-compose up --no-start
+```
 
 Run initial db init and migrations
 ```
@@ -27,7 +33,7 @@ docker-compose up migrate
 Wait for process to finish and than run noc itself
 
 ```
-COMPOSE_HTTP_TIMEOUT=120 docker-compose up -d 
+export DOCKER_CLIENT_TIMEOUT=120 COMPOSE_HTTP_TIMEOUT=120 docker-compose up -d 
 ```
 Be aware that command will run lots of noc daemons and intended to be pretty slow. 
 On my laptops it took at about 2 minutes to get everything started
