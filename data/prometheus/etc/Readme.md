@@ -7,6 +7,18 @@ Use search for doc
 See https://github.com/influxdata/telegraf
 
 Enable export Docker daemon metrics to Prometheus
+
+Add */etc/telegtaf/telegraf.d/prometheus.conf file
+```
+# Configuration for the Prometheus client to spawn
+[[outputs.prometheus_client]]
+  ## Address to listen on
+  listen = "0.0.0.0:9273"
+  expiration_interval = "10s"
+```
+
+
+
 ------
 
 Edit */etc/docker/daemon.json*
