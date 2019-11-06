@@ -10,14 +10,11 @@ git clone https://code.getnoc.com/noc/noc-dc.git /opt/noc-dc
 
 cd /opt/noc-dc
 ```
-Check *$INSTALLPATH* and run *pre.sh* script for make dirs\permissions
+Check *$INSTALLPATH* and run *pre.sh* script for make dirs\permissions\config
 ```
 pre.sh
 ```
-Check *data/noc/etc/noc.conf.example* and make you config
-```
-cp ./data/noc/etc/noc.conf.example ./data/noc/etc/noc.conf
-```
+Check *data/noc/etc/noc.conf* and edit config if needed
 
 Preparing to launch containers:
 ```
