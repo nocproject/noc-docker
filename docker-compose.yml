@@ -74,6 +74,8 @@ services:
       MONGO_INITDB_DATABASE: noc
       MONGO_INITDB_ROOT_USERNAME: noc
       MONGO_INITDB_ROOT_PASSWORD: noc
+    env_file:
+      - $PWD/data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -91,6 +93,8 @@ services:
       MONGO_REPL_SET_NAME: noc
       MONGO_REPL_SET_HOSTS: mongo
     entrypoint: sh /rs-init.sh
+    env_file:
+      - $PWD/data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -108,6 +112,8 @@ services:
       interval: 3s
       timeout: 3s
       retries: 100
+    env_file:
+      - $PWD/data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -130,6 +136,8 @@ services:
       - -ui
     volumes:
       - consul_data:/data
+    env_file:
+      - $PWD/data/noc/etc/noc.conf
     labels:
       traefik.protocol: http
       traefik.backend: consul
@@ -176,18 +184,23 @@ services:
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - clickhouse_etc:/etc/clickhouse-server
-
+    env_file:
+      - $PWD/data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
   redis:
     image: redis:5-alpine
+    env_file:
+      - $PWD/data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
   nsqlookupd:
     image: nsqio/nsq:v1.1.0
     command: /nsqlookupd
+    env_file:
+      - $PWD/data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -198,6 +211,8 @@ services:
     command: /nsqd --lookupd-tcp-address=nsqlookupd:4160 --mem-queue-size=10000
     volumes:
       - nsq_data:/data
+    env_file:
+      - $PWD/data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -574,6 +589,8 @@ services:
         #openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048 # currently unused
       fi
       "
+    env_file:
+      - $PWD/data/noc/etc/noc.conf
     volumes:
       - nginx_ssl:/etc/nginx/ssl
     labels:
@@ -591,6 +608,8 @@ services:
     volumes:
       - $PWD/data/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - nginx_ssl:/etc/nginx/ssl:ro
+    env_file:
+      - $PWD/data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -636,4 +655,6 @@ services:
     # comment "environment" if node doesn't have access to internet
     environment:
       GF_INSTALL_PLUGINS: grafana-simple-json-datasource,vertamedia-clickhouse-datasource
+    env_file:
+      - $PWD/data/noc/etc/noc.conf
 
