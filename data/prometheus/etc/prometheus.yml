@@ -51,6 +51,12 @@ scrape_configs:
         target_label: env
         replacement: "prod"
 
+  - job_name: 'prommongo'
+    static_configs:
+      - targets: ['prommongo:9104']
+        labels:
+           env: 'infrastructure'
+
   - job_name: 'ch'
     scrape_interval: 30s
     static_configs:
