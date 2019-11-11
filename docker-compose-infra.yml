@@ -124,3 +124,12 @@ services:
       - --log.level=info
     labels:
       - traefik.enable=false
+
+  prommongo:
+    image: eses/mongodb_exporter
+    restart: always
+    hostname: prommongo
+    command:
+      - -mongodb.uri=mongodb://noc:noc@mongo:27017
+    labels:
+      - traefik.enable=false
