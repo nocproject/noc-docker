@@ -61,6 +61,12 @@ volumes:
     driver_opts:
       device: $PWD/data/grafana/plugins
       o: bind
+  noc_custom:
+    driver: local
+    driver_opts:
+      device: /opt/noc-dc/data/noc/custom
+      o: bind
+
 
 services:
   mongo:
@@ -216,6 +222,8 @@ services:
     mem_limit: 120m
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.protocol: http
       traefik.backend: web
@@ -232,6 +240,8 @@ services:
     mem_limit: 75m
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.protocol: http
       traefik.backend: login
@@ -251,6 +261,8 @@ services:
     mem_limit: 140m
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.protocol: http
       traefik.backend: card
@@ -267,6 +279,8 @@ services:
     mem_limit: 103m
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.protocol: http
       traefik.backend: mrt
@@ -300,6 +314,8 @@ services:
     mem_limit: 100m
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.protocol: http
       traefik.backend: bi
@@ -317,6 +333,8 @@ services:
     mem_limit: 85m
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.enable: false
 
@@ -329,6 +347,8 @@ services:
     mem_limit: 300m
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.enable: false
 
@@ -341,6 +361,8 @@ services:
     mem_limit: 110m
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.enable: false
 
@@ -356,6 +378,8 @@ services:
     mem_limit: 100m
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.enable: false
 
@@ -368,6 +392,8 @@ services:
       NOC_POOL: default
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.enable: false
 
@@ -380,6 +406,8 @@ services:
       NOC_POOL: default
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.enable: false
 
@@ -412,6 +440,8 @@ services:
       NOC_POOL: default
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.enable: false
 
@@ -429,6 +459,8 @@ services:
       NOC_POOL: default
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.enable: false
 
@@ -443,6 +475,8 @@ services:
     mem_limit: 90m
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.enable: false
 
@@ -456,6 +490,8 @@ services:
     mem_limit: 90m
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.enable: false
 
@@ -469,6 +505,8 @@ services:
     mem_limit: 150m
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.enable: false
 
@@ -495,6 +533,8 @@ services:
     command: /usr/bin/python /opt/noc/services/mib/service.py
     env_file:
       - noc.conf
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.enable: false
 
@@ -536,6 +576,8 @@ services:
       - noc.conf
     ports:
       - 514:514/udp
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.enable: false
 
@@ -553,6 +595,8 @@ services:
       - noc.conf
     ports:
       - 162:162/udp
+    volumes:
+      - noc_custom:/opt/noc_custom:ro
     labels:
       traefik.enable: false
 
