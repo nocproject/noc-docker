@@ -165,4 +165,12 @@ Q: How to make \ restore a backup.
 
 A: Use *backup.sh* and *restore.sh* scripts from ./backup directory. Read ./backup/Readme.md first!
 
+Q: Sentry not work after first run. 
 
+A: You need run 
+```
+docker exec -ti noc-dc_sentry_1 sentry upgrade
+```
+Setup admin user and password.
+
+Go to https://0.0.0.0:9000 to login in Sentry
