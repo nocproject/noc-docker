@@ -43,6 +43,17 @@ volumes:
     driver_opts:
       device: $PWD/data/alertmanager/etc
       o: bind
+  sentryredis_data:
+    driver: local
+    driver_opts:
+      device: $PWD/data/sentry/redis
+      o: bind
+  sentrypostgres_data:
+    driver: local
+    driver_opts:
+      device: $PWD/data/sentry/pg
+      o: bind
+
 
 services:
 
@@ -125,11 +136,96 @@ services:
     labels:
       - traefik.enable=false
 
-  prommongo:
-    image: eses/mongodb_exporter
+
+  sentry-redis:
+    image: redis:alpine
     restart: always
-    hostname: prommongo
-    command:
-      - -mongodb.uri=mongodb://noc:noc@mongo:27017
+    volumes:
+      - sentryredis_data:/data
     labels:
       - traefik.enable=false
+
+  sentry-postgres:
+    image: postgres:9.6-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: sentry
+      POSTGRES_PASSWORD: yoobKaHaspIjOjBackIb
+      POSTGRES_DBNAME: sentry
+      POSTGRES_DBUSER: yoobKaHaspIjOjBackIb
+      POSTGRES_DBPASS: sentry
+    volumes:
+      - sentrypostgres_data:/var/lib/postgresql/data
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
+    labels:
+      - traefik.enable=false
+
+  # after firsh start need run "docker exec -ti sentry_sentry_1 sentry upgrade"
+  # for setup admin user\passwd
+  sentry:
+    image: sentry
+    restart: always
+    links:
+     - sentry-redis
+     - sentry-postgres
+    command: "sentry run web -w 16"
+    ports:
+      - "9000:9000"
+    environment:
+      SENTRY_SECRET_KEY: 'UcHuchLyfreakJitneFlalmoalOahokdoHeaKnajBudwuquap%'
+      SENTRY_POSTGRES_HOST: sentry-postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: yoobKaHaspIjOjBackIb
+      SENTRY_REDIS_HOST: sentry-redis
+      SENTRY_METRICS_SAMPLE_RATE: 0.9
+    labels:
+      - traefik.enable=false
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000"]
+      interval: 5m30s
+      timeout: 10s
+      retries: 3
+
+  sentry-cron:
+    image: sentry
+    restart: always
+    links:
+     - sentry-redis
+     - sentry-postgres
+    command: "sentry run cron"
+    environment:
+      SENTRY_SECRET_KEY: 'UcHuchLyfreakJitneFlalmoalOahokdoHeaKnajBudwuquap%'
+      SENTRY_POSTGRES_HOST: sentry-postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: yoobKaHaspIjOjBackIb
+      SENTRY_REDIS_HOST: sentry-redis
+      SENTRY_METRICS_SAMPLE_RATE: 0.9
+    labels:
+      - traefik.enable=false
+
+  sentry-worker:
+    image: sentry
+    restart: always
+    links:
+     - sentry-redis
+     - sentry-postgres
+    command: "sentry run worker"
+    environment:
+      SENTRY_SECRET_KEY: 'UcHuchLyfreakJitneFlalmoalOahokdoHeaKnajBudwuquap%'
+      SENTRY_POSTGRES_HOST: sentry-postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: yoobKaHaspIjOjBackIb
+      SENTRY_REDIS_HOST: sentry-redis
+      SENTRY_METRICS_SAMPLE_RATE: 0.9
+    labels:
+      - traefik.enable=false
+
