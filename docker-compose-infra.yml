@@ -136,7 +136,7 @@ services:
     labels:
       - traefik.enable=false
 
- prommongo:
+  prommongo:
     image: eses/mongodb_exporter
     restart: always
     hostname: prommongo
