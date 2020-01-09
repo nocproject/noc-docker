@@ -49,30 +49,40 @@ function SETUPPROMRULES {
    cp -f "$TMPPATH1"/*.yml "$INSTALLPATH"/data/prometheus/etc/rules.d
 }
 
+function SETUPNOCCONF {
+    if [ ! -f $INSTALLPATH/data/noc/etc/noc.conf ]
+        then
+            cp $INSTALLPATH/data/noc/etc/noc.conf.example $INSTALLPATH/data/noc/etc/noc.conf
+    fi
+}
 
 if [ -n "$1" ]
     then
         if [ "$1" = "all" ]
             then
-		        CREATEDIR
+                CREATEDIR
                 SETPERMISSION
                 SETUPPROMGRAFANA
                 SETUPPROMRULES
+                SETUPNOCCONF
         elif [ "$1" = "perm" ]
             then
-		        CREATEDIR
+                CREATEDIR
                 SETPERMISSION
         elif [ "$1" = "grafana" ]
             then
-		        CREATEDIR
+                CREATEDIR
                 SETUPPROMGRAFANA
         elif [ "$1" = "promrules" ]
             then
                 CREATEDIR
                 SETUPPROMRULES
+        elif [ "$1" = "nocconf" ]
+            then
+                SETUPNOCCONF
         else
-            echo "Unknown parameter.  Use: all, perm, grafana, promrules"
+            echo "Unknown parameter.  Use: all, perm, grafana, promrules, nocconf"
         fi
 else
-    echo "No  parameters found. Use: all, perm, grafana, promrules" 
+    echo "No  parameters found. Use: all, perm, grafana, promrules, nocconf" 
 fi
