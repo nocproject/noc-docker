@@ -49,6 +49,21 @@ Password: admin
 * Only single pool. No way to add equipment from different vrfs.
 * need 10G+ free space on block device
 
+
+Install monitoring
+-------
+
+Read *data/prometheus/etc/Readme.md and setup export metrics from docker host
+
+Run compose file *docker-compose-infra.yml*
+```
+docker-compose -f docker-compose-infra.yml -d
+```
+Open URL:
+*  Prometheus: https://0.0.0.0:9090
+*  Grafana: https://0.0.0.0:3000
+*  Sentry: https://0.0.0.0:9000
+
 FAQ:
 ----
 
