@@ -12,7 +12,7 @@ cd /opt/noc-dc
 ```
 Check *$INSTALLPATH* and run *pre.sh* script for make dirs\permissions\config
 ```
-pre.sh
+pre.sh all
 ```
 Check *data/noc/etc/noc.conf* and edit config if needed
 
