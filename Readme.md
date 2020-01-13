@@ -3,6 +3,7 @@ NOC Project installation via docker
 
 Install
 -------
+Disable SELINUX. See distro docs.
 
 Fork that git repo to your namespace and clone it to your favorite location
 ```
@@ -10,15 +11,22 @@ git clone https://code.getnoc.com/noc/noc-dc.git /opt/noc-dc
 
 cd /opt/noc-dc
 ```
-Check *$INSTALLPATH* and run *pre.sh* script for make dirs\permissions
+Check *$INSTALLPATH* and run *pre.sh* script for make dirs\permissions\config
 ```
-pre.sh
+./pre.sh all
 ```
-Check *data/noc/etc/noc.conf.example* and make you config
-```
-cp ./data/noc/etc/noc.conf.example ./data/noc/etc/noc.conf
-```
+Check *./data/noc/etc/noc.conf* and edit config if needed
 
+Install *docker-compose*:
+
+see URL: https://docs.docker.com/compose/install/
+
+Preparing to launch containers:
+```
+export DOCKER_CLIENT_TIMEOUT=120
+export COMPOSE_HTTP_TIMEOUT=120
+docker-compose up --no-start
+```
 
 Run initial db init and migrations
 ```
@@ -27,7 +35,7 @@ docker-compose up migrate
 Wait for process to finish and than run noc itself
 
 ```
-COMPOSE_HTTP_TIMEOUT=120 docker-compose up -d 
+export DOCKER_CLIENT_TIMEOUT=120 COMPOSE_HTTP_TIMEOUT=120 && docker-compose up -d 
 ```
 Be aware that command will run lots of noc daemons and intended to be pretty slow. 
 On my laptops it took at about 2 minutes to get everything started
@@ -45,6 +53,21 @@ Password: admin
 * Databases in docker. That is known to be not the best option
 * Only single pool. No way to add equipment from different vrfs.
 * need 10G+ free space on block device
+
+
+Install monitoring
+-------
+
+Read *data/prometheus/etc/Readme.md and setup export metrics from docker host
+
+Run compose file *docker-compose-infra.yml*
+```
+docker-compose -f docker-compose-infra.yml -d
+```
+Open URL:
+*  Prometheus: https://0.0.0.0:9090
+*  Grafana: https://0.0.0.0:3000
+*  Sentry: https://0.0.0.0:9000
 
 FAQ:
 ----
@@ -170,4 +193,12 @@ Q: How to make \ restore a backup.
 
 A: Use *backup.sh* and *restore.sh* scripts from ./backup directory. Read ./backup/Readme.md first!
 
+Q: Sentry not work after first run. 
 
+A: You need run 
+```
+docker exec -ti noc-dc_sentry_1 sentry upgrade
+```
+Setup admin user and password.
+
+Go to https://0.0.0.0:9000 to login in Sentry
