@@ -3,6 +3,7 @@ NOC Project installation via docker
 
 Install
 -------
+Disable SELINUX. See distro docs.
 
 Fork that git repo to your namespace and clone it to your favorite location
 ```
@@ -12,9 +13,13 @@ cd /opt/noc-dc
 ```
 Check *$INSTALLPATH* and run *pre.sh* script for make dirs\permissions\config
 ```
-pre.sh all
+./pre.sh all
 ```
-Check *data/noc/etc/noc.conf* and edit config if needed
+Check *./data/noc/etc/noc.conf* and edit config if needed
+
+Install *docker-compose*:
+
+see URL: https://docs.docker.com/compose/install/
 
 Preparing to launch containers:
 ```
