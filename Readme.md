@@ -54,7 +54,6 @@ Password: admin
 * Only single pool. No way to add equipment from different vrfs.
 * need 10G+ free space on block device
 
-
 Install monitoring
 -------
 

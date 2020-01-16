@@ -4,62 +4,62 @@ volumes:
   mongo_data:
     driver: local
     driver_opts:
-      device: $PWD/data/mongo
+      device: ./data/mongo
       o: bind
   postgres_data:
     driver: local
     driver_opts:
-      device: $PWD/data/postgres
+      device: ./data/postgres
       o: bind
   clickhouse_data:
     driver: local
     driver_opts:
-      device: $PWD/data/clickhouse/data
+      device: ./data/clickhouse/data
       o: bind
   clickhouse_etc:
     driver: local
     driver_opts:
-      device: $PWD/data/clickhouse/etc
+      device: ./data/clickhouse/etc
       o: bind
   nsq_data:
     driver: local
     driver_opts:
-      device: $PWD/data/nsq
+      device: ./data/nsq
       o: bind
   redis_data:
     driver: local
     driver_opts:
-      device: $PWD/data/redis
+      device: ./data/redis
       o: bind
   consul_data:
     driver: local
     driver_opts:
-      device: $PWD/data/consul
+      device: ./data/consul
       o: bind
   nginx_ssl:
     driver: local
     driver_opts:
-      device: $PWD/data/nginx/ssl
+      device: ./data/nginx/ssl
       o: bind
   grafana_etc:
     driver: local
     driver_opts:
-      device: $PWD/data/grafana/etc
+      device: ./data/grafana/etc
       o: bind
   grafana_dashboards:
     driver: local
     driver_opts:
-      device: $PWD/data/grafana/dashboards
+      device: ./data/grafana/dashboards
       o: bind
   grafana_db:
     driver: local
     driver_opts:
-      device: $PWD/data/grafana/db
+      device: ./data/grafana/db
       o: bind
   grafana_plugins:
     driver: local
     driver_opts:
-      device: $PWD/data/grafana/plugins
+      device: ./data/grafana/plugins
       o: bind
 
 services:
@@ -162,7 +162,7 @@ services:
       && /usr/bin/python ./scripts/deploy/apply-pools
       "
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -215,7 +215,7 @@ services:
     command: /usr/bin/python /opt/noc/services/web/service.py
     mem_limit: 120m
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.protocol: http
       traefik.backend: web
@@ -231,7 +231,7 @@ services:
     command: /usr/bin/python /opt/noc/services/login/service.py
     mem_limit: 75m
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.protocol: http
       traefik.backend: login
@@ -250,7 +250,7 @@ services:
     command: /usr/bin/python /opt/noc/services/card/service.py
     mem_limit: 140m
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.protocol: http
       traefik.backend: card
@@ -266,7 +266,7 @@ services:
     command: /usr/bin/python /opt/noc/services/mrt/service.py
     mem_limit: 103m
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.protocol: http
       traefik.backend: mrt
@@ -282,7 +282,7 @@ services:
     command: /usr/bin/python /opt/noc/services/grafanads/service.py
     mem_limit: 110m
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.protocol: http
       traefik.backend: grafanads
@@ -299,7 +299,7 @@ services:
     command: /usr/bin/python /opt/noc/services/bi/service.py
     mem_limit: 100m
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.protocol: http
       traefik.backend: bi
@@ -316,7 +316,7 @@ services:
     command: /usr/bin/python /opt/noc/services/sae/service.py
     mem_limit: 85m
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -328,7 +328,7 @@ services:
     command: /usr/bin/python /opt/noc/services/datasource/service.py
     mem_limit: 300m
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -340,7 +340,7 @@ services:
     command: /usr/bin/python /opt/noc/services/datastream/service.py
     mem_limit: 110m
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -355,7 +355,7 @@ services:
     command: /usr/bin/python /opt/noc/services/nbi/service.py
     mem_limit: 100m
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -367,7 +367,7 @@ services:
     environment:
       NOC_POOL: default
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -379,7 +379,7 @@ services:
     environment:
       NOC_POOL: default
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -394,7 +394,7 @@ services:
     depends_on:
       - datastream
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -411,7 +411,7 @@ services:
     environment:
       NOC_POOL: default
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -428,7 +428,7 @@ services:
     environment:
       NOC_POOL: default
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -442,7 +442,7 @@ services:
     command: /usr/bin/python /opt/noc/services/chwriter/service.py
     mem_limit: 90m
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -455,7 +455,7 @@ services:
     command: /usr/bin/python /opt/noc/services/escalator/service.py
     mem_limit: 90m
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -468,7 +468,7 @@ services:
     command: /usr/bin/python /opt/noc/services/scheduler/service.py
     mem_limit: 150m
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -482,7 +482,7 @@ services:
       - nsqd
     command: /usr/bin/python /opt/noc/services/selfmon/service.py
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -494,7 +494,7 @@ services:
       - mongo
     command: /usr/bin/python /opt/noc/services/mib/service.py
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -506,7 +506,7 @@ services:
       - mongo
     command: /usr/bin/python /opt/noc/services/mailsender/service.py
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -518,7 +518,7 @@ services:
       - mongo
     command: /usr/bin/python /opt/noc/services/tgsender/service.py
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -533,7 +533,7 @@ services:
     command: /usr/bin/python /opt/noc/services/syslogcollector/service.py
     mem_limit: 80m
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     ports:
       - 514:514/udp
     labels:
@@ -550,7 +550,7 @@ services:
     command: /usr/bin/python /opt/noc/services/trapcollector/service.py
     mem_limit: 80m
     env_file:
-      - $PWD/data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     ports:
       - 162:162/udp
     labels:
@@ -589,7 +589,7 @@ services:
       - nginx_openssl
       - traefik
     volumes:
-      - $PWD/data/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./data/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - nginx_ssl:/etc/nginx/ssl:ro
     labels:
       traefik.enable: false
