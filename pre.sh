@@ -56,6 +56,15 @@ function SETUPNOCCONF {
     fi
 }
 
+# todo
+# need check $INSTALLPATH == $COMPOSEPATH and make warning if not
+function SETUPENV {
+    if [ ! -f $INSTALLPATH/.env ]
+        then
+            echo "COMPOSEPATH=$INSTALLPATH" > $INSTALLPATH/.env
+    fi
+}
+
 if [ -n "$1" ]
     then
         if [ "$1" = "all" ]
@@ -65,6 +74,7 @@ if [ -n "$1" ]
                 SETUPPROMGRAFANA
                 SETUPPROMRULES
                 SETUPNOCCONF
+                SETUPENV
         elif [ "$1" = "perm" ]
             then
                 CREATEDIR
@@ -80,9 +90,12 @@ if [ -n "$1" ]
         elif [ "$1" = "nocconf" ]
             then
                 SETUPNOCCONF
+        elif [ "$1" = "env" ]
+            then
+                SETUPENV
         else
-            echo "Unknown parameter.  Use: all, perm, grafana, promrules, nocconf"
+            echo "Unknown parameter.  Use: all, env, perm, grafana, promrules, nocconf"
         fi
 else
-    echo "No  parameters found. Use: all, perm, grafana, promrules, nocconf" 
+    echo "No  parameters found. Use: all, env, perm, grafana, promrules, nocconf"
 fi
