@@ -15,6 +15,8 @@ Check *$INSTALLPATH* and run *pre.sh* script for make dirs\permissions\config
 ```
 ./pre.sh all
 ```
+If you need change install path to other - edit .env file
+
 Check *./data/noc/etc/noc.conf* and edit config if needed
 
 Install *docker-compose*:
@@ -53,6 +55,7 @@ Password: admin
 * Databases in docker. That is known to be not the best option
 * Only single pool. No way to add equipment from different vrfs.
 * need 10G+ free space on block device
+* SSD block device highly recommended
 
 Install monitoring
 -------

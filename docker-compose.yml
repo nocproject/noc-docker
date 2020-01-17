@@ -74,8 +74,6 @@ services:
       MONGO_INITDB_DATABASE: noc
       MONGO_INITDB_ROOT_USERNAME: noc
       MONGO_INITDB_ROOT_PASSWORD: noc
-    env_file:
-      - ./.env
     labels:
       traefik.enable: false
 
