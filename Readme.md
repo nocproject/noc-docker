@@ -60,7 +60,7 @@ Password: admin
 Install monitoring
 -------
 
-Read *data/prometheus/etc/Readme.md and setup export metrics from docker host
+Read *data/prometheus/etc/Readme.md* and setup export metrics from docker host
 
 Run compose file *docker-compose-infra.yml*
 ```
