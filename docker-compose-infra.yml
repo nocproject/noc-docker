@@ -172,7 +172,7 @@ services:
     labels:
       - traefik.enable=false
 
-  # after firsh start need run "docker exec -ti sentry_sentry_1 sentry upgrade"
+  # after firsh start need run "docker exec -ti noc-dc_sentry_1 sentry upgrade"
   # for setup admin user\passwd
   sentry:
     image: sentry
