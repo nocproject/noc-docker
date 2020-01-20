@@ -1,5 +1,5 @@
 ---
-version: '2'
+version: '2.4'
 
 volumes:
   prometheus_metrics:
@@ -236,4 +236,3 @@ services:
       SENTRY_METRICS_SAMPLE_RATE: 0.9
     labels:
       - traefik.enable=false
-
