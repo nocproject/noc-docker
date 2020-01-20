@@ -182,7 +182,6 @@ services:
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - clickhouse_etc:/etc/clickhouse-server
-
     labels:
       traefik.enable: false
 
@@ -390,8 +389,6 @@ services:
     restart: "always"
     command: /usr/bin/python /opt/noc/services/activator/service.py
     mem_limit: 150m
-    environment:
-      NOC_POOL: default
     env_file:
       - data/noc/etc/noc.conf
     volumes:
@@ -404,8 +401,6 @@ services:
     restart: "always"
     command: /usr/bin/python /opt/noc/services/discovery/service.py
     mem_limit: 150m
-    environment:
-      NOC_POOL: default
     env_file:
       - data/noc/etc/noc.conf
     volumes:
@@ -419,8 +414,7 @@ services:
     command: /usr/bin/python /opt/noc/services/ping/service.py
     privileged: true
     mem_limit: 50m
-    environment:
-      NOC_POOL: default
+
     depends_on:
       - datastream
     env_file:
@@ -440,8 +434,6 @@ services:
       - nsqlookupd
       - nsqd
     command: /usr/bin/python /opt/noc/services/classifier/service.py
-    environment:
-      NOC_POOL: default
     env_file:
       - data/noc/etc/noc.conf
     volumes:
@@ -459,8 +451,6 @@ services:
       - nsqlookupd
       - nsqd
     command: /usr/bin/python /opt/noc/services/correlator/service.py
-    environment:
-      NOC_POOL: default
     env_file:
       - data/noc/etc/noc.conf
     volumes:
@@ -575,8 +565,6 @@ services:
   syslogcollector-default:
     image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
-    environment:
-      NOC_POOL: default
     depends_on:
       - nsqd
       - datastream
@@ -594,8 +582,6 @@ services:
   trapcollector-default:
     image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
-    environment:
-      NOC_POOL: default
     depends_on:
       - nsqd
       - datastream
