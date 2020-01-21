@@ -677,3 +677,16 @@ services:
     environment:
       GF_INSTALL_PLUGINS: grafana-simple-json-datasource,vertamedia-clickhouse-datasource
 
+  import-default:
+    image: registry.getnoc.com/noc/noc/code:19.3.1
+    restart: "no"
+    command: >
+       sh -c "cd /opt/noc &&
+              ./noc csv-import sa.managedobject sa.managedobject.csv"
+    mem_limit: 80m
+    env_file:
+      - data/noc/etc/noc.conf
+    volumes:
+      - ./data/noc/import/sa.managedobject.csv:/opt/noc/sa.managedobject.csv
+    labels:
+      traefik.enable: false

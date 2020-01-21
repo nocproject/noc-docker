@@ -173,7 +173,7 @@ services:
       - traefik.enable=false
 
   # after firsh start need run "docker exec -ti noc-dc_sentry_1 sentry upgrade"
-  # for setup admin user\passwd
+  # for run migration and setup admin user\passwd
   sentry:
     image: sentry
     restart: always
@@ -197,11 +197,6 @@ services:
       nofile:
         soft: 20000
         hard: 40000
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000"]
-      interval: 5m30s
-      timeout: 10s
-      retries: 3
 
   sentry-cron:
     image: sentry

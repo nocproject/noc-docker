@@ -125,6 +125,10 @@ Q: Can i setup my ssl certificate?
 
 A: Yes you can. you have to put it in data/nginx/ssl and name it noc.crt and noc.key
 
+Q: I need add my hosts.
+
+A: Read *data/noc/import/Readme.md* file
+
 Q: Can i use my own databases instead of new ? 
 
 A: Glad you asked. Of course you can. Ensure that dockerized noc is not started
