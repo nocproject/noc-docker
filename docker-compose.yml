@@ -5,67 +5,67 @@ volumes:
   mongo_data:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/mongo
+      device: $COMPOSEPATH/./data/mongo
       o: bind
   postgres_data:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/postgres
+      device: $COMPOSEPATH/./data/postgres
       o: bind
   clickhouse_data:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/clickhouse/data
+      device: $COMPOSEPATH/./data/clickhouse/data
       o: bind
   clickhouse_etc:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/clickhouse/etc
+      device: $COMPOSEPATH/./data/clickhouse/etc
       o: bind
   nsq_data:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/nsq
+      device: $COMPOSEPATH/./data/nsq
       o: bind
   redis_data:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/redis
+      device: $COMPOSEPATH/./data/redis
       o: bind
   consul_data:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/consul
+      device: $COMPOSEPATH/./data/consul
       o: bind
   nginx_ssl:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/nginx/ssl
+      device: $COMPOSEPATH/./data/nginx/ssl
       o: bind
   grafana_etc:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/grafana/etc
+      device: $COMPOSEPATH/./data/grafana/etc
       o: bind
   grafana_dashboards:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/grafana/dashboards
+      device: $COMPOSEPATH/./data/grafana/dashboards
       o: bind
   grafana_db:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/grafana/db
+      device: $COMPOSEPATH/./data/grafana/db
       o: bind
   grafana_plugins:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/grafana/plugins
+      device: $COMPOSEPATH/./data/grafana/plugins
       o: bind
   noc_custom:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/noc/custom
+      device: $COMPOSEPATH/./data/noc/custom
       o: bind
 
 services:
@@ -75,7 +75,7 @@ services:
     restart: "no"
     volumes:
       - ./files/mongo-init.js:/docker-entrypoint-initdb.d/01mongo-init.js
-      - mongo_data:/data/db
+      - mongo_data:/./data/db
     environment:
       MONGO_INITDB_DATABASE: noc
       MONGO_INITDB_ROOT_USERNAME: noc
@@ -168,7 +168,7 @@ services:
       && /usr/bin/python ./scripts/deploy/apply-pools
       "
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     labels:
       traefik.enable: false
 
@@ -220,7 +220,7 @@ services:
     command: /usr/bin/python /opt/noc/services/web/service.py
     mem_limit: 120m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -238,7 +238,7 @@ services:
     command: /usr/bin/python /opt/noc/services/login/service.py
     mem_limit: 75m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -259,7 +259,7 @@ services:
     command: /usr/bin/python /opt/noc/services/card/service.py
     mem_limit: 140m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -277,7 +277,7 @@ services:
     command: /usr/bin/python /opt/noc/services/mrt/service.py
     mem_limit: 103m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -295,7 +295,7 @@ services:
     command: /usr/bin/python /opt/noc/services/grafanads/service.py
     mem_limit: 110m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -314,7 +314,7 @@ services:
     command: /usr/bin/python /opt/noc/services/bi/service.py
     mem_limit: 100m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -333,7 +333,7 @@ services:
     command: /usr/bin/python /opt/noc/services/sae/service.py
     mem_limit: 85m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -347,7 +347,7 @@ services:
     command: /usr/bin/python /opt/noc/services/datasource/service.py
     mem_limit: 300m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -361,7 +361,7 @@ services:
     command: /usr/bin/python /opt/noc/services/datastream/service.py
     mem_limit: 110m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -378,7 +378,7 @@ services:
     command: /usr/bin/python /opt/noc/services/nbi/service.py
     mem_limit: 100m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -390,7 +390,7 @@ services:
     command: /usr/bin/python /opt/noc/services/activator/service.py
     mem_limit: 150m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -402,7 +402,7 @@ services:
     command: /usr/bin/python /opt/noc/services/discovery/service.py
     mem_limit: 150m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -418,7 +418,7 @@ services:
     depends_on:
       - datastream
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -435,7 +435,7 @@ services:
       - nsqd
     command: /usr/bin/python /opt/noc/services/classifier/service.py
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -452,7 +452,7 @@ services:
       - nsqd
     command: /usr/bin/python /opt/noc/services/correlator/service.py
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -468,7 +468,7 @@ services:
     command: /usr/bin/python /opt/noc/services/chwriter/service.py
     mem_limit: 90m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -483,7 +483,7 @@ services:
     command: /usr/bin/python /opt/noc/services/escalator/service.py
     mem_limit: 90m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -498,7 +498,7 @@ services:
     command: /usr/bin/python /opt/noc/services/scheduler/service.py
     mem_limit: 150m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -514,7 +514,7 @@ services:
       - nsqd
     command: /usr/bin/python /opt/noc/services/selfmon/service.py
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -528,7 +528,7 @@ services:
       - mongo
     command: /usr/bin/python /opt/noc/services/mib/service.py
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -542,7 +542,7 @@ services:
       - mongo
     command: /usr/bin/python /opt/noc/services/mailsender/service.py
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -556,7 +556,7 @@ services:
       - mongo
     command: /usr/bin/python /opt/noc/services/tgsender/service.py
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     labels:
@@ -571,7 +571,7 @@ services:
     command: /usr/bin/python /opt/noc/services/syslogcollector/service.py
     mem_limit: 80m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     ports:
@@ -588,7 +588,7 @@ services:
     command: /usr/bin/python /opt/noc/services/trapcollector/service.py
     mem_limit: 80m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
     ports:
@@ -629,7 +629,7 @@ services:
       - nginx_openssl
       - traefik
     volumes:
-      - ./data/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ././data/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - nginx_ssl:/etc/nginx/ssl:ro
     labels:
       traefik.enable: false
@@ -685,8 +685,8 @@ services:
               ./noc csv-import sa.managedobject sa.managedobject.csv"
     mem_limit: 80m
     env_file:
-      - data/noc/etc/noc.conf
+      - ./data/noc/etc/noc.conf
     volumes:
-      - ./data/noc/import/sa.managedobject.csv:/opt/noc/sa.managedobject.csv
+      - ././data/noc/import/sa.managedobject.csv:/opt/noc/sa.managedobject.csv
     labels:
       traefik.enable: false
