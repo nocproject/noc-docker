@@ -37,22 +37,37 @@ function SETPERMISSION {
     chown 65534 -R $INSTALLPATH/data/prometheus/metrics
     chown 472 -R $INSTALLPATH/data/promgrafana/plugins
     chown 999 -R $INSTALLPATH/data/sentry/redis
+    chown 70 -R $INSTALLPATH/data/sentry/pg
 }
 
 function SETUPPROMGRAFANA {
-    cd "$TMPPATH" && git clone https://code.getnoc.com/e_zombie/grafana-dashboard-import.git .
+    echo "Clone GRAFANA dashboards from code.getnoc.com"
+    cd "$TMPPATH" && git clone https://code.getnoc.com/noc/grafana-selfmon-dashboards.git .
     cp -f -r "$TMPPATH"/dashboards/* "$INSTALLPATH"/data/promgrafana/etc/dashboards
     cp -f -r "$TMPPATH"/provisioning/* "$INSTALLPATH"/data/promgrafana/etc/provisioning
 }
 
 function SETUPPROMRULES {
-   cd "$TMPPATH1" && git clone https://code.getnoc.com/noc/noc-prometheus-alerts.git .
-   cp -f "$TMPPATH1"/*.yml "$INSTALLPATH"/data/prometheus/etc/rules.d
+    echo "Clone PROMETHEUS alert rules from code.getnoc.com"
+    cd "$TMPPATH1" && git clone https://code.getnoc.com/noc/noc-prometheus-alerts.git .
+    cp -f "$TMPPATH1"/*.yml "$INSTALLPATH"/data/prometheus/etc/rules.d
+}
+
+function SETUPSENTRY() {
+    if [ ! -f $INSTALLPATH/data/sentry/sentry.env ]
+        then
+            echo "Setup Sentry env in $INSTALLPATH/data/sentry/sentry.env"
+            echo "SENTRY_SECRET_KEY=$(date -d "Oct 22 1974" +%s)" > $INSTALLPATH/data/sentry/sentry.env
+            echo "SENTRY_DB_PASSWORD=$(date -d "now" +%s)" >> $INSTALLPATH/data/sentry/sentry.env
+            echo "POSTGRES_PASSWORD=$(date -d "Oct 1 2000" +%s)" >> $INSTALLPATH/data/sentry/sentry.env
+            echo "POSTGRES_DBPASS$(date -d "Oct 14 1199" +%s)" >> $INSTALLPATH/data/sentry/sentry.env
+    fi
 }
 
 function SETUPNOCCONF {
     if [ ! -f $INSTALLPATH/data/noc/etc/noc.conf ]
         then
+            echo "Copy " $INSTALLPATH/data/noc/etc/noc.conf.example " to " $INSTALLPATH/data/noc/etc/noc.conf
             cp $INSTALLPATH/data/noc/etc/noc.conf.example $INSTALLPATH/data/noc/etc/noc.conf
     fi
 }
@@ -62,6 +77,7 @@ function SETUPNOCCONF {
 function SETUPENV {
     if [ ! -f $INSTALLPATH/.env ]
         then
+            echo "Setup COMPOSEPATH=$INSTALLPATH in $INSTALLPATH/.env"
             echo "COMPOSEPATH=$INSTALLPATH" > $INSTALLPATH/.env
     fi
 }
@@ -75,6 +91,7 @@ if [ -n "$1" ]
                 SETUPPROMGRAFANA
                 SETUPPROMRULES
                 SETUPNOCCONF
+                SETUPSENTRY
                 SETUPENV
         elif [ "$1" = "perm" ]
             then
@@ -91,12 +108,17 @@ if [ -n "$1" ]
         elif [ "$1" = "nocconf" ]
             then
                 SETUPNOCCONF
+        elif [ "$1" = "sentry" ]
+            then
+                SETUPSENTRY
         elif [ "$1" = "env" ]
             then
                 SETUPENV
         else
-            echo "Unknown parameter.  Use: all, env, perm, grafana, promrules, nocconf"
+            echo "Unknown parameter"
+            echo "Use one of: all, env, perm, grafana, promrules, nocconf, sentry"
         fi
 else
-    echo "No  parameters found. Use: all, env, perm, grafana, promrules, nocconf"
+    echo "No  parameters found."
+    echo "Use one of: all, env, perm, grafana, promrules, nocconf, sentry"
 fi

@@ -156,12 +156,11 @@ services:
   sentry-postgres:
     image: postgres:9.6-alpine
     restart: always
+    env_file:
+      - ./data/sentry/sentry.env
     environment:
       POSTGRES_USER: sentry
-      POSTGRES_PASSWORD: yoobKaHaspIjOjBackIb
       POSTGRES_DBNAME: sentry
-      POSTGRES_DBUSER: yoobKaHaspIjOjBackIb
-      POSTGRES_DBPASS: sentry
     volumes:
       - sentrypostgres_data:/var/lib/postgresql/data
     ulimits:
@@ -183,11 +182,11 @@ services:
     command: "sentry run web -w 16"
     ports:
       - "9000:9000"
+    env_file:
+      - ./data/sentry/sentry.env
     environment:
-      SENTRY_SECRET_KEY: 'UcHuchLyfreakJitneFlalmoalOahokdoHeaKnajBudwuquap%'
       SENTRY_POSTGRES_HOST: sentry-postgres
       SENTRY_DB_USER: sentry
-      SENTRY_DB_PASSWORD: yoobKaHaspIjOjBackIb
       SENTRY_REDIS_HOST: sentry-redis
       SENTRY_METRICS_SAMPLE_RATE: 0.9
     labels:
@@ -205,11 +204,11 @@ services:
      - sentry-redis
      - sentry-postgres
     command: "sentry run cron"
+    env_file:
+      - ./data/sentry/sentry.env
     environment:
-      SENTRY_SECRET_KEY: 'UcHuchLyfreakJitneFlalmoalOahokdoHeaKnajBudwuquap%'
       SENTRY_POSTGRES_HOST: sentry-postgres
       SENTRY_DB_USER: sentry
-      SENTRY_DB_PASSWORD: yoobKaHaspIjOjBackIb
       SENTRY_REDIS_HOST: sentry-redis
       SENTRY_METRICS_SAMPLE_RATE: 0.9
     labels:
@@ -222,11 +221,11 @@ services:
      - sentry-redis
      - sentry-postgres
     command: "sentry run worker"
+    env_file:
+      - ./data/sentry/sentry.env
     environment:
-      SENTRY_SECRET_KEY: 'UcHuchLyfreakJitneFlalmoalOahokdoHeaKnajBudwuquap%'
       SENTRY_POSTGRES_HOST: sentry-postgres
       SENTRY_DB_USER: sentry
-      SENTRY_DB_PASSWORD: yoobKaHaspIjOjBackIb
       SENTRY_REDIS_HOST: sentry-redis
       SENTRY_METRICS_SAMPLE_RATE: 0.9
     labels:
