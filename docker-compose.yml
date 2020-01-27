@@ -681,8 +681,8 @@ services:
     image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "no"
     command: >
-       sh -c "cd /opt/noc &&
-              ./noc csv-import sa.managedobject /tmp/sa.managedobject.csv"
+             sh -c "cd /opt/noc &&
+             ./noc csv-import sa.managedobject /tmp/sa.managedobject.csv"
     mem_limit: 80m
     env_file:
       - ./data/noc/etc/noc.conf
