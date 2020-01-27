@@ -59,6 +59,12 @@ function SETUPSENTRY() {
             echo "Setup Sentry env in $INSTALLPATH/data/sentry/sentry.env"
             { echo SENTRY_SECRET_KEY="$(date -d "Oct 22 1974" +%s)"
               echo SENTRY_DB_PASSWORD="$(date -d "now" +%s)"
+              echo SENTRY_POSTGRES_HOST=sentry-postgres
+              echo SENTRY_DB_USER=sentry
+              echo SENTRY_REDIS_HOST=sentry-redis
+              echo SENTRY_METRICS_SAMPLE_RATE=0.9
+              echo POSTGRES_USER=sentry
+              echo POSTGRES_DBNAME=sentry
               echo POSTGRES_PASSWORD="$(date -d "Oct 1 2000" +%s)"
               echo POSTGRES_DBPASS="$(date -d "Oct 14 1199" +%s)"
             } >> $INSTALLPATH/data/sentry/sentry.env

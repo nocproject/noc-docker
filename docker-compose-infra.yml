@@ -158,9 +158,6 @@ services:
     restart: always
     env_file:
       - ./data/sentry/sentry.env
-    environment:
-      POSTGRES_USER: sentry
-      POSTGRES_DBNAME: sentry
     volumes:
       - sentrypostgres_data:/var/lib/postgresql/data
     ulimits:
@@ -184,11 +181,6 @@ services:
       - "9000:9000"
     env_file:
       - ./data/sentry/sentry.env
-    environment:
-      SENTRY_POSTGRES_HOST: sentry-postgres
-      SENTRY_DB_USER: sentry
-      SENTRY_REDIS_HOST: sentry-redis
-      SENTRY_METRICS_SAMPLE_RATE: 0.9
     labels:
       - traefik.enable=false
     ulimits:
@@ -206,11 +198,6 @@ services:
     command: "sentry run cron"
     env_file:
       - ./data/sentry/sentry.env
-    environment:
-      SENTRY_POSTGRES_HOST: sentry-postgres
-      SENTRY_DB_USER: sentry
-      SENTRY_REDIS_HOST: sentry-redis
-      SENTRY_METRICS_SAMPLE_RATE: 0.9
     labels:
       - traefik.enable=false
 
@@ -223,10 +210,5 @@ services:
     command: "sentry run worker"
     env_file:
       - ./data/sentry/sentry.env
-    environment:
-      SENTRY_POSTGRES_HOST: sentry-postgres
-      SENTRY_DB_USER: sentry
-      SENTRY_REDIS_HOST: sentry-redis
-      SENTRY_METRICS_SAMPLE_RATE: 0.9
     labels:
       - traefik.enable=false
