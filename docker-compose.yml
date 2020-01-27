@@ -172,7 +172,7 @@ services:
     labels:
       traefik.enable: false
 
-  # @todo make logs avalaible
+# TODO make logs avalaible
   clickhouse:
     image: yandex/clickhouse-server:latest
     ulimits:
