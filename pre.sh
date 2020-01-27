@@ -56,6 +56,7 @@ function SETUPPROMRULES {
 function SETUPSENTRY() {
     if [ ! -f $INSTALLPATH/data/sentry/sentry.env ]
         then
+# @TODO
             GENERATE_PASSWORD="$(date -d "Oct 1 2000" +%s)"
 
             echo "Setup Sentry env in $INSTALLPATH/data/sentry/sentry.env"
@@ -85,7 +86,7 @@ function SETUPNOCCONF {
     fi
 }
 
-# todo
+# @TODO
 # need check $INSTALLPATH == $COMPOSEPATH and make warning if not
 function SETUPENV {
     if [ ! -f $INSTALLPATH/.env ]
