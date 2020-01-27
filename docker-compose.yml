@@ -682,11 +682,11 @@ services:
     restart: "no"
     command: >
        sh -c "cd /opt/noc &&
-              ./noc csv-import sa.managedobject sa.managedobject.csv"
+              ./noc csv-import sa.managedobject /tmp/sa.managedobject.csv"
     mem_limit: 80m
     env_file:
       - ./data/noc/etc/noc.conf
     volumes:
-      - ././data/noc/import/sa.managedobject.csv:/opt/noc/sa.managedobject.csv
+      - ././data/noc/import/sa.managedobject.csv:/tmp/sa.managedobject.csv
     labels:
       traefik.enable: false
