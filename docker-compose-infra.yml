@@ -64,13 +64,13 @@ services:
     volumes:
       - prometheus_etc:/etc/prometheus
       - prometheus_metrics:/prometheus-data
-    command:
-      - --config.file=/etc/prometheus/prometheus.yml
-      - --storage.tsdb.path=/prometheus-data
-      - --storage.tsdb.retention.time=12h
-      - --web.external-url=https://prom:9090
-      - --query.max-concurrency=40
-      - --query.timeout=20s
+    command: >
+        --config.file=/etc/prometheus/prometheus.yml
+        --storage.tsdb.path=/prometheus-data
+        --storage.tsdb.retention.time=12h
+        --web.external-url=https://prom:9090
+        --query.max-concurrency=40
+        --query.timeout=20s
     ports:
       - "9090:9090"
     labels:
@@ -109,10 +109,10 @@ services:
       - promvm_data:/storage
     labels:
       - traefik.enable=false
-    command:
-      - '-storageDataPath=/storage'
-      - '-retentionPeriod=3'
-      - '-httpListenAddr=:8428'
+    command: >
+        -storageDataPath=/storage
+        -retentionPeriod=3
+        -httpListenAddr=:8428
 
   promclickhouse:
     image: f1yegor/clickhouse-exporter
@@ -130,9 +130,9 @@ services:
       - alertmanager_etc:/etc/alertmanager
     ports:
       - "9093:9093"
-    command:
-      - --config.file=/etc/alertmanager/alertmanager.conf
-      - --log.level=info
+    command: >
+        --config.file=/etc/alertmanager/alertmanager.conf
+        --log.level=info
     labels:
       - traefik.enable=false
 
@@ -140,8 +140,8 @@ services:
     image: eses/mongodb_exporter
     restart: always
     hostname: prommongo
-    command:
-      - -mongodb.uri=mongodb://noc:noc@mongo:27017
+    command: >
+        -mongodb.uri=mongodb://noc:noc@mongo:27017
     labels:
       - traefik.enable=false
 
@@ -176,7 +176,7 @@ services:
     links:
      - sentry-redis
      - sentry-postgres
-    command: "sentry run web -w 16"
+    command: "sentry run web -w 4"
     ports:
       - "9000:9000"
     env_file:
