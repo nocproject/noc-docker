@@ -57,7 +57,7 @@ function SETUPSENTRY() {
     if [ ! -f $INSTALLPATH/data/sentry/sentry.env ]
         then
 # @TODO
-            GENERATE_PASSWORD="$(dd 'if=/dev/random' 'bs=1' 'count=32' 2>/dev/null | base64)"
+            GENERATE_PASSWORD="$(dd if=/dev/urandom bs=1 count=32 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)"
 
             echo "Setup Sentry env in $INSTALLPATH/data/sentry/sentry.env"
             echo "after firsh start need run command for for run migration and setup admin user\passwd"
