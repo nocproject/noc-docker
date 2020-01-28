@@ -687,6 +687,6 @@ services:
     env_file:
       - ./data/noc/etc/noc.conf
     volumes:
-      - ././data/noc/import/sa.managedobject.csv:/tmp/sa.managedobject.csv
+      - ./data/noc/import/sa.managedobject.csv:/tmp/sa.managedobject.csv
     labels:
       traefik.enable: false
