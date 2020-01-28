@@ -65,13 +65,13 @@ function SETUPSENTRY() {
             { echo SENTRY_POSTGRES_HOST=sentry-postgres
               echo SENTRY_DB_NAME=sentry
               echo SENTRY_DB_USER=sentry
-              echo SENTRY_DB_PASSWORD=$GENERATE_PASSWORD
+              echo SENTRY_DB_PASSWORD="$GENERATE_PASSWORD"
               echo SENTRY_SECRET_KEY="$(dd 'if=/dev/random' 'bs=1' 'count=32' 2>/dev/null | base64)"
               echo SENTRY_REDIS_HOST=sentry-redis
               echo SENTRY_METRICS_SAMPLE_RATE=0.9
               echo POSTGRES_USER=sentry
               echo POSTGRES_DBNAME=sentry
-              echo POSTGRES_PASSWORD=$GENERATE_PASSWORD
+              echo POSTGRES_PASSWORD="$GENERATE_PASSWORD"
               echo "Important!!! POSTGRES_PASSWORD == SENTRY_DB_PASSWORD"
             } >> $INSTALLPATH/data/sentry/sentry.env
     fi
