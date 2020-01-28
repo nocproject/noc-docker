@@ -72,7 +72,7 @@ function SETUPSENTRY() {
               echo POSTGRES_USER=sentry
               echo POSTGRES_DBNAME=sentry
               echo POSTGRES_PASSWORD="$GENERATE_PASSWORD"
-              echo "Important!!! POSTGRES_PASSWORD == SENTRY_DB_PASSWORD"
+              echo "#Important!!! POSTGRES_PASSWORD == SENTRY_DB_PASSWORD"
             } >> $INSTALLPATH/data/sentry/sentry.env
     fi
 }
