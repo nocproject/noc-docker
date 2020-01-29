@@ -104,7 +104,7 @@ services:
     container_name: vm
     hostname: vm
     restart: always
-    image: victoriametrics/victoria-metrics:v1.27.0
+    image: victoriametrics/victoria-metrics:v1.32.8
     volumes:
       - promvm_data:/storage
     labels:
