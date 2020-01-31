@@ -162,12 +162,14 @@ services:
       && /usr/bin/python ./commands/migrate.py
       && ./noc ensure-indexes
       && /usr/bin/python ./commands/migrate-ch.py
-      && /usr/bin/python ./scripts/deploy/install-packages requirements/collections.json
+      && /usr/bin/python ./scripts/deploy/install-packages \
+      requirements/collections.json
       && ./noc collection sync
       && ./noc sync-perm
       && ./noc sync-mibs
       && mkdir -p /opt/noc/etc
-      && echo 'cG9vbHM6CiAgZGVmYXVsdDoKICAgIGRlc2NyaXB0aW9uOiBkZWZhdWx0Cg==' |base64 -d > /opt/noc/etc/noc.yml
+      && echo 'cG9vbHM6CiAgZGVmYXVsdDoKICAgIGRlc2NyaXB0aW9uOiBkZWZhdWx0Cg==' \
+      |base64 -d > /opt/noc/etc/noc.yml
       && cat /opt/noc/etc/noc.yml
       && /usr/bin/python ./scripts/deploy/apply-pools
       "
@@ -678,7 +680,8 @@ services:
       - grafana_plugins:/var/lib/grafana/plugins
     # comment "environment" if node doesn't have access to internet
     environment:
-      GF_INSTALL_PLUGINS: grafana-simple-json-datasource,vertamedia-clickhouse-datasource
+      GF_INSTALL_PLUGINS: grafana-simple-json-datasource,
+                          vertamedia-clickhouse-datasource
 
   import-default:
     image: registry.getnoc.com/noc/noc/code:19.3.1

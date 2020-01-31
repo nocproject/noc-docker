@@ -92,7 +92,8 @@ services:
     environment:
       GF_SERVER_ROOT_URL: https://promgrafana
       GF_PATHS_PROVISIONING: /etc/grafana/provisioning
-      GF_INSTALL_PLUGINS: grafana-simple-json-datasource,vertamedia-clickhouse-datasource
+      GF_INSTALL_PLUGINS: grafana-simple-json-datasource,
+                          vertamedia-clickhouse-datasource
     labels:
       - traefik.enable=false
 
