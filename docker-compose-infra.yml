@@ -171,8 +171,8 @@ services:
     image: sentry
     restart: always
     links:
-     - sentry-redis
-     - sentry-postgres
+      - sentry-redis
+      - sentry-postgres
     command: "sentry run web -w 4"
     ports:
       - "9000:9000"
@@ -202,8 +202,8 @@ services:
     image: sentry
     restart: always
     links:
-     - sentry-redis
-     - sentry-postgres
+      - sentry-redis
+      - sentry-postgres
     command: "sentry run worker"
     env_file:
       - ./data/sentry/sentry.env
