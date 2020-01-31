@@ -683,6 +683,7 @@ services:
       GF_INSTALL_PLUGINS: grafana-simple-json-datasource,
                           vertamedia-clickhouse-datasource
 
+
   import-default:
     image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "no"
