@@ -15,6 +15,8 @@ Check *$INSTALLPATH* and run *pre.sh* script for make dirs\permissions\config
 ```
 ./pre.sh all
 ```
+If you need change install path to other - edit .env file
+
 Check *./data/noc/etc/noc.conf* and edit config if needed
 
 Install *docker-compose*:
@@ -53,12 +55,12 @@ Password: admin
 * Databases in docker. That is known to be not the best option
 * Only single pool. No way to add equipment from different vrfs.
 * need 10G+ free space on block device
-
+* SSD block device highly recommended
 
 Install monitoring
 -------
 
-Read *data/prometheus/etc/Readme.md and setup export metrics from docker host
+Read *data/prometheus/etc/Readme.md* and setup export metrics from docker host
 
 Run compose file *docker-compose-infra.yml*
 ```
@@ -122,6 +124,10 @@ noc-dc_web_1                       /usr/bin/python /opt/noc/s ...   Up          
 Q: Can i setup my ssl certificate?
 
 A: Yes you can. you have to put it in data/nginx/ssl and name it noc.crt and noc.key
+
+Q: I need add my hosts.
+
+A: Read *data/noc/import/Readme.md* file
 
 Q: Can i use my own databases instead of new ? 
 

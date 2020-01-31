@@ -1,0 +1,2 @@
+name,is_managed,container,administrative_domain,segment,pool,profile,object_profile,description,auth_profile,scheme,address,port,user,password,super_password,remote_path,trap_source_type,trap_source_ip,syslog_source_type,syslog_source_ip,trap_community,snmp_ro,snmp_rw,vc_domain,vrf,shape,time_pattern,max_scripts,tags
+127.0.0.1,True,,default,ALL,default,Generic.Host,default,,,2,127.0.0.1,0,,,,,m,,m,,,,,,,Cisco/router,,5,""
