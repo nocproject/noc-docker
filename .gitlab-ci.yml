@@ -1,0 +1,14 @@
+---
+variables:
+  PROMETHEUS_VERSION: v2.14.0
+
+stages:
+  - lint
+
+lint_yaml:
+  stage: lint
+  image: registry.getnoc.com/infrastructure/ansible_linter:master
+  script:
+    - yamllint docker-*.yml
+  tags:
+    - docker
