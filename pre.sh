@@ -100,12 +100,12 @@ if [ -n "$1" ]
         if [ "$1" = "all" ]
             then
                 CREATEDIR
+                SETUPENV
                 SETPERMISSION
                 SETUPPROMGRAFANA
                 SETUPPROMRULES
                 SETUPNOCCONF
                 SETUPSENTRY
-                SETUPENV
         elif [ "$1" = "perm" ]
             then
                 CREATEDIR
