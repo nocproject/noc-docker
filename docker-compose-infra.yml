@@ -96,10 +96,6 @@ services:
     labels:
       - traefik.enable=false
 
-# for use dashboards do
-# mkdir -p /opt/noc-dc/data/promgrafana/etc && cd /opt/noc-dc/data/promgrafana/etc && git  clone https://code.getnoc.com/e_zombie/grafana-dashboard-import.git .
-# login to grafana, go to setup datasources and setup default  
-
   promvm:
     container_name: vm
     hostname: vm

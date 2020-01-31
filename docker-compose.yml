@@ -71,7 +71,11 @@ volumes:
 services:
   mongo:
     image: mongo:4.0
-    command: --wiredTigerCacheSizeGB 1.5 --bind_ip_all --replSet noc --port 27017
+    command: >
+             --wiredTigerCacheSizeGB 1.5
+             --bind_ip_all
+             --replSet noc
+             --port 27017
     restart: "no"
     volumes:
       - ./files/mongo-init.js:/docker-entrypoint-initdb.d/01mongo-init.js
@@ -172,7 +176,7 @@ services:
     labels:
       traefik.enable: false
 
-# TODO make logs avalaible
+  # TODO make logs avalaible
   clickhouse:
     image: yandex/clickhouse-server:latest
     ulimits:
@@ -611,7 +615,6 @@ services:
         -x509 \
         -days 365 \
         -subj "/C=US/ST=NOC/L=NOC/O=NOC/OU=NOC/CN=NOC/emailAddress=NOC@NOC";
-        #openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048 # currently unused
       fi
       "
     volumes:
@@ -629,7 +632,7 @@ services:
       - nginx_openssl
       - traefik
     volumes:
-      - ././data/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./data/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - nginx_ssl:/etc/nginx/ssl:ro
     labels:
       traefik.enable: false
@@ -680,7 +683,9 @@ services:
   import-default:
     image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "no"
-    command: /usr/bin/python /opt/noc/commands/csv-import.py sa.managedobject /tmp/sa.managedobject.csv
+    command: >
+             /usr/bin/python /opt/noc/commands/csv-import.py \
+             sa.managedobject /tmp/sa.managedobject.csv
     env_file:
       - ./data/noc/etc/noc.conf
     volumes:
