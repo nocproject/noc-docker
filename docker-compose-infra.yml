@@ -190,8 +190,8 @@ services:
     image: sentry
     restart: always
     links:
-     - sentry-redis
-     - sentry-postgres
+      - sentry-redis
+      - sentry-postgres
     command: "sentry run cron"
     env_file:
       - ./data/sentry/sentry.env
