@@ -1,0 +1,11 @@
+---
+stages:
+  - lint
+
+lint_yaml:
+  stage: lint
+  image: registry.getnoc.com/infrastructure/ansible_linter:master
+  script:
+    - yamllint docker-*.yml
+  tags:
+    - docker
