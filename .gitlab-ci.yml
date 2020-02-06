@@ -19,6 +19,6 @@ lint_prometheus:
     name: prom/prometheus:$PROMETHEUS_VERSION
     entrypoint: [""]
   script:
-    - promtool check config ./data/prometeus/etc/prometheus.yml
+    - promtool check config ./data/prometheus/etc/prometheus.yml
   tags:
     - docker
