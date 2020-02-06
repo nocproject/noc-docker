@@ -29,7 +29,8 @@ lint_grafana:
     name: grafana/grafana:6.3.6
     entrypoint: [""]
   script:
-    - grafana-cli --config /etc/grafana/grafana.ini admin reset-admin-password admin
+    - grafana-cli --homepath=/usr/share/grafana 
+      --config /etc/grafana/grafana.ini admin reset-admin-password admin
   tags:
     - docker
 
