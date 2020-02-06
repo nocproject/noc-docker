@@ -1,4 +1,7 @@
 ---
+variables:
+  PROMETHEUS_VERSION: v2.14.0
+
 stages:
   - lint
 
@@ -7,5 +10,15 @@ lint_yaml:
   image: registry.getnoc.com/infrastructure/ansible_linter:master
   script:
     - yamllint docker-*.yml
+  tags:
+    - docker
+
+lint_prometheus:
+  stage: lint
+  image:
+    name: prom/prometheus:$PROMETHEUS_VERSION
+    entrypoint: [""]
+  script:
+    - promtool check config ./data/prometeus/etc/prometheus.yml
   tags:
     - docker
