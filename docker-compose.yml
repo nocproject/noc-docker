@@ -640,7 +640,7 @@ services:
       traefik.enable: false
 
   traefik:
-    image: traefik:1.7-alpine
+    image: traefik:latest
     restart: "always"
     depends_on:
       - web
@@ -663,7 +663,7 @@ services:
       - 1200:1200
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /dev/null:/traefik.toml
+      - ./data/traefik/etc/traefik.toml:/traefik.toml
     labels:
       traefik.protocol: http
       traefik.port: "8080"
