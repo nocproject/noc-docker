@@ -30,7 +30,7 @@ lint_grafana:
     entrypoint: [""]
   script:
     - grafana-cli --homepath=/usr/share/grafana 
-      --config /etc/grafana/grafana.ini admin reset-admin-password admin
+      --config ./data/grafana/etc/grafana.ini admin reset-admin-password admin
   tags:
     - docker
 
