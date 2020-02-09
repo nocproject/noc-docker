@@ -6,21 +6,26 @@ variables:
   #GIT_CLONE_PATH: $CI_BUILDS_DIR
 
 before_script:
-  - apk update && apk add bash git curl
-  - apk add py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
-  - curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-  - chmod +x /usr/local/bin/docker-compose
-  - ln -s /usr/local/bin/docker-compose /bin/docker-compose
+  - apk update && apk add bash git curl shellcheck
+#  - apk add py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+#  - curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#  - chmod +x /usr/local/bin/docker-compose
+#  - ln -s /usr/local/bin/docker-compose /bin/docker-compose
 
 #    Tpip install docker-compose
 
 
 stages:
-  - test
   - lint
   - test
 
-  
+lint_bash:
+  stage: lint
+  script:
+    - /usr/bin/shellcheсk pre.sh
+  tags:
+    - docker
+    
 lint_yaml:
   stage: lint
   image: registry.getnoc.com/infrastructure/ansible_linter:master
