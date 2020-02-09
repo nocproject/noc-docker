@@ -37,7 +37,9 @@ lint_grafana:
 
 docker.compose:
   stage: test
-  scripts:
+  script:
     - ./pre.sh all
     - docker-compose migrate
     - docker-compose up -d
+  tags:
+   - docker
