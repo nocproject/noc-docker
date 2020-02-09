@@ -1,4 +1,7 @@
 ---
+variables:
+  PROMETHEUS_VERSION: v2.14.0
+
 stages:
   - lint
 
@@ -9,3 +12,25 @@ lint_yaml:
     - yamllint docker-*.yml
   tags:
     - docker
+
+lint_prometheus:
+  stage: lint
+  image:
+    name: prom/prometheus:$PROMETHEUS_VERSION
+    entrypoint: [""]
+  script:
+    - promtool check config ./data/prometheus/etc/prometheus.yml
+  tags:
+    - docker
+
+lint_grafana:
+  stage: lint
+  image:
+    name: grafana/grafana:6.3.6
+    entrypoint: [""]
+  script:
+    - grafana-cli --homepath=/usr/share/grafana 
+      --config ./data/grafana/etc/grafana.ini admin reset-admin-password admin
+  tags:
+    - docker
+
