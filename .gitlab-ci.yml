@@ -22,7 +22,6 @@ stages:
 lint_bash:
   stage: lint
   script:
-    - ls -1 /usr/bin
     - shellcheck pre.sh
   tags:
     - docker
