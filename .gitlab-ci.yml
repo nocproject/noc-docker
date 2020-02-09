@@ -2,6 +2,10 @@
 variables:
   PROMETHEUS_VERSION: v2.14.0
 
+before_script:
+  - apk update && apk add bash git
+
+
 stages:
   - test
   - lint
