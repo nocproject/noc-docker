@@ -7,7 +7,7 @@ INSTALLPATH=/opt/noc-dc
 TMPPATH=$(mktemp -d -p /tmp)
 TMPPATH1=$(mktemp -d -p /tmp)
 
-function CREATEDIR {
+CREATEDIR {
     mkdir -p $INSTALLPATH/data/promgrafana/etc/provisioning/datasources
     mkdir -p $INSTALLPATH/data/promgrafana/etc/provisioning/notifiers
     mkdir -p $INSTALLPATH/data/promgrafana/etc/provisioning/dashboards
@@ -29,7 +29,7 @@ function CREATEDIR {
     mkdir -p $INSTALLPATH/data/sentry/pg
 }
 
-function SETPERMISSION {
+SETPERMISSION {
     chown 101 -R $INSTALLPATH/data/clickhouse/data
     chown 999 -R $INSTALLPATH/data/postgres
     chown 999 -R $INSTALLPATH/data/mongo
@@ -40,20 +40,20 @@ function SETPERMISSION {
     chown 70 -R $INSTALLPATH/data/sentry/pg
 }
 
-function SETUPPROMGRAFANA {
+SETUPPROMGRAFANA {
     echo "Clone GRAFANA dashboards from code.getnoc.com"
     cd "$TMPPATH" && git clone https://code.getnoc.com/noc/grafana-selfmon-dashboards.git .
     cp -f -r "$TMPPATH"/dashboards/* "$INSTALLPATH"/data/promgrafana/etc/dashboards
     cp -f -r "$TMPPATH"/provisioning/* "$INSTALLPATH"/data/promgrafana/etc/provisioning
 }
 
-function SETUPPROMRULES {
+SETUPPROMRULES {
     echo "Clone PROMETHEUS alert rules from code.getnoc.com"
     cd "$TMPPATH1" && git clone https://code.getnoc.com/noc/noc-prometheus-alerts.git .
     cp -f "$TMPPATH1"/*.yml "$INSTALLPATH"/data/prometheus/etc/rules.d
 }
 
-function SETUPSENTRY() {
+SETUPSENTRY() {
     if [ ! -f $INSTALLPATH/data/sentry/sentry.env ]
         then
 # @TODO
@@ -77,7 +77,7 @@ function SETUPSENTRY() {
     fi
 }
 
-function SETUPNOCCONF {
+SETUPNOCCONF {
     if [ ! -f $INSTALLPATH/data/noc/etc/noc.conf ]
         then
             echo "Copy " $INSTALLPATH/data/noc/etc/noc.conf.example " to " $INSTALLPATH/data/noc/etc/noc.conf
@@ -87,7 +87,7 @@ function SETUPNOCCONF {
 
 # @TODO
 # need check $INSTALLPATH == $COMPOSEPATH and make warning if not
-function SETUPENV {
+SETUPENV {
     if [ ! -f $INSTALLPATH/.env ]
         then
             echo "Setup COMPOSEPATH=$INSTALLPATH in $INSTALLPATH/.env"
