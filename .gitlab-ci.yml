@@ -25,7 +25,7 @@ lint_bash:
   before_script:
     - apk update && apk add bash shellcheck
   script:
-    - shellcheck pre.sh ./backup/backup.sh ./backup/restore.sh
+    - shellcheck pre.sh
   rules:
     - changes:
       - pre.sh
@@ -50,9 +50,6 @@ lint_prometheus:
     entrypoint: [""]
   script:
     - promtool check config ./data/prometheus/etc/prometheus.yml
-  rules:
-    - changes:
-      - "./data/prometheus/etc/prometheus.yml"
   tags:
     - docker
 
