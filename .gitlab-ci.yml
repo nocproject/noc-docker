@@ -17,6 +17,7 @@ before_script:
 
 stages:
   - lint
+  - test
 
 lint_bash:
   stage: lint
