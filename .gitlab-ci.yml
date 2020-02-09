@@ -47,7 +47,7 @@ docker.compose:
   script:
     - pwd && ls -la 
     - ./pre.sh all
-    - docker-compose migrate
+    - docker-compose up migrate
     - docker-compose up -d
   tags:
    - docker
