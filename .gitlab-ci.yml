@@ -4,7 +4,8 @@ variables:
 
 stages:
   - lint
-
+  - test
+  
 lint_yaml:
   stage: lint
   image: registry.getnoc.com/infrastructure/ansible_linter:master
@@ -34,3 +35,9 @@ lint_grafana:
   tags:
     - docker
 
+docker.compose:
+  stage: test
+  scripts:
+    - ./pre.sh all
+    - docker-compose migrate
+    - docker-compose up -d
