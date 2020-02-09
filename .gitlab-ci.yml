@@ -1,45 +1,29 @@
 ---
 variables:
   PROMETHEUS_VERSION: v2.14.0
-  COMPOSE_HTTP_TIMEOUT: "300"
-#  GET_SOURCES_ATTEMPTS: 3
-#  GIT_CLEAN_FLAGS: none
-  GIT_STRATEGY: clone
-  
+  CI_BUILDS_DIR: /opt/noc-dc
+  GIT_CLONE_PATH: $CI_BUILDS_DIR
+
+before_script:
+  - apk update && apk add bash git curl
+  - apk add py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+  - curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  - chmod +x /usr/local/bin/docker-compose
+  - ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
+#    Tpip install docker-compose
+
+
 stages:
-  - .pre
   - test
   - lint
 
-clear_stage:
-  stage: .pre
-  script:
-    - chmod 777 -R ./
-    - rm -rf ./*
-  allow_failure: true
-  tags:
-    - shell
-
-lint_bash:
-  stage: lint
-  before_script:
-    - apk update && apk add bash shellcheck
-  script:
-    - shellcheck pre.sh ./backup/backup.sh ./backup/restore.sh
-  rules:
-    - changes:
-      - pre.sh
-  tags:
-    - docker
-    
+  
 lint_yaml:
   stage: lint
   image: registry.getnoc.com/infrastructure/ansible_linter:master
   script:
     - yamllint docker-*.yml
-  rules:
-    - changes:
-      - "docker-*.yml"
   tags:
     - docker
 
@@ -50,9 +34,6 @@ lint_prometheus:
     entrypoint: [""]
   script:
     - promtool check config ./data/prometheus/etc/prometheus.yml
-  rules:
-    - changes:
-      - "./data/prometheus/etc/prometheus.yml"
   tags:
     - docker
 
@@ -64,49 +45,15 @@ lint_grafana:
   script:
     - grafana-cli --homepath=/usr/share/grafana 
       --config ./data/grafana/etc/grafana.ini admin reset-admin-password admin
-  rules:
-    - changes:
-      - ./data/grafana/etc/grafana.ini
   tags:
     - docker
 
 docker.compose:
   stage: test
-  allow_failure: true
-  before_script:
-    # TODO
-    # need auth in registry
-    # docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY or use
-    - rm /home/gitlab-runner/.docker/config.json || true
-    - ./pre.sh -p nocconf -d $PWD
-    - env
-    - ./pre.sh -p sentry -d $PWD
-    - ./pre.sh -p env -d $PWD
-    - docker-compose down -v --remove-orphans
-    - docker-compose -f docker-compose-infra.yml down -v  --remove-orphans
-    - rm -f ./data/sentry/sentry.env
-    - rm -f ./data/noc/etc/noc.conf
-    - rm -f ./.env
- #   - rm -rf ./*
-  #artifacts:
-   # untracked: true
-    #when: always
-    #expire_in: 6h
-    #paths:
-     # - ./data/grafana/plugins/*
-      #- ./data/promgrafana/plugins/*
   script:
-    - ./pre.sh -p all -d $PWD
-    - docker --version
-    - docker-compose --version
+    - pwd && ls -la 
+    - ./pre.sh all
     - docker-compose up migrate
     - docker-compose up -d
-    - docker-compose -f docker-compose-infra.yml up -d
-  after_script:
-    - docker-compose down -v --remove-orphans
-    - docker-compose -f docker-compose-infra.yml down -v  --remove-orphans
-    - rm -f ./data/sentry/sentry.env
-    - rm -f ./data/noc/etc/noc.conf
-    - rm -f ./.env
   tags:
-    - shell
+   - docker
