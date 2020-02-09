@@ -38,7 +38,7 @@ SETPERMISSION() {
     chown 472 -R $INSTALLPATH/data/promgrafana/plugins
     chown 999 -R $INSTALLPATH/data/sentry/redis
     chown 70 -R $INSTALLPATH/data/sentry/pg
-)
+}
 
 SETUPPROMGRAFANA() {
     echo "Clone GRAFANA dashboards from code.getnoc.com"
