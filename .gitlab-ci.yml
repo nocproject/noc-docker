@@ -18,6 +18,7 @@ before_script:
 stages:
   - test
   - lint
+  - test
 
   
 lint_yaml:
