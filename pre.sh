@@ -7,7 +7,7 @@ INSTALLPATH=/opt/noc-dc
 TMPPATH=$(mktemp -d -p /tmp)
 TMPPATH1=$(mktemp -d -p /tmp)
 
-CREATEDIR {
+CREATEDIR(
     mkdir -p $INSTALLPATH/data/promgrafana/etc/provisioning/datasources
     mkdir -p $INSTALLPATH/data/promgrafana/etc/provisioning/notifiers
     mkdir -p $INSTALLPATH/data/promgrafana/etc/provisioning/dashboards
@@ -27,9 +27,9 @@ CREATEDIR {
     mkdir -p $INSTALLPATH/data/grafana/plugins
     mkdir -p $INSTALLPATH/data/sentry/redis
     mkdir -p $INSTALLPATH/data/sentry/pg
-}
+)
 
-SETPERMISSION {
+SETPERMISSION(
     chown 101 -R $INSTALLPATH/data/clickhouse/data
     chown 999 -R $INSTALLPATH/data/postgres
     chown 999 -R $INSTALLPATH/data/mongo
@@ -38,22 +38,22 @@ SETPERMISSION {
     chown 472 -R $INSTALLPATH/data/promgrafana/plugins
     chown 999 -R $INSTALLPATH/data/sentry/redis
     chown 70 -R $INSTALLPATH/data/sentry/pg
-}
+)
 
-SETUPPROMGRAFANA {
+SETUPPROMGRAFANA(
     echo "Clone GRAFANA dashboards from code.getnoc.com"
     cd "$TMPPATH" && git clone https://code.getnoc.com/noc/grafana-selfmon-dashboards.git .
     cp -f -r "$TMPPATH"/dashboards/* "$INSTALLPATH"/data/promgrafana/etc/dashboards
     cp -f -r "$TMPPATH"/provisioning/* "$INSTALLPATH"/data/promgrafana/etc/provisioning
-}
+)
 
-SETUPPROMRULES {
+SETUPPROMRULES(
     echo "Clone PROMETHEUS alert rules from code.getnoc.com"
     cd "$TMPPATH1" && git clone https://code.getnoc.com/noc/noc-prometheus-alerts.git .
     cp -f "$TMPPATH1"/*.yml "$INSTALLPATH"/data/prometheus/etc/rules.d
-}
+)
 
-SETUPSENTRY() {
+SETUPSENTRY(
     if [ ! -f $INSTALLPATH/data/sentry/sentry.env ]
         then
 # @TODO
@@ -75,25 +75,25 @@ SETUPSENTRY() {
               echo "#Important!!! POSTGRES_PASSWORD == SENTRY_DB_PASSWORD"
             } >> $INSTALLPATH/data/sentry/sentry.env
     fi
-}
+)
 
-SETUPNOCCONF {
+SETUPNOCCONF(
     if [ ! -f $INSTALLPATH/data/noc/etc/noc.conf ]
         then
             echo "Copy " $INSTALLPATH/data/noc/etc/noc.conf.example " to " $INSTALLPATH/data/noc/etc/noc.conf
             cp $INSTALLPATH/data/noc/etc/noc.conf.example $INSTALLPATH/data/noc/etc/noc.conf
     fi
-}
+)
 
 # @TODO
 # need check $INSTALLPATH == $COMPOSEPATH and make warning if not
-SETUPENV {
+SETUPENV(
     if [ ! -f $INSTALLPATH/.env ]
         then
             echo "Setup COMPOSEPATH=$INSTALLPATH in $INSTALLPATH/.env"
             echo "COMPOSEPATH=$INSTALLPATH" > $INSTALLPATH/.env
     fi
-}
+)
 
 if [ -n "$1" ]
     then
