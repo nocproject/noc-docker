@@ -3,8 +3,9 @@ variables:
   PROMETHEUS_VERSION: v2.14.0
 
 stages:
-  - lint
   - test
+  - lint
+
   
 lint_yaml:
   stage: lint
@@ -38,6 +39,7 @@ lint_grafana:
 docker.compose:
   stage: test
   script:
+    - pwd && ls -la 
     - ./pre.sh all
     - docker-compose migrate
     - docker-compose up -d
