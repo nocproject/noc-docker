@@ -1,7 +1,7 @@
 ---
 variables:
   PROMETHEUS_VERSION: v2.14.0
-  CI_PROJECT_DIR: /opt/noc-dc
+#  CI_PROJECT_DIR: /opt/noc-dc
   #CI_BUILDS_DIR: /opt/noc-dc
   #GIT_CLONE_PATH: $CI_BUILDS_DIR
 
