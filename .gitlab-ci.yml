@@ -53,7 +53,7 @@ docker.compose:
   script:
     - docker-compose pull
   tags:
-    - docker
+    - shell
 
 
 
