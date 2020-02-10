@@ -663,7 +663,7 @@ services:
       - 1200:1200
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./data/traefik/etc/traefik.toml:/traefik.toml
+      - ./data/traefik/etc/traefik.yml:/traefik.yml
     labels:
       traefik.protocol: http
       traefik.port: "8080"
