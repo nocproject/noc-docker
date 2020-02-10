@@ -56,7 +56,7 @@ docker.compose:
     - pwd && ls -la
     - env
     - find / -name docker-compose
-    - ldd docker-compose
+#    - ldd docker-compose
     - ./pre.sh all /builds/noc/noc-dc
     - pip install docker-compose==1.25.0
     - docker-compose up migrate
