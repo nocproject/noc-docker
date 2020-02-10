@@ -3,8 +3,8 @@ variables:
   PROMETHEUS_VERSION: v2.14.0
 
 stages:
-#  - test
-  - lint
+  - test
+#  - lint
 
 
 lint_bash:
