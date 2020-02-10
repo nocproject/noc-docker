@@ -51,8 +51,12 @@ docker.compose:
     - pwd && ls -la
     - env
     - ./pre.sh all $PWD
+    - docker-compose --version
     - docker-compose up migrate
     - docker-compose up -d
+    - docker-compose -f docker-compose-infra.yml up -d
+  after_script:
+    - docker-compose down -v
   tags:
     - shell
 
