@@ -1,9 +1,6 @@
 ---
 variables:
   PROMETHEUS_VERSION: v2.14.0
-#  CI_PROJECT_DIR: /opt/noc-dc
-  #CI_BUILDS_DIR: /opt/noc-dc
-  #GIT_CLONE_PATH: $CI_BUILDS_DIR
 
 stages:
   - test
@@ -12,7 +9,8 @@ stages:
 
 lint_bash:
   stage: lint
-  script:
+  before_script:
+    - apk update && apk add bash shellcheck
     - shellcheck pre.sh
   tags:
     - docker
@@ -57,6 +55,7 @@ docker.compose:
     - pwd && ls -la
     - env
     - find / -name docker-compose
+    - ldd docker-compose
     - ./pre.sh all /builds/noc/noc-dc
     - docker-compose up migrate
     - docker-compose up -d
