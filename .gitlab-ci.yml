@@ -47,6 +47,7 @@ lint_grafana:
 docker.compose:
   stage: test
   before_script:
+    # TODO
     # need auth in registry
     # docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY or use
     - rm /home/gitlab-runner/.docker/config.json || true
@@ -59,8 +60,8 @@ docker.compose:
     - docker --version
     - docker-compose --version
     - COMPOSE_HTTP_TIMEOUT=200 docker-compose up migrate
-    - COMPOSE_HTTP_TIMEOUT=200 docker-compose up -d
-    - COMPOSE_HTTP_TIMEOUT=200 docker-compose -f docker-compose-infra.yml up -d
+    - COMPOSE_HTTP_TIMEOUT=300 docker-compose up -d
+    - COMPOSE_HTTP_TIMEOUT=300 docker-compose -f docker-compose-infra.yml up -d
   after_script:
     - docker-compose down -v
   tags:
