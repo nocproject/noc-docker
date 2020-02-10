@@ -45,9 +45,13 @@ lint_grafana:
   tags:
     - docker
 
-#docker.compose:
-#  stage: test
-#  image: docker:17.09.0-ce
+docker.compose:
+  stage: test
+  script:
+    - docker-compose pull
+  after_script:
+  - docker-compose down -v
+
 #  services:
 #    - docker:dind
 #  before_script:
