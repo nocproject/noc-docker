@@ -47,10 +47,9 @@ lint_grafana:
 
 docker.compose:
   stage: test
-  image: centos:6
+  image: debian:duster
   before_script:
-    - yum clean all && yum -y install epel-release
-    - yum -y install docker curl
+    - apt-get install git docker curl
     - systemctl enable docker
     - systemctl start docker
     - curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /builds/noc/noc-dc/docker-compose
