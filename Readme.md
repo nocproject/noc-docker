@@ -11,11 +11,14 @@ git clone https://code.getnoc.com/noc/noc-dc.git /opt/noc-dc
 
 cd /opt/noc-dc
 ```
-Check *$INSTALLPATH* and run *pre.sh* script for make dirs\permissions\config
+Run *pre.sh* script for make dirs\permissions\config
 ```
 ./pre.sh all
 ```
-If you need change install path to other - edit .env file
+If you need change default install path to other run *pre.sh* with second parameter
+```bash
+./pre.sh all /opt/noc-dc
+```
 
 Check *./data/noc/etc/noc.conf* and edit config if needed
 

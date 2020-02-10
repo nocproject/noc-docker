@@ -3,7 +3,6 @@
 # setup permissions
 # setup promgrafana dashboards\sources
 
-INSTALLPATH=/opt/noc-dc
 TMPPATH=$(mktemp -d -p /tmp)
 TMPPATH1=$(mktemp -d -p /tmp)
 
@@ -95,6 +94,15 @@ SETUPENV() {
     fi
 }
 
+# Setup $INSTALLPATH from second param
+if [ -n "$2" ]
+    then
+        echo "Setup NOC-DC to $2"
+    else
+        INSTALLPATH=/opt/noc-dc
+        echo "Setup NOC-DC to $INSTALLPATH"
+fi
+
 if [ -n "$1" ]
     then
         if [ "$1" = "all" ]
@@ -127,11 +135,14 @@ if [ -n "$1" ]
         elif [ "$1" = "env" ]
             then
                 SETUPENV
+        elif [ "$1" = "help" ]
+            then
+                echo "pre.sh <all,env,perm,grafana,promrules,nocconf,sentry> <path to install>"
         else
             echo "Unknown parameter"
-            echo "Use one of: all, env, perm, grafana, promrules, nocconf, sentry"
+            echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
         fi
 else
     echo "No  parameters found."
-    echo "Use one of: all, env, perm, grafana, promrules, nocconf, sentry"
+    echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
 fi
