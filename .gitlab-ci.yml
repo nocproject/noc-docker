@@ -58,6 +58,7 @@ docker.compose:
     - pwd && ls -la
     - env
     - find / -name docker-compose
+    - ls -la /bin/docker-compose
     - ./pre.sh all /builds/noc/noc-dc
     - /bin/docker-compose up migrate
     - /bin/docker-compose up -d
