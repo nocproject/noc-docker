@@ -50,14 +50,15 @@ docker.compose:
   before_script:
     - apk update && apk add bash git curl shellcheck
     - apk add python2 py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
-    - curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /builds/noc/noc-dc/docker-compose
-    - chmod +x /builds/noc/noc-dc/docker-compose
+#    - curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /builds/noc/noc-dc/docker-compose
+#    - chmod +x /builds/noc/noc-dc/docker-compose
   script:
     - pwd && ls -la
     - env
     - find / -name docker-compose
     - ldd docker-compose
     - ./pre.sh all /builds/noc/noc-dc
+    - pip install docker-compose==1.25.0
     - docker-compose up migrate
     - docker-compose up -d
   tags:
