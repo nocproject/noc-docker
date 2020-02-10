@@ -3,7 +3,7 @@ variables:
   PROMETHEUS_VERSION: v2.14.0
 
 stages:
-  - test
+#  - test
   - lint
 
 
