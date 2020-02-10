@@ -50,8 +50,9 @@ docker.compose:
   image: debian:buster
   before_script:
     - apt-get update && apt-get -y install git docker curl
-    - systemctl enable docker
-    - systemctl start docker
+    - /usr/bin/dockerd -H &
+#    - systemctl enable docker
+ #   - systemctl start docker
     - curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /builds/noc/noc-dc/docker-compose
     - chmod +x /builds/noc/noc-dc/docker-compose
   script:
