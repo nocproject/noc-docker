@@ -59,8 +59,9 @@ docker.compose:
     - env
     - find / -name docker-compose
     - ls -la /bin/docker-compose
+    - witch docker-compose
     - ./pre.sh all /builds/noc/noc-dc
-    - /bin/docker-compose up migrate
-    - /bin/docker-compose up -d
+    - docker-compose up migrate
+    - docker-compose up -d
   tags:
    - docker
