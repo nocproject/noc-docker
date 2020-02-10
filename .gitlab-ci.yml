@@ -48,9 +48,9 @@ lint_grafana:
 docker.compose:
   stage: test
   script:
-     - docker-compose pull
-  after_script:
-     - docker-compose down -v
+    - docker-compose pull
+#  after_script:
+#     - docker-compose down -v
 
 #  services:
 #    - docker:dind
