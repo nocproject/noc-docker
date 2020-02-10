@@ -65,6 +65,7 @@ docker.compose:
     - docker-compose up migrate
     - docker-compose up -d
   after_script:
+    - rm -rf ./*
     - docker system prune -a -f
   tags:
    - docker
