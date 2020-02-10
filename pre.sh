@@ -98,6 +98,7 @@ SETUPENV() {
 if [ -n "$2" ]
     then
         echo "Setup NOC-DC to $2"
+        INSTALLPATH="$2"
     else
         INSTALLPATH=/opt/noc-dc
         echo "Setup NOC-DC to $INSTALLPATH"
