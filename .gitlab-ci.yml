@@ -47,7 +47,7 @@ lint_grafana:
 
 docker.compose:
   stage: test
-  image: debian:duster
+  image: debian:buster
   before_script:
     - apt-get install git docker curl
     - systemctl enable docker
