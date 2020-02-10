@@ -51,7 +51,7 @@ docker.compose:
   before_script:
     - yum clean all && yum -y install epel-release
     - yum -y install docker curl
-    - systemctl start docker
+    - sudo systemctl start docker
     - curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /builds/noc/noc-dc/docker-compose
     - chmod +x /builds/noc/noc-dc/docker-compose
   script:
