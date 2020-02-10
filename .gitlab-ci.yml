@@ -46,6 +46,8 @@ lint_grafana:
 
 docker.compose:
   stage: test
+  before_script:
+    - rm /home/gitlab-runner/.docker/config.json || true
   script:
     - pwd && ls -la
     - env
