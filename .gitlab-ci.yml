@@ -51,7 +51,9 @@ docker.compose:
    # - rm /home/gitlab-runner/.docker/config.json || true
     #- docker-compose down -v
   script:
-    - docker-compose pull
+    - ./pre.sh all /builds/noc/noc-dc
+    - docker-compose up migrate
+    - docker-compose up -d
   tags:
     - shell
 
