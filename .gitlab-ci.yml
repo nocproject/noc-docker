@@ -11,6 +11,7 @@ lint_bash:
   stage: lint
   before_script:
     - apk update && apk add bash shellcheck
+  script:
     - shellcheck pre.sh
   tags:
     - docker
