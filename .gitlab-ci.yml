@@ -47,20 +47,17 @@ lint_grafana:
 
 docker.compose:
   stage: test
-  #before_script:
-   # - rm /home/gitlab-runner/.docker/config.json || true
-    #- docker-compose down -v
   script:
     - pwd && ls -la
     - env
-    - ./pre.sh all ./
+    - ./pre.sh all $PWD
     - docker-compose up migrate
     - docker-compose up -d
   tags:
     - shell
 
 
-
+# PWD=/home/gitlab-runner/builds/3c5a866c/0/noc/noc-dc
 #  after_script:
 #     - docker-compose down -v
 
