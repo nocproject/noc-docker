@@ -7,36 +7,36 @@ TMPPATH=$(mktemp -d -p /tmp)
 TMPPATH1=$(mktemp -d -p /tmp)
 
 CREATEDIR() {
-    mkdir -p $INSTALLPATH/data/promgrafana/etc/provisioning/datasources
-    mkdir -p $INSTALLPATH/data/promgrafana/etc/provisioning/notifiers
-    mkdir -p $INSTALLPATH/data/promgrafana/etc/provisioning/dashboards
-    mkdir -p $INSTALLPATH/data/promgrafana/etc/dashboards
-    mkdir -p $INSTALLPATH/data/promgrafana/plugins
-    mkdir -p $INSTALLPATH/data/promgrafana/db
-    mkdir -p $INSTALLPATH/data/promvm
-    mkdir -p $INSTALLPATH/data/prometheus/metrics
-    mkdir -p $INSTALLPATH/data/prometheus/etc/rules.d
-    mkdir -p $INSTALLPATH/data/consul
-    mkdir -p $INSTALLPATH/data/clickhouse/data
-    mkdir -p $INSTALLPATH/data/nsq
-    mkdir -p $INSTALLPATH/data/mongo
-    mkdir -p $INSTALLPATH/data/noc/custom
-    mkdir -p $INSTALLPATH/data/postgres
-    mkdir -p $INSTALLPATH/data/nginx/ssl
-    mkdir -p $INSTALLPATH/data/grafana/plugins
-    mkdir -p $INSTALLPATH/data/sentry/redis
-    mkdir -p $INSTALLPATH/data/sentry/pg
+    mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/datasources
+    mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/notifiers
+    mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/dashboards
+    mkdir -p "$INSTALLPATH"/data/promgrafana/etc/dashboards
+    mkdir -p "$INSTALLPATH"/data/promgrafana/plugins
+    mkdir -p "$INSTALLPATH"/data/promgrafana/db
+    mkdir -p "$INSTALLPATH"/data/promvm
+    mkdir -p "$INSTALLPATH"/data/prometheus/metrics
+    mkdir -p "$INSTALLPATH"/data/prometheus/etc/rules.d
+    mkdir -p "$INSTALLPATH"/data/consul
+    mkdir -p "$INSTALLPATH"/data/clickhouse/data
+    mkdir -p "$INSTALLPATH"/data/nsq
+    mkdir -p "$INSTALLPATH"/data/mongo
+    mkdir -p "$INSTALLPATH"/data/noc/custom
+    mkdir -p "$INSTALLPATH"/data/postgres
+    mkdir -p "$INSTALLPATH"/data/nginx/ssl
+    mkdir -p "$INSTALLPATH"/data/grafana/plugins
+    mkdir -p "$INSTALLPATH"/data/sentry/redis
+    mkdir -p "$INSTALLPATH"/data/sentry/pg
 }
 
 SETPERMISSION() {
-    chown 101 -R $INSTALLPATH/data/clickhouse/data
-    chown 999 -R $INSTALLPATH/data/postgres
-    chown 999 -R $INSTALLPATH/data/mongo
-    chown 472 -R $INSTALLPATH/data/grafana/
-    chown 65534 -R $INSTALLPATH/data/prometheus/metrics
-    chown 472 -R $INSTALLPATH/data/promgrafana/plugins
-    chown 999 -R $INSTALLPATH/data/sentry/redis
-    chown 70 -R $INSTALLPATH/data/sentry/pg
+    chown 101 -R "$INSTALLPATH"/data/clickhouse/data
+    chown 999 -R "$INSTALLPATH"/data/postgres
+    chown 999 -R "$INSTALLPATH"/data/mongo
+    chown 472 -R "$INSTALLPATH"/data/grafana/
+    chown 65534 -R "$INSTALLPATH"/data/prometheus/metrics
+    chown 472 -R "$INSTALLPATH"/data/promgrafana/plugins
+    chown 999 -R "$INSTALLPATH"/data/sentry/redis
+    chown 70 -R "$INSTALLPATH"/data/sentry/pg
 }
 
 SETUPPROMGRAFANA() {
@@ -53,7 +53,7 @@ SETUPPROMRULES() {
 }
 
 SETUPSENTRY() {
-    if [ ! -f $INSTALLPATH/data/sentry/sentry.env ]
+    if [ ! -f "$INSTALLPATH"/data/sentry/sentry.env ]
         then
 # @TODO
             GENERATE_PASSWORD="$(dd if=/dev/urandom bs=1 count=32 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)"
@@ -72,14 +72,15 @@ SETUPSENTRY() {
               echo POSTGRES_DBNAME=sentry
               echo POSTGRES_PASSWORD="$GENERATE_PASSWORD"
               echo "#Important!!! POSTGRES_PASSWORD == SENTRY_DB_PASSWORD"
-            } >> $INSTALLPATH/data/sentry/sentry.env
+            } >> "$INSTALLPATH"/data/sentry/sentry.env
     fi
 }
 
 SETUPNOCCONF() {
-    if [ ! -f $INSTALLPATH/data/noc/etc/noc.conf ]
+    if [ ! -f "$INSTALLPATH"/data/noc/etc/noc.conf ]
         then
-            echo "Copy " $INSTALLPATH/data/noc/etc/noc.conf.example " to " $INSTALLPATH/data/noc/etc/noc.conf
+            echo "Copy " "$INSTALLPATH"/data/noc/etc/noc.conf.example " to " "$INSTALLPATH"/data/noc/etc/noc.conf
+            # shellcheck disable=SC2086
             cp $INSTALLPATH/data/noc/etc/noc.conf.example $INSTALLPATH/data/noc/etc/noc.conf
     fi
 }
@@ -87,10 +88,10 @@ SETUPNOCCONF() {
 # @TODO
 # need check $INSTALLPATH == $COMPOSEPATH and make warning if not
 SETUPENV() {
-    if [ ! -f $INSTALLPATH/.env ]
+    if [ ! -f "$INSTALLPATH"/.env ]
         then
             echo "Setup COMPOSEPATH=$INSTALLPATH in $INSTALLPATH/.env"
-            echo "COMPOSEPATH=$INSTALLPATH" > $INSTALLPATH/.env
+            echo "COMPOSEPATH=$INSTALLPATH" > "$INSTALLPATH"/.env
     fi
 }
 
