@@ -13,8 +13,9 @@ before_script:
   - ln -s /usr/local/bin/docker-compose /bin/docker-compose
 
 stages:
-  - lint
   - test
+  - lint
+
 
 lint_bash:
   stage: lint
