@@ -6,7 +6,6 @@ stages:
   - test
   - lint
 
-
 lint_bash:
   stage: lint
   before_script:
@@ -51,8 +50,8 @@ docker.compose:
     - pwd && ls -la
     - env
     - ./pre.sh all $PWD
-    - tree
-    - mount -l
+#    - tree
+#    - mount -l
     - docker --version
     - docker-compose --version
     - docker-compose up migrate
