@@ -49,7 +49,7 @@ docker.compose:
   stage: test
   image: centos:8
   before_script:
-    - yum clean all && yum -y install epel-release deltarpm
+    - yum clean all && yum -y install epel-release
     - yum -y install docker curl
     - systemctl enable docker
     - systemctl start docker
