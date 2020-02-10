@@ -47,9 +47,9 @@ lint_grafana:
 
 docker.compose:
   stage: test
-  before_script:
-    - rm /home/gitlab-runner/.docker/config.json || true
-    - docker-compose down -v
+  #before_script:
+   # - rm /home/gitlab-runner/.docker/config.json || true
+    #- docker-compose down -v
   script:
     - docker-compose pull
   tags:
