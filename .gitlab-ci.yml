@@ -47,23 +47,9 @@ lint_grafana:
 
 docker.compose:
   stage: test
-  image: debian:buster
+  image: docker:17.09.0-ce
   before_script:
-    - apt-get update && apt-get -y install git docker curl apt-transport-https ca-certificates curl gnupg2 software-properties-common
-    - curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
-    - sudo add-apt-repository \
-      "deb [arch=amd64] https://download.docker.com/linux/debian \
-      $(lsb_release -cs) \
-      stable"
-    - apt-get update && apt -y install docker-ce docker-ce-cli containerd.io
-    - usermod -aG docker $USER
-    - newgrp docker
-    - /usr/bin/dockerd -H &
-    - ps aux | grep docker
-#    - systemctl enable docker
- #   - systemctl start docker
-    - curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /builds/noc/noc-dc/docker-compose
-    - chmod +x /builds/noc/noc-dc/docker-compose
+    -  apk add --update py-pip &&  pip install docker-compose
   script:
     - pwd && ls -la
     - env
@@ -71,8 +57,8 @@ docker.compose:
 #    - ldd docker-compose
     - ./pre.sh all /builds/noc/noc-dc
     #- pip install docker-compose==1.25.0
-    - ./docker-compose up migrate
-    - ./docker-compose up -d
+    - docker-compose up migrate
+    - docker-compose up -d
   after_script:
     - rm -rf ./*
     - docker system prune -a -f
