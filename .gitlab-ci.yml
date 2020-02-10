@@ -49,6 +49,7 @@ docker.compose:
   stage: test
   image: centos:8
   before_script:
+    - /lib/systemd/systemd --system --log-target=kmsg &
     - yum clean all && yum -y install epel-release
     - yum -y install docker curl
     - systemctl enable docker
