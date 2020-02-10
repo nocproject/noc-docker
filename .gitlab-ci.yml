@@ -49,7 +49,7 @@ docker.compose:
   stage: test
   image: docker:17.09.0-ce
   before_script:
-    -  apk add --update py-pip &&  pip install docker-compose
+    -  apk add --update py-pip gcc &&  pip install docker-compose
   script:
     - pwd && ls -la
     - env
