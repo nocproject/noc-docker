@@ -51,6 +51,7 @@ docker.compose:
     - pwd && ls -la
     - env
     - ./pre.sh all $PWD
+    - tree
     - docker-compose --version
     - docker-compose up migrate
     - docker-compose up -d
