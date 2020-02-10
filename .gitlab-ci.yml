@@ -48,9 +48,10 @@ lint_grafana:
 docker.compose:
   stage: test
   before_script:
-    - apk update && apk add bash git curl shellcheck
+    - apk update && apk add bash git
     - apk add docker python2 py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
-#    - service docker start
+    - rc-update add docker boot
+    - service docker start
 #    - curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /builds/noc/noc-dc/docker-compose
 #    - chmod +x /builds/noc/noc-dc/docker-compose
   script:
@@ -62,5 +63,8 @@ docker.compose:
     - pip install docker-compose==1.25.0
     - docker-compose up migrate
     - docker-compose up -d
+  after_script:
+    - apk del docker python2 py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+    - docker system prune -a -f
   tags:
    - docker
