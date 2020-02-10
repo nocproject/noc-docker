@@ -5,17 +5,17 @@ volumes:
   mongo_data:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/./data/mongo
+      device: $COMPOSEPATH/data/mongo
       o: bind
   postgres_data:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/./data/postgres
+      device: $COMPOSEPATH/data/postgres
       o: bind
   clickhouse_data:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/./data/clickhouse/data
+      device: $COMPOSEPATH/data/clickhouse/data
       o: bind
   clickhouse_etc:
     driver: local
