@@ -4,7 +4,7 @@ variables:
 
 stages:
   - test
-#  - lint
+  - lint
 
 
 lint_bash:
@@ -49,6 +49,11 @@ docker.compose:
   stage: test
   script:
     - docker-compose pull
+  tags:
+    - docker
+
+
+
 #  after_script:
 #     - docker-compose down -v
 
