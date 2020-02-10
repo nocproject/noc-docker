@@ -13,61 +13,73 @@ volumes:
     driver_opts:
       device: $COMPOSEPATH/data/postgres
       o: bind
+      type: bind
   clickhouse_data:
     driver: local
     driver_opts:
       device: $COMPOSEPATH/data/clickhouse/data
       o: bind
+      type: bind
   clickhouse_etc:
     driver: local
     driver_opts:
       device: $COMPOSEPATH/./data/clickhouse/etc
       o: bind
+      type: bind
   nsq_data:
     driver: local
     driver_opts:
       device: $COMPOSEPATH/./data/nsq
       o: bind
+      type: bind
   redis_data:
     driver: local
     driver_opts:
       device: $COMPOSEPATH/./data/redis
       o: bind
+      type: bind
   consul_data:
     driver: local
     driver_opts:
       device: $COMPOSEPATH/./data/consul
       o: bind
+      type: bind
   nginx_ssl:
     driver: local
     driver_opts:
       device: $COMPOSEPATH/./data/nginx/ssl
       o: bind
+      type: bind
   grafana_etc:
     driver: local
     driver_opts:
       device: $COMPOSEPATH/./data/grafana/etc
       o: bind
+      type: bind
   grafana_dashboards:
     driver: local
     driver_opts:
       device: $COMPOSEPATH/./data/grafana/dashboards
       o: bind
+      type: bind
   grafana_db:
     driver: local
     driver_opts:
       device: $COMPOSEPATH/./data/grafana/db
       o: bind
+      type: bind
   grafana_plugins:
     driver: local
     driver_opts:
       device: $COMPOSEPATH/./data/grafana/plugins
       o: bind
+      type: bind
   noc_custom:
     driver: local
     driver_opts:
       device: $COMPOSEPATH/./data/noc/custom
       o: bind
+      type: bind
 
 services:
   mongo:
