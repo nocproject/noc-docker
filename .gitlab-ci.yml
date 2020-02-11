@@ -3,7 +3,8 @@ variables:
   PROMETHEUS_VERSION: v2.14.0
   GET_SOURCES_ATTEMPTS: 3
   GIT_CLEAN_FLAGS: none
-
+  GIT_STRATEGY: clone
+  
 stages:
   - .pre
   - lint
