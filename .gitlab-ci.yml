@@ -2,8 +2,8 @@
 variables:
   PROMETHEUS_VERSION: v2.14.0
   GET_SOURCES_ATTEMPTS: 3
-  GIT_CLEAN_FLAGS: none
-  GIT_STRATEGY: clone
+#  GIT_CLEAN_FLAGS: none
+#  GIT_STRATEGY: clone
   
 stages:
   - .pre
@@ -14,8 +14,8 @@ stages:
 clear_stage:
   stage: .pre
   script:
-    - sudo chmod 777 -R ./
-    - sudo rm -rf ./*
+    - chmod 777 -R ./
+    - rm -rf ./*
   allow_failure: true
   tags:
     - shell
