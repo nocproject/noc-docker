@@ -3,9 +3,16 @@ variables:
   PROMETHEUS_VERSION: v2.14.0
 
 stages:
+  - .pre
   - lint
   - test
 
+clear_stage:
+  stage: .pre
+  script:
+    - rm -rf ./*
+  tags:
+    - shell
 
 lint_bash:
   stage: lint
