@@ -52,11 +52,8 @@ docker.compose:
     # docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY or use
     - rm /home/gitlab-runner/.docker/config.json || true
   script:
-    - pwd && ls -la
     - env
     - ./pre.sh all $PWD
-#    - tree
-#    - mount -l
     - docker --version
     - docker-compose --version
     - COMPOSE_HTTP_TIMEOUT=200 docker-compose up migrate
@@ -64,32 +61,6 @@ docker.compose:
     - COMPOSE_HTTP_TIMEOUT=300 docker-compose -f docker-compose-infra.yml up -d
   after_script:
     - docker-compose down -v
+    - docker-compose -f docker-compose-infra.yml down -v
   tags:
     - shell
-
-
-# PWD=/home/gitlab-runner/builds/3c5a866c/0/noc/noc-dc
-#  after_script:
-#     - docker-compose down -v
-
-#  services:
-#    - docker:dind
-#  before_script:
-#    - apk add --update curl git
-#    - curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-#    - chmod +x /usr/local/bin/docker-compose
-#    - ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-#  script:
-#    - pwd && ls -la
-#    - env
-#    - find / -name docker-compose
-#    - ldd docker-compose
-#    - ./pre.sh all /builds/noc/noc-dc
-#    #- pip install docker-compose==1.25.0
-#    - docker-compose up migrate
-#    - docker-compose up -d
-#  after_script:
-#    - rm -rf ./*
-#    - docker system prune -a -f
-#  tags:
-#   - docker
