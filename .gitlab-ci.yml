@@ -10,6 +10,7 @@ stages:
 clear_stage:
   stage: .pre
   script:
+    - chmod 777 -R ./
     - rm -rf ./*
   tags:
     - shell
