@@ -1,6 +1,7 @@
 ---
 variables:
   PROMETHEUS_VERSION: v2.14.0
+  COMPOSE_HTTP_TIMEOUT: 300
 #  GET_SOURCES_ATTEMPTS: 3
 #  GIT_CLEAN_FLAGS: none
   GIT_STRATEGY: clone
@@ -91,8 +92,6 @@ docker.compose:
     expire_in: 10 days
     paths:
       - ./data/grafana/plugins/*
-  environment:
-    COMPOSE_HTTP_TIMEOUT: 300
   script:
     - ./pre.sh all $PWD
     - docker --version
