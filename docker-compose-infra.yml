@@ -189,9 +189,9 @@ services:
       - traefik.enable=false
     ulimits:
       nproc: 65535
-      nofile:
-        soft: 20000
-        hard: 40000
+#      nofile:
+#        soft: 20000
+#        hard: 40000
 
   sentry-cron:
     image: sentry
