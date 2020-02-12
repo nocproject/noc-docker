@@ -90,7 +90,6 @@ docker.compose:
     when: always
     expire_in: 10 days
     paths:
-      - ./data/grafana/plugins/*/*
       - ./data/grafana/plugins/*
   script:
     - ./pre.sh all $PWD
