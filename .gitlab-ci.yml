@@ -79,12 +79,19 @@ docker.compose:
     - ./pre.sh nocconf $PWD
     - ./pre.sh sentry $PWD
     - ./pre.sh env $PWD
-    - COMPOSE_HTTP_TIMEOUT=300 docker-compose down -v
-    - COMPOSE_HTTP_TIMEOUT=300 docker-compose -f docker-compose-infra.yml down -v
+    - COMPOSE_HTTP_TIMEOUT=300 docker-compose down -v --remove-orphans
+    - COMPOSE_HTTP_TIMEOUT=300 docker-compose -f docker-compose-infra.yml down -v  --remove-orphans
     - rm -f ./data/sentry/sentry.env
     - rm -f ./data/noc/etc/noc.conf
     - rm -f ./.env
  #   - rm -rf ./*
+  artifacts:
+    untracked: true
+    when: always
+    expire_in: 10 days
+    paths:
+      - ./data/grafana/plugins/*/*
+      - ./data/grafana/plugins/*
   script:
     - ./pre.sh all $PWD
     - docker --version
@@ -93,8 +100,8 @@ docker.compose:
     - COMPOSE_HTTP_TIMEOUT=300 docker-compose up -d
     - COMPOSE_HTTP_TIMEOUT=300 docker-compose -f docker-compose-infra.yml up -d
   after_script:
-    - COMPOSE_HTTP_TIMEOUT=300 docker-compose down -v
-    - COMPOSE_HTTP_TIMEOUT=300 docker-compose -f docker-compose-infra.yml down -v
+    - COMPOSE_HTTP_TIMEOUT=300 docker-compose down -v --remove-orphans
+    - COMPOSE_HTTP_TIMEOUT=300 docker-compose -f docker-compose-infra.yml down -v  --remove-orphans
     - rm -f ./data/sentry/sentry.env
     - rm -f ./data/noc/etc/noc.conf
     - rm -f ./.env
