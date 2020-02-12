@@ -1,7 +1,7 @@
 ---
 variables:
   PROMETHEUS_VERSION: v2.14.0
-  GET_SOURCES_ATTEMPTS: 3
+#  GET_SOURCES_ATTEMPTS: 3
 #  GIT_CLEAN_FLAGS: none
   GIT_STRATEGY: clone
   
@@ -9,7 +9,6 @@ stages:
   - .pre
   - test
   - lint
-
 
 clear_stage:
   stage: .pre
@@ -77,6 +76,14 @@ docker.compose:
     # need auth in registry
     # docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY or use
     - rm /home/gitlab-runner/.docker/config.json || true
+    - ./pre.sh nocconf $PWD
+    - ./pre.sh sentry $PWD
+    - ./pre.sh env $PWD
+    - COMPOSE_HTTP_TIMEOUT=300 docker-compose down -v
+    - COMPOSE_HTTP_TIMEOUT=300 docker-compose -f docker-compose-infra.yml down -v
+    - rm -f ./data/sentry/sentry.env
+    - rm -f ./data/noc/etc/noc.conf
+    - rm -f ./.env
  #   - rm -rf ./*
   script:
     - ./pre.sh all $PWD
@@ -86,7 +93,10 @@ docker.compose:
     - COMPOSE_HTTP_TIMEOUT=300 docker-compose up -d
     - COMPOSE_HTTP_TIMEOUT=300 docker-compose -f docker-compose-infra.yml up -d
   after_script:
-    - docker-compose down -v
-    - docker-compose -f docker-compose-infra.yml down -v
+    - COMPOSE_HTTP_TIMEOUT=300 docker-compose down -v
+    - COMPOSE_HTTP_TIMEOUT=300 docker-compose -f docker-compose-infra.yml down -v
+    - rm -f ./data/sentry/sentry.env
+    - rm -f ./data/noc/etc/noc.conf
+    - rm -f ./.env
   tags:
     - shell
