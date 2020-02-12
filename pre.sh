@@ -60,7 +60,7 @@ SETUPSENTRY() {
 
             echo "Setup Sentry env in $INSTALLPATH/data/sentry/sentry.env"
             echo "after firsh start need run command for for run migration and setup admin user\passwd"
-            echo "docker exec -ti noc-dc_sentry_1 sentry upgrade"
+            echo "cd $INSTALLPATH && docker-compose exec sentry sentry upgrade"
             { echo SENTRY_POSTGRES_HOST=sentry-postgres
               echo SENTRY_DB_NAME=sentry
               echo SENTRY_DB_USER=sentry
