@@ -26,8 +26,8 @@ lint_bash:
     - apk update && apk add bash shellcheck
   script:
     - shellcheck pre.sh
-  only:
-    changes:
+  rules:
+    - changes:
       - pre.sh
   tags:
     - docker
@@ -37,8 +37,8 @@ lint_yaml:
   image: registry.getnoc.com/infrastructure/ansible_linter:master
   script:
     - yamllint docker-*.yml
-  only:
-    changes:
+  rules:
+    - changes:
       - "docker-*.yml"
   tags:
     - docker
@@ -50,8 +50,8 @@ lint_prometheus:
     entrypoint: [""]
   script:
     - promtool check config ./data/prometheus/etc/prometheus.yml
-  only:
-    changes:
+  rules:
+    - changes:
       - "./data/prometheus/etc/prometheus.yml"
   tags:
     - docker
@@ -64,8 +64,8 @@ lint_grafana:
   script:
     - grafana-cli --homepath=/usr/share/grafana 
       --config ./data/grafana/etc/grafana.ini admin reset-admin-password admin
-  only:
-    changes:
+  rules:
+    - changes:
       - ./data/grafana/etc/grafana.ini
   tags:
     - docker
