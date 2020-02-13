@@ -85,22 +85,6 @@ SETUPNOCCONF() {
     fi
 }
 
-SETUPNETWORKSCAN(){
-    if [ ! -f "$INSTALLPATH"/data/noc/networkscan/nets.conf ]
-        then
-            touch "$INSTALLPATH"/data/noc/networkscan/nets.conf
-            echo "Create " "$INSTALLPATH""/data/noc/networkscan/nets.conf"
-        else
-            echo "$INSTALLPATH""/data/noc/networkscan/nets.conf present"
-    fi
-    if [ ! -f "$INSTALLPATH"/data/noc/networkscan/excludenets.conf ]
-        then
-            touch "$INSTALLPATH"/data/noc/networkscan/excludenets.conf
-            echo "Create " "$INSTALLPATH""/data/noc/networkscan/excludenets.conf"
-        else
-            echo "$INSTALLPATH""/data/noc/networkscan/excludenets.conf present"
-    fi
-}
 # @TODO
 # need check $INSTALLPATH == $COMPOSEPATH and make warning if not
 SETUPENV() {
@@ -132,7 +116,6 @@ if [ -n "$1" ]
                 SETUPPROMRULES
                 SETUPNOCCONF
                 SETUPSENTRY
-                SETUPNETWORKSCAN
         elif [ "$1" = "perm" ]
             then
                 CREATEDIR
@@ -154,17 +137,14 @@ if [ -n "$1" ]
         elif [ "$1" = "env" ]
             then
                 SETUPENV
-        elif [ "$1" = "networkscan" ]
-            then
-                SETUPNETWORKSCAN
         elif [ "$1" = "help" ]
             then
-                echo "pre.sh <all,env,perm,networkscan,grafana,promrules,nocconf,sentry> <path to install>"
+                echo "pre.sh <all,env,perm,grafana,promrules,nocconf,sentry> <path to install>"
         else
             echo "Unknown parameter"
-            echo "Use one of: all,env,perm,networkscan,grafana,promrules,nocconf,sentry"
+            echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
         fi
 else
     echo "No  parameters found."
-    echo "Use one of: all,env,perm,networkscan,grafana,promrules,nocconf,sentry"
+    echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
 fi
