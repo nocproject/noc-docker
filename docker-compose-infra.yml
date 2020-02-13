@@ -5,61 +5,61 @@ volumes:
   prometheus_metrics:
     driver: local
     driver_opts:
-      device: $PWD/data/prometheus/metrics
+      device: $COMPOSEPATH/data/prometheus/metrics
       o: bind
       type: bind
   prometheus_etc:
     driver: local
     driver_opts:
-      device: $PWD/data/prometheus/etc
+      device: $COMPOSEPATH/data/prometheus/etc
       o: bind
       type: bind
   promvm_data:
     driver: local
     driver_opts:
-      device: $PWD/data/promvm
+      device: $COMPOSEPATH/data/promvm
       o: bind
       type: bind
   promgrafana_etc:
     driver: local
     driver_opts:
-      device: $PWD/data/promgrafana/etc
+      device: $COMPOSEPATH/data/promgrafana/etc
       o: bind
       type: bind
   promgrafana_db:
     driver: local
     driver_opts:
-      device: $PWD/data/promgrafana/db
+      device: $COMPOSEPATH/data/promgrafana/db
       o: bind
       type: bind
   promgrafana_plugins:
     driver: local
     driver_opts:
-      device: $PWD/data/promgrafana/plugins
+      device: $COMPOSEPATH/data/promgrafana/plugins
       o: bind
       type: bind
   promgrafana_dashboards:
     driver: local
     driver_opts:
-      device: $PWD/data/promgrafana/etc/dashboards
+      device: $COMPOSEPATH/data/promgrafana/etc/dashboards
       o: bind
       type: bind
   alertmanager_etc:
     driver: local
     driver_opts:
-      device: $PWD/data/alertmanager/etc
+      device: $COMPOSEPATH/data/alertmanager/etc
       o: bind
       type: bind
   sentryredis_data:
     driver: local
     driver_opts:
-      device: $PWD/data/sentry/redis
+      device: $COMPOSEPATH/data/sentry/redis
       o: bind
       type: bind
   sentrypostgres_data:
     driver: local
     driver_opts:
-      device: $PWD/data/sentry/pg
+      device: $COMPOSEPATH/data/sentry/pg
       o: bind
       type: bind
 
@@ -146,6 +146,7 @@ services:
     hostname: prommongo
     command: >
         -mongodb.uri=mongodb://noc:noc@mongo:27017
+         # TODO get login\passwd from noc env
     labels:
       - traefik.enable=false
 
