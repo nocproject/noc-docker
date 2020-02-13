@@ -729,7 +729,6 @@ services:
       GF_INSTALL_PLUGINS: grafana-simple-json-datasource,
                           vertamedia-clickhouse-datasource
 
-
   import-default:
     image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "no"
@@ -740,5 +739,22 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - ./data/noc/import/sa.managedobject.csv:/tmp/sa.managedobject.csv
+    labels:
+      traefik.enable: false
+
+  networkscan-default:
+    image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: networkscan
+    restart: "no"
+    command: >
+             cd /opt/noc && ./noc command networkscan \
+             --in /tmp/nets.conf \
+             --exclude /tmp/excludenets.conf
+    env_file:
+      - ./data/noc/etc/noc.conf
+    volumes:
+      - ./data/noc/networkscan/networkscan.py:/opt/noc/commands/networkscan.py
+      - ./data/noc/networkscan/nets.conf:/tmp/nets.conf
+      - ./data/noc/networkscan/excludenets.conf:/tmp/excludenets.conf
     labels:
       traefik.enable: false
