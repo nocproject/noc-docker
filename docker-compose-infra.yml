@@ -192,11 +192,11 @@ services:
       - ./data/sentry/sentry.env
     labels:
       - traefik.enable=false
-#    ulimits:
-#      nproc: 65535
-#      nofile:
-#        soft: 20000
-#        hard: 40000
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
 
   sentry-cron:
     image: sentry
