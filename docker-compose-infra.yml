@@ -175,7 +175,8 @@ services:
     labels:
       - traefik.enable=false
 
-  # after firsh start need run "docker exec -ti noc-dc_sentry_1 sentry upgrade"
+  # after firsh start need run
+  # cd $INSTALLPATH && docker-compose exec sentry sentry upgrade
   # for run migration and setup admin user\passwd
   sentry:
     image: sentry
