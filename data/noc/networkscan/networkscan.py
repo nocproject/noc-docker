@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # ----------------------------------------------------------------------
-# Pretty command ver.6
+# Networkscan.py
 # ----------------------------------------------------------------------
-# Copyright (C) 2007-2019 The NOC Project
+# Copyright (C) 2007-2020 The NOC Project
 # See LICENSE for details
 # ----------------------------------------------------------------------
 
@@ -157,7 +157,7 @@ class Command(BaseCommand):
                     self.die("Invalid pool")
             else:
                 community = [self.DEFAULT_COMMUNITY]
-        data = "IP;Доступен по ICMP;IP есть в NOC;is_managed;SMNP sysname;SNMP sysObjectId;Vendor;Model;Имя в NOC;pool;tags\n"
+        data = "IP;Доступен по ICMP;IP in NOC;is_managed;SMNP sysname;SNMP sysObjectId;Vendor;Model;Name in NOC;pool;tags\n"
         # столбцы x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12
         # создание списка наличия мо в noc
         moall = ManagedObject.objects.filter(is_managed=True)
