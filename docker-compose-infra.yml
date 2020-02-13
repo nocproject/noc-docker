@@ -5,58 +5,65 @@ volumes:
   prometheus_metrics:
     driver: local
     driver_opts:
-      device: $PWD/data/prometheus/metrics
+      device: $COMPOSEPATH/data/prometheus/metrics
       o: bind
+      type: bind
   prometheus_etc:
     driver: local
     driver_opts:
-      device: $PWD/data/prometheus/etc
+      device: $COMPOSEPATH/data/prometheus/etc
       o: bind
+      type: bind
   promvm_data:
     driver: local
     driver_opts:
-      device: $PWD/data/promvm
+      device: $COMPOSEPATH/data/promvm
       o: bind
+      type: bind
   promgrafana_etc:
     driver: local
     driver_opts:
-      device: $PWD/data/promgrafana/etc
+      device: $COMPOSEPATH/data/promgrafana/etc
       o: bind
+      type: bind
   promgrafana_db:
     driver: local
     driver_opts:
-      device: $PWD/data/promgrafana/db
+      device: $COMPOSEPATH/data/promgrafana/db
       o: bind
+      type: bind
   promgrafana_plugins:
     driver: local
     driver_opts:
-      device: $PWD/data/promgrafana/plugins
+      device: $COMPOSEPATH/data/promgrafana/plugins
       o: bind
+      type: bind
   promgrafana_dashboards:
     driver: local
     driver_opts:
-      device: $PWD/data/promgrafana/etc/dashboards
+      device: $COMPOSEPATH/data/promgrafana/etc/dashboards
       o: bind
-
+      type: bind
   alertmanager_etc:
     driver: local
     driver_opts:
-      device: $PWD/data/alertmanager/etc
+      device: $COMPOSEPATH/data/alertmanager/etc
       o: bind
+      type: bind
   sentryredis_data:
     driver: local
     driver_opts:
-      device: $PWD/data/sentry/redis
+      device: $COMPOSEPATH/data/sentry/redis
       o: bind
+      type: bind
   sentrypostgres_data:
     driver: local
     driver_opts:
-      device: $PWD/data/sentry/pg
+      device: $COMPOSEPATH/data/sentry/pg
       o: bind
-
+      type: bind
 
 services:
-
   prom:
     image: prom/prometheus:v2.11.1
     restart: always
@@ -139,11 +146,13 @@ services:
     hostname: prommongo
     command: >
         -mongodb.uri=mongodb://noc:noc@mongo:27017
+         # TODO get login\passwd from noc env
     labels:
       - traefik.enable=false
 
   sentry-redis:
     image: redis:alpine
+    hostname: sentry-redis
     restart: always
     volumes:
       - sentryredis_data:/data
@@ -152,6 +161,7 @@ services:
 
   sentry-postgres:
     image: postgres:9.6-alpine
+    hostname: sentry-postgres
     restart: always
     env_file:
       - ./data/sentry/sentry.env
@@ -165,10 +175,12 @@ services:
     labels:
       - traefik.enable=false
 
-  # after firsh start need run "docker exec -ti noc-dc_sentry_1 sentry upgrade"
+  # after firsh start need run
+  # cd $INSTALLPATH && docker-compose exec sentry sentry upgrade
   # for run migration and setup admin user\passwd
   sentry:
     image: sentry
+    hostname: sentry
     restart: always
     links:
       - sentry-redis
@@ -188,6 +200,7 @@ services:
 
   sentry-cron:
     image: sentry
+    hostname: sentry-cron
     restart: always
     links:
       - sentry-redis
@@ -200,6 +213,7 @@ services:
 
   sentry-worker:
     image: sentry
+    hostname: sentry-worker
     restart: always
     links:
       - sentry-redis

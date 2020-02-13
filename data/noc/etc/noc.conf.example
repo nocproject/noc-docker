@@ -19,7 +19,7 @@ NOC_NSQLOOKUPD_HTTP_ADDRESSES=nsqlookupd:4161
 NOC_SELFMON_ENABLE_FM=true
 NOC_SELFMON_ENABLE_INVENTORY=true
 NOC_SELFMON_ENABLE_TASK=true
-NOC_FEATURES_SENTRY=true
+NOC_FEATURES_SENTRY=false
 # setup Sentry DSN (Deprecated) http://<ip<:9000/settings/sentry/projects/<NAMEPROJECT>/keys/
 # NOC_SENTRY_URL=http://6ab3d0b0702d44d0acee73298a5bb40f:43d1cb7adc1946488ac9bba1d5e0dc58@sentry:9000/2
 TZ=Europe/Moscow
