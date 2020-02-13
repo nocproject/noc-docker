@@ -89,12 +89,14 @@ SETUPNETWORKSCAN(){
     if [ ! -f "$INSTALLPATH"/data/noc/networkscan/nets.conf ]
         then
             touch "$INSTALLPATH"/data/noc/networkscan/nets.conf
+            echo "Create " "$INSTALLPATH""/data/noc/networkscan/nets.conf"
         else
             echo "$INSTALLPATH""/data/noc/networkscan/nets.conf present"
     fi
     if [ ! -f "$INSTALLPATH"/data/noc/networkscan/excludenets.conf ]
         then
             touch "$INSTALLPATH"/data/noc/networkscan/excludenets.conf
+            echo "Create " "$INSTALLPATH""/data/noc/networkscan/excludenets.conf"
         else
             echo "$INSTALLPATH""/data/noc/networkscan/excludenets.conf present"
     fi
