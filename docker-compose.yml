@@ -747,7 +747,7 @@ services:
     hostname: networkscan
     restart: "no"
     command: >
-             cd /opt/noc && ./noc commands networkscan \
+             cd /opt/noc && ./noc networkscan \
              --in /tmp/nets.conf \
              --exclude /tmp/excludenets.conf
     env_file:
