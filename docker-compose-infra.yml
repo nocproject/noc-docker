@@ -152,6 +152,7 @@ services:
 
   sentry-redis:
     image: redis:alpine
+    hostname: sentry-redis
     restart: always
     volumes:
       - sentryredis_data:/data
@@ -160,6 +161,7 @@ services:
 
   sentry-postgres:
     image: postgres:9.6-alpine
+    hostname: sentry-postgres
     restart: always
     env_file:
       - ./data/sentry/sentry.env
@@ -177,6 +179,7 @@ services:
   # for run migration and setup admin user\passwd
   sentry:
     image: sentry
+    hostname: sentry
     restart: always
     links:
       - sentry-redis
@@ -196,6 +199,7 @@ services:
 
   sentry-cron:
     image: sentry
+    hostname: sentry-cron
     restart: always
     links:
       - sentry-redis
@@ -208,6 +212,7 @@ services:
 
   sentry-worker:
     image: sentry
+    hostname: sentry-worker
     restart: always
     links:
       - sentry-redis

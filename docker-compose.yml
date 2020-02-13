@@ -84,6 +84,7 @@ volumes:
 services:
   mongo:
     image: mongo:4.0
+    hostname: mongo
     command: >
              --wiredTigerCacheSizeGB 1.5
              --bind_ip_all
@@ -119,6 +120,7 @@ services:
 
   postgres:
     image: postgres:9.6
+    hostname: postgres
     restart: "no"
     environment:
       POSTGRES_USER: noc
@@ -194,6 +196,7 @@ services:
   # TODO make logs avalaible
   clickhouse:
     image: yandex/clickhouse-server:latest
+    hostname: clickhouse
     ulimits:
       nofile:
         soft: 262144
@@ -206,17 +209,20 @@ services:
 
   redis:
     image: redis:5-alpine
+    hostname: redis
     labels:
       traefik.enable: false
 
   nsqlookupd:
     image: nsqio/nsq:v1.1.0
+    hostname: nsqlookupd
     command: /nsqlookupd
     labels:
       traefik.enable: false
 
   nsqd:
     image: nsqio/nsq:v1.1.0
+    hostname: nsqd
     depends_on:
       - nsqlookupd
     command: /nsqd --lookupd-tcp-address=nsqlookupd:4160 --mem-queue-size=10000
@@ -227,6 +233,7 @@ services:
 
   web:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: web
     restart: "always"
     depends_on:
       - mongo
@@ -251,6 +258,7 @@ services:
 
   login:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: login
     restart: "always"
     depends_on:
       - mongo
@@ -270,6 +278,7 @@ services:
 
   card:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: card
     restart: "always"
     depends_on:
       - mongo
@@ -290,6 +299,7 @@ services:
 
   mrt:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: mrt
     restart: "always"
     depends_on:
       - mongo
@@ -309,6 +319,7 @@ services:
   grafanads:
     image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
+    hostname: grafanads
     depends_on:
       - mongo
     command: /usr/bin/python /opt/noc/services/grafanads/service.py
@@ -327,6 +338,7 @@ services:
   bi:
     image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
+    hostname: bi
     depends_on:
       - mongo
       - clickhouse
@@ -346,6 +358,7 @@ services:
   sae:
     image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
+    hostname: sae
     depends_on:
       - mongo
       - redis
@@ -361,6 +374,7 @@ services:
   datasource:
     image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
+    hostname: datasource
     depends_on:
       - mongo
     command: /usr/bin/python /opt/noc/services/datasource/service.py
@@ -375,6 +389,7 @@ services:
   datastream:
     image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
+    hostname: datastream
     depends_on:
       - mongo
     command: /usr/bin/python /opt/noc/services/datastream/service.py
@@ -389,6 +404,7 @@ services:
   nbi:
     image: registry.getnoc.com/noc/noc/code:19.3.1
     restart: "always"
+    hostname: nbi
     depends_on:
       - mongo
       - clickhouse
@@ -405,6 +421,7 @@ services:
 
   activator-default:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: activator
     restart: "always"
     command: /usr/bin/python /opt/noc/services/activator/service.py
     mem_limit: 150m
@@ -417,6 +434,7 @@ services:
 
   discovery-default:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: discovery
     restart: "always"
     command: /usr/bin/python /opt/noc/services/discovery/service.py
     mem_limit: 150m
@@ -429,6 +447,7 @@ services:
 
   ping-default:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: ping
     restart: "always"
     command: /usr/bin/python /opt/noc/services/ping/service.py
     privileged: true
@@ -445,6 +464,7 @@ services:
 
   classifier-default:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: classifier
     restart: "always"
     mem_limit: 120m
     depends_on:
@@ -462,6 +482,7 @@ services:
 
   correlator-default:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: correlator
     restart: "always"
     mem_limit: 120m
     depends_on:
@@ -479,6 +500,7 @@ services:
 
   chwriter:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: chwriter
     restart: "always"
     depends_on:
       - clickhouse
@@ -495,6 +517,7 @@ services:
 
   escalator:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: escalator
     restart: "always"
     depends_on:
       - nsqlookupd
@@ -510,6 +533,7 @@ services:
 
   scheduler:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: scheduler
     restart: "always"
     depends_on:
       - mongo
@@ -525,6 +549,7 @@ services:
 
   selfmon:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: selfmon
     restart: "always"
     mem_limit: 110m
     depends_on:
@@ -541,6 +566,7 @@ services:
 
   mib:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: mib
     restart: "always"
     mem_limit: 100m
     depends_on:
@@ -555,6 +581,7 @@ services:
 
   mailsender:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: mailsender
     restart: "always"
     mem_limit: 52m
     depends_on:
@@ -569,6 +596,7 @@ services:
 
   tgsender:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: tgsender
     restart: "always"
     mem_limit: 52m
     depends_on:
@@ -583,6 +611,7 @@ services:
 
   syslogcollector-default:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: syslogcollector
     restart: "always"
     depends_on:
       - nsqd
@@ -600,6 +629,7 @@ services:
 
   trapcollector-default:
     image: registry.getnoc.com/noc/noc/code:19.3.1
+    hostname: trapcollector
     restart: "always"
     depends_on:
       - nsqd
@@ -639,6 +669,7 @@ services:
 
   nginx:
     image: registry.getnoc.com/noc/noc/static:19.3.1
+    hostname: nginx
     restart: "always"
     mem_limit: 30m
     ports:
@@ -654,6 +685,7 @@ services:
 
   traefik:
     image: traefik:1.7-alpine
+    hostname: traefik
     restart: "always"
     depends_on:
       - web
@@ -685,6 +717,7 @@ services:
 
   grafana:
     image: grafana/grafana:6.3.6
+    hostname: grafana
     restart: always
     volumes:
       - grafana_etc:/etc/grafana
