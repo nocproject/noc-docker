@@ -177,8 +177,6 @@ services:
       && /usr/bin/python ./commands/migrate.py
       && ./noc ensure-indexes
       && /usr/bin/python ./commands/migrate-ch.py
-      && /usr/bin/python ./scripts/deploy/install-packages \
-      requirements/collections.json
       && ./noc collection sync
       && ./noc sync-perm
       && ./noc sync-mibs
@@ -187,6 +185,8 @@ services:
       |base64 -d > /opt/noc/etc/noc.yml
       && cat /opt/noc/etc/noc.yml
       && /usr/bin/python ./scripts/deploy/apply-pools
+      && /usr/bin/python ./scripts/deploy/install-packages \
+      requirements/collections.json
       "
     env_file:
       - ./data/noc/etc/noc.conf
