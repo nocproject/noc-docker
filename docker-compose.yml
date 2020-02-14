@@ -177,8 +177,8 @@ services:
       && /usr/bin/python ./commands/migrate.py
       && ./noc ensure-indexes
       && /usr/bin/python ./commands/migrate-ch.py
-      && /usr/bin/python ./scripts/deploy/install-packages \
-      requirements/collections.json
+      && cp ./requirements/collections.json /tmp/collections.json
+      && /usr/bin/python ./scripts/deploy/install-packages /tmp/collections.json
       && ./noc collection sync
       && ./noc sync-perm
       && ./noc sync-mibs
