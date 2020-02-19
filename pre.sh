@@ -91,7 +91,9 @@ SETUPENV() {
     if [ ! -f "$INSTALLPATH"/.env ]
         then
             echo "Setup COMPOSEPATH=$INSTALLPATH in $INSTALLPATH/.env"
-            echo "COMPOSEPATH=$INSTALLPATH" > "$INSTALLPATH"/.env
+            { echo "COMPOSEPATH=$INSTALLPATH"
+              echo "COMPOSETAG=$PARAM_TAG"
+            } >> "$INSTALLPATH"/.env
     fi
 }
 
@@ -102,14 +104,14 @@ SETUPENV() {
 while [ -n "$1" ]
 do
     case "$1" in
-        -t) PARAM_T="$2"
-            echo "Found the -t option, with parameter value $PARAM_T"
+        -t) PARAM_TAG="$2"
+            echo "Found the -t option, with parameter value $PARAM_TAG"
             shift ;;
         -p) PARAM_P="$2"
             echo "Found the -p option, with parameter value $PARAM_P"
             shift ;;
-        -d) PARAM_D="$2"
-            echo "Found the -d option, with parameter value $PARAM_D"
+        -d) INSTALLPATH="$2"
+            echo "Found the -d option, with parameter value $INSTALLPATH"
             shift ;;
         -h) echo "Example: ./pre.sh -p all -d /opt/noc -t latest"
             shift ;;
@@ -120,19 +122,57 @@ do
     shift
 done
 
-#-a Вывести все объекты.
-#-c Произвести подсчёт.
-#-d Указать директорию.
-#-e Развернуть объект.
-#-f Указать файл, из которого нужно прочитать данные.
-#-h Вывести справку по команде.
-#-i Игнорировать регистр символов.
-#-l Выполнить полноформатный вывод данных.
-#-n Использовать неинтерактивный (пакетный) режим.
-#-o Позволяет указать файл, в который нужно перенаправить вывод.
-#-q Выполнить скрипт в quiet-режиме.
-#-r Обрабатывать папки и файлы рекурсивно.
-#-s Выполнить скрипт в silent-режиме.
-#-v Выполнить многословный вывод.
-#- x Исключить объект.
-# -y Ответить «yes» на все вопросы.
+if [ -z "$INSTALLPATH" ]
+    then
+        INSTALLPATH=/opt/noc-dc
+        echo "Setup NOC-DC to $INSTALLPATH"
+fi
+
+if [ -z "$PARAM_TAG" ]
+    then
+        PARAM_TAG="latest"
+        echo "Use image  noc/noc/code:$PARAM_TAG"
+        echo "All tags in https://code.getnoc.com/noc/noc/container_registry"
+fi
+
+if [ -n "$PARAM_P" ]
+    then
+        if [ "$PARAM_P" = "all" ]
+            then
+                CREATEDIR
+                SETUPENV
+                SETPERMISSION
+                SETUPPROMGRAFANA
+                SETUPPROMRULES
+                SETUPNOCCONF
+                SETUPSENTRY
+        elif [ "$PARAM_P" = "perm" ]
+            then
+                CREATEDIR
+                SETPERMISSION
+        elif [ "$PARAM_P" = "grafana" ]
+            then
+                CREATEDIR
+                SETUPPROMGRAFANA
+        elif [ "$PARAM_P" = "promrules" ]
+            then
+                CREATEDIR
+                SETUPPROMRULES
+        elif [ "$PARAM_P" = "nocconf" ]
+            then
+                SETUPNOCCONF
+        elif [ "$PARAM_P" = "sentry" ]
+            then
+                SETUPSENTRY
+        elif [ "$PARAM_P" = "env" ]
+            then
+                SETUPENV
+        else
+            echo "Unknown parameter"
+            echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
+        fi
+else
+    echo "No  parameters found."
+    echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
+fi
+
