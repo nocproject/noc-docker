@@ -733,7 +733,8 @@ services:
     image: registry.getnoc.com/noc/noc/code:$COMPOSETAG
     restart: "no"
     command: >
-             sh -c "python ./noc csv-import sa.managedobject /tmp/sa.managedobject.csv"
+             sh -c "python ./noc csv-import sa.managedobject
+             /tmp/sa.managedobject.csv"
     env_file:
       - ./data/noc/etc/noc.conf
     volumes:
