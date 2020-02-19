@@ -91,23 +91,53 @@ SETUPENV() {
     if [ ! -f "$INSTALLPATH"/.env ]
         then
             echo "Setup COMPOSEPATH=$INSTALLPATH in $INSTALLPATH/.env"
-            echo "COMPOSEPATH=$INSTALLPATH" > "$INSTALLPATH"/.env
+            { echo "COMPOSEPATH=$INSTALLPATH"
+              echo "COMPOSETAG=$PARAM_TAG"
+            } >> "$INSTALLPATH"/.env
     fi
 }
 
-# Setup $INSTALLPATH from second param
-if [ -n "$2" ]
+# @TODO   ./pre.sh -p all -d /opt/noc -t latest
+
+
+# @TODO set tag for docker container from https://code.getnoc.com/noc/noc/container_registry
+while [ -n "$1" ]
+do
+    case "$1" in
+        -t) PARAM_TAG="$2"
+            echo "Found the -t option, with parameter value $PARAM_TAG"
+            shift ;;
+        -p) PARAM_P="$2"
+            echo "Found the -p option, with parameter value $PARAM_P"
+            shift ;;
+        -d) INSTALLPATH="$2"
+            echo "Found the -d option, with parameter value $INSTALLPATH"
+            shift ;;
+        -h) echo "Example: ./pre.sh -p all -d /opt/noc -t latest"
+            shift ;;
+        --) shift
+            break ;;
+        *) echo "Example: ./pre.sh -p all -d /opt/noc -t latest";;
+    esac
+    shift
+done
+
+if [ -z "$INSTALLPATH" ]
     then
-        echo "Setup NOC-DC to $2"
-        INSTALLPATH="$2"
-    else
         INSTALLPATH=/opt/noc-dc
         echo "Setup NOC-DC to $INSTALLPATH"
 fi
 
-if [ -n "$1" ]
+if [ -z "$PARAM_TAG" ]
     then
-        if [ "$1" = "all" ]
+        PARAM_TAG="latest"
+        echo "Use image  noc/noc/code:$PARAM_TAG"
+        echo "All tags in https://code.getnoc.com/noc/noc/container_registry"
+fi
+
+if [ -n "$PARAM_P" ]
+    then
+        if [ "$PARAM_P" = "all" ]
             then
                 CREATEDIR
                 SETUPENV
@@ -116,30 +146,27 @@ if [ -n "$1" ]
                 SETUPPROMRULES
                 SETUPNOCCONF
                 SETUPSENTRY
-        elif [ "$1" = "perm" ]
+        elif [ "$PARAM_P" = "perm" ]
             then
                 CREATEDIR
                 SETPERMISSION
-        elif [ "$1" = "grafana" ]
+        elif [ "$PARAM_P" = "grafana" ]
             then
                 CREATEDIR
                 SETUPPROMGRAFANA
-        elif [ "$1" = "promrules" ]
+        elif [ "$PARAM_P" = "promrules" ]
             then
                 CREATEDIR
                 SETUPPROMRULES
-        elif [ "$1" = "nocconf" ]
+        elif [ "$PARAM_P" = "nocconf" ]
             then
                 SETUPNOCCONF
-        elif [ "$1" = "sentry" ]
+        elif [ "$PARAM_P" = "sentry" ]
             then
                 SETUPSENTRY
-        elif [ "$1" = "env" ]
+        elif [ "$PARAM_P" = "env" ]
             then
                 SETUPENV
-        elif [ "$1" = "help" ]
-            then
-                echo "pre.sh <all,env,perm,grafana,promrules,nocconf,sentry> <path to install>"
         else
             echo "Unknown parameter"
             echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
@@ -148,3 +175,4 @@ else
     echo "No  parameters found."
     echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
 fi
+
