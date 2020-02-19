@@ -17,7 +17,7 @@ Run *pre.sh* script for make dirs\permissions\config
 ```
 If you need change default install path to other run *pre.sh* with second parameter
 ```bash
-./pre.sh all /opt/noc-dc
+./pre.sh -p all -d /opt/noc -t latest
 ```
 
 Check *./data/noc/etc/noc.conf* and edit config if needed
