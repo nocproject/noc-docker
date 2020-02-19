@@ -95,56 +95,44 @@ SETUPENV() {
     fi
 }
 
-# Setup $INSTALLPATH from second param
-if [ -n "$2" ]
-    then
-        echo "Setup NOC-DC to $2"
-        INSTALLPATH="$2"
-    else
-        INSTALLPATH=/opt/noc-dc
-        echo "Setup NOC-DC to $INSTALLPATH"
-fi
+# @TODO   ./pre.sh -p all -d /opt/noc -t latest
 
-if [ -n "$1" ]
-    then
-        if [ "$1" = "all" ]
-            then
-                CREATEDIR
-                SETUPENV
-                SETPERMISSION
-                SETUPPROMGRAFANA
-                SETUPPROMRULES
-                SETUPNOCCONF
-                SETUPSENTRY
-        elif [ "$1" = "perm" ]
-            then
-                CREATEDIR
-                SETPERMISSION
-        elif [ "$1" = "grafana" ]
-            then
-                CREATEDIR
-                SETUPPROMGRAFANA
-        elif [ "$1" = "promrules" ]
-            then
-                CREATEDIR
-                SETUPPROMRULES
-        elif [ "$1" = "nocconf" ]
-            then
-                SETUPNOCCONF
-        elif [ "$1" = "sentry" ]
-            then
-                SETUPSENTRY
-        elif [ "$1" = "env" ]
-            then
-                SETUPENV
-        elif [ "$1" = "help" ]
-            then
-                echo "pre.sh <all,env,perm,grafana,promrules,nocconf,sentry> <path to install>"
-        else
-            echo "Unknown parameter"
-            echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
-        fi
-else
-    echo "No  parameters found."
-    echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
-fi
+
+# @TODO set tag for docker container from https://code.getnoc.com/noc/noc/container_registry
+while [ -n "$1" ]
+do
+    case "$1" in
+        -t) PARAM_T="$2"
+            echo "Found the -t option, with parameter value $PARAM_T"
+            shift ;;
+        -p) PARAM_P="$2"
+            echo "Found the -p option, with parameter value $PARAM_P"
+            shift ;;
+        -d) PARAM_D="$2"
+            echo "Found the -d option, with parameter value $PARAM_D"
+            shift ;;
+        -h) echo "Example: ./pre.sh -p all -d /opt/noc -t latest"
+            shift ;;
+        --) shift
+            break ;;
+        *) echo "Example: ./pre.sh -p all -d /opt/noc -t latest";;
+    esac
+    shift
+done
+
+#-a Вывести все объекты.
+#-c Произвести подсчёт.
+#-d Указать директорию.
+#-e Развернуть объект.
+#-f Указать файл, из которого нужно прочитать данные.
+#-h Вывести справку по команде.
+#-i Игнорировать регистр символов.
+#-l Выполнить полноформатный вывод данных.
+#-n Использовать неинтерактивный (пакетный) режим.
+#-o Позволяет указать файл, в который нужно перенаправить вывод.
+#-q Выполнить скрипт в quiet-режиме.
+#-r Обрабатывать папки и файлы рекурсивно.
+#-s Выполнить скрипт в silent-режиме.
+#-v Выполнить многословный вывод.
+#- x Исключить объект.
+# -y Ответить «yes» на все вопросы.
