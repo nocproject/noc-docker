@@ -97,10 +97,6 @@ SETUPENV() {
     fi
 }
 
-# @TODO   ./pre.sh -p all -d /opt/noc -t latest
-
-
-# @TODO set tag for docker container from https://code.getnoc.com/noc/noc/container_registry
 while [ -n "$1" ]
 do
     case "$1" in
@@ -113,11 +109,11 @@ do
         -d) INSTALLPATH="$2"
             echo "Found the -d option, with parameter value $INSTALLPATH"
             shift ;;
-        -h) echo "Example: ./pre.sh -p all -d /opt/noc-dc -t latest"
+        -h) echo "Example: ./pre.sh -p all -d /opt/noc-dc -t stable"
             shift ;;
         --) shift
             break ;;
-        *) echo "Example: ./pre.sh -p all -d /opt/noc-dc -t latest";;
+        *) echo "Example: ./pre.sh -p all -d /opt/noc-dc -t stable";;
     esac
     shift
 done
@@ -130,7 +126,7 @@ fi
 
 if [ -z "$PARAM_TAG" ]
     then
-        PARAM_TAG="latest"
+        PARAM_TAG="stable"
         echo "Use image  noc/noc/code:$PARAM_TAG"
         echo "All tags in https://code.getnoc.com/noc/noc/container_registry"
 fi
