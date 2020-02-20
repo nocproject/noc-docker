@@ -113,11 +113,11 @@ do
         -d) INSTALLPATH="$2"
             echo "Found the -d option, with parameter value $INSTALLPATH"
             shift ;;
-        -h) echo "Example: ./pre.sh -p all -d /opt/noc -t latest"
+        -h) echo "Example: ./pre.sh -p all -d /opt/noc-dc -t latest"
             shift ;;
         --) shift
             break ;;
-        *) echo "Example: ./pre.sh -p all -d /opt/noc -t latest";;
+        *) echo "Example: ./pre.sh -p all -d /opt/noc-dc -t latest";;
     esac
     shift
 done
