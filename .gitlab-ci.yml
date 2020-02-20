@@ -95,7 +95,7 @@ docker.compose:
      # - ./data/grafana/plugins/*
       #- ./data/promgrafana/plugins/*
   script:
-    - ./pre.sh -d all -d $PWD
+    - ./pre.sh -p all -d $PWD
     - docker --version
     - docker-compose --version
     - docker-compose up migrate
