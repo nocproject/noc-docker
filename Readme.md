@@ -20,7 +20,7 @@ If you need change default install path to other or
 ```bash
 ./pre.sh -p all -d /opt/noc-dc -t stable
 ```
-All tags in for -t parameter:
+All tags for -t parameter:
 https://code.getnoc.com/noc/noc/container_registry
 
 Check *./data/noc/etc/noc.conf* and edit config if needed
