@@ -77,25 +77,25 @@ docker.compose:
     # need auth in registry
     # docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY or use
     - rm /home/gitlab-runner/.docker/config.json || true
-    - ./pre.sh nocconf $PWD
+    - ./pre.sh -p nocconf -d $PWD
     - env
-    - ./pre.sh sentry $PWD
-    - ./pre.sh env $PWD
+    - ./pre.sh -p sentry -d $PWD
+    - ./pre.sh -p env -d $PWD
     - docker-compose down -v --remove-orphans
     - docker-compose -f docker-compose-infra.yml down -v  --remove-orphans
     - rm -f ./data/sentry/sentry.env
     - rm -f ./data/noc/etc/noc.conf
     - rm -f ./.env
  #   - rm -rf ./*
-  artifacts:
-    untracked: true
-    when: always
-    expire_in: 6h
-    paths:
-      - ./data/grafana/plugins/*
-      - ./data/promgrafana/plugins/*
+  #artifacts:
+   # untracked: true
+    #when: always
+    #expire_in: 6h
+    #paths:
+     # - ./data/grafana/plugins/*
+      #- ./data/promgrafana/plugins/*
   script:
-    - ./pre.sh all $PWD
+    - ./pre.sh -d all -d $PWD
     - docker --version
     - docker-compose --version
     - docker-compose up migrate
