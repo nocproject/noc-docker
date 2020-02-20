@@ -13,9 +13,10 @@ cd /opt/noc-dc
 ```
 Run *pre.sh* script for make dirs\permissions\config
 ```
-./pre.sh all
+./pre.sh -p all
 ```
-If you need change default install path to other run *pre.sh* with second parameter
+If you need change default install path to other or
+ other image run *pre.sh* with parameter *-d* or *-t*
 ```bash
 ./pre.sh -p all -d /opt/noc-dc -t stable
 ```
