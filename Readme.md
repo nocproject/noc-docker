@@ -89,46 +89,46 @@ Q: What it looks like default output of `docker-compose ps`
 A:
 
 ```
-% docker-compose ps   
-              Name                            Command                  State                                        Ports                                  
------------------------------------------------------------------------------------------------------------------------------------------------------------
-noc-dc_activator-default_1         /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_bi_1                        /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_card_1                      /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_chwriter_1                  /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_classifier-default_1        /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_clickhouse_1                /entrypoint.sh                   Up             8123/tcp, 9000/tcp, 9009/tcp                                            
-noc-dc_consul_1                    consul agent -server -boot ...   Up             8300/tcp, 8301/tcp, 8301/udp, 8302/tcp, 8302/udp,                       
-......                                                                                   0.0.0.0:8500->8500/tcp, 8600/tcp, 8600/udp                              
-noc-dc_correlator-default_1        /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_datasource_1                /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_datastream_1                /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_discovery-default_1         /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_escalator_1                 /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_grafanads_1                 /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_login_1                     /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_mailsender_1                /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_mib_1                       /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_migrate_1                   sh -c set -xe && /usr/bin/ ...   Exit 0                                                                
-noc-dc_mongo_1                     docker-entrypoint.sh --wir ...   Up             27017/tcp                                                               
-noc-dc_mongodb-repl-set-init_1     sh /rs-init.sh                   Exit 0                                                                                 
-noc-dc_mrt_1                       /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_nbi_1                       /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_nginx_1                     nginx -g daemon off;             Up             0.0.0.0:8443->443/tcp, 80/tcp                                           
-noc-dc_nginx_openssl_1             sh -c set -xe; if [ ! -f / ...   Exit 0                                                                                 
-noc-dc_nsqd_1                      /nsqd --lookupd-tcp-addres ...   Up             4150/tcp, 4151/tcp, 4160/tcp, 4161/tcp, 4170/tcp, 4171/tcp              
-noc-dc_nsqlookupd_1                /nsqlookupd                      Up             4150/tcp, 4151/tcp, 4160/tcp, 4161/tcp, 4170/tcp, 4171/tcp              
-noc-dc_ping-default_1              /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_postgres_1                  docker-entrypoint.sh postgres    Up (healthy)   5432/tcp                                                                
-noc-dc_redis_1                     docker-entrypoint.sh redis ...   Up             6379/tcp                                                                
-noc-dc_sae_1                       /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_scheduler_1                 /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_selfmon_1                   /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_syslogcollector-default_1   /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_tgsender_1                  /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_traefik_1                   /traefik - traefik - --web ...   Up             0.0.0.0:1200->1200/tcp, 80/tcp, 0.0.0.0:8080->8080/tcp                  
-noc-dc_trapcollector-default_1     /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_web_1                       /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                      
+% docker ps --format "{{.Names}}: {{.Status}}\t{{.Ports}}"
+noc-dc_nginx_1:                 Up 2 minutes	80/tcp, 0.0.0.0:443->443/tcp
+noc-dc_traefik_1:               Up 2 minutes	0.0.0.0:1200->1200/tcp, 80/tcp,
+                                    0.0.0.0:8080->8080/tcp
+noc-dc_ping-default_1:          Up 2 minutes	1200/tcp
+noc-dc_trapcollector-default_1: Up 2 minutes	0.0.0.0:162->162/udp, 1200/tcp
+noc-dc_syslogcollector-default_1: Up 2 minutes	0.0.0.0:514->514/udp, 1200/tcp
+noc-dc_web_1:                   Up 2 minutes	1200/tcp
+noc-dc_card_1:                  Up 2 minutes	1200/tcp
+noc-dc_nbi_1:                   Up 2 minutes	1200/tcp
+noc-dc_chwriter_1:              Up 3 minutes	1200/tcp
+noc-dc_escalator_1:             Up 3 minutes	1200/tcp
+noc-dc_classifier-default_1:    Up 3 minutes	1200/tcp
+noc-dc_selfmon_1:               Up 3 minutes	1200/tcp
+noc-dc_correlator-default_1:    Up 3 minutes	1200/tcp
+noc-dc_nsqd_1:                  Up 4 minutes	4150-4151/tcp, 
+                                                4160-4161/tcp, 4170-4171/tcp
+noc-dc_bi_1:                    Up 3 minutes	1200/tcp
+noc-dc_mailsender_1:            Up 3 minutes	1200/tcp
+noc-dc_tgsender_1:              Up 3 minutes	1200/tcp
+noc-dc_sae_1:                   Up 3 minutes	1200/tcp
+noc-dc_datastream_1:            Up 3 minutes	1200/tcp
+noc-dc_datasource_1:            Up 3 minutes	1200/tcp
+noc-dc_login_1:                 Up 3 minutes	1200/tcp
+noc-dc_mib_1:                   Up 3 minutes	1200/tcp
+noc-dc_mrt_1:                   Up 3 minutes	1200/tcp
+noc-dc_scheduler_1:             Up 3 minutes	1200/tcp
+noc-dc_grafanads_1:             Up 3 minutes	1200/tcp
+noc-dc_discovery-default_1:     Up 3 minutes	1200/tcp
+noc-dc_nsqlookupd_1:            Up 4 minutes	4150-4151/tcp, 4160-4161/tcp,
+                                                4170-4171/tcp
+noc-dc_clickhouse_1:            Up 4 minutes	8123/tcp, 9000/tcp, 9009/tcp
+noc-dc_grafana_1:               Up 4 minutes	3000/tcp
+noc-dc_activator-default_1:     Up 4 minutes	1200/tcp
+noc-dc_consul_1:                Up 4 minutes	8300-8302/tcp, 8301-8302/udp,
+                                                8600/tcp, 8600/udp, 
+                                                0.0.0.0:8500->8500/tcp
+noc-dc_mongo_1:                 Up 4 minutes	27017/tcp
+noc-dc_postgres_1:              Up 4 minutes (healthy)	5432/tcp
+noc-dc_redis_1:                 Up 4 minutes	6379/tcp                            
 ```
 
 Q: Can i setup my ssl certificate?
