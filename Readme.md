@@ -37,6 +37,8 @@ export DOCKER_CLIENT_TIMEOUT=200
 export COMPOSE_HTTP_TIMEOUT=200
 docker-compose up --no-start
 ```
+Setup `granafa` host IP\DomainName in 
+`./data/grafana/etc/provisioning/datasources/NocDS.yml`
 
 Run initial db init and migrations
 ```

@@ -5,4 +5,4 @@ datasources:
   isDefault: false
   name: NocDS
   type: grafana-simple-json-datasource
-  url: https://traefik/api/grafanads
+  url: https://<node_IP_or_DomainName>/api/grafanads
