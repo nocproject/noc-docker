@@ -16,23 +16,25 @@ Run *pre.sh* script for make dirs\permissions\config
 ./pre.sh -p all
 ```
 If you need change default install path to other or
- other image run *pre.sh* with parameter *-d* or *-t*
+ other image run `pre.sh` with parameter `-d` or `-t`
 ```bash
 ./pre.sh -p all -d /opt/noc-dc -t stable
 ```
 All tags for -t parameter:
 https://code.getnoc.com/noc/noc/container_registry
 
-Check *./data/noc/etc/noc.conf* and edit config if needed
+Check `./data/noc/etc/noc.conf` and edit config if needed
 
 Install *docker-compose*:
 
 see URL: https://docs.docker.com/compose/install/
 
+Check "docker" daemon is running
+
 Preparing to launch containers:
 ```
-export DOCKER_CLIENT_TIMEOUT=120
-export COMPOSE_HTTP_TIMEOUT=120
+export DOCKER_CLIENT_TIMEOUT=200
+export COMPOSE_HTTP_TIMEOUT=200
 docker-compose up --no-start
 ```
 
@@ -43,9 +45,10 @@ docker-compose up migrate
 Wait for process to finish and than run noc itself
 
 ```
-export DOCKER_CLIENT_TIMEOUT=120 COMPOSE_HTTP_TIMEOUT=120 && docker-compose up -d 
+docker-compose up -d 
 ```
-Be aware that command will run lots of noc daemons and intended to be pretty slow. 
+Be aware that command will run lots of noc daemons and intended
+to be pretty slow.  
 On my laptops it took at about 2 minutes to get everything started
 
 Go to https://0.0.0.0 default credentials
@@ -58,17 +61,17 @@ Password: admin
 # Limitations
 
 * Only single node. No way to scale noc daemons to multihost.
-* Databases in docker. That is known to be not the best option
+* Databases outside container in `./data/...` . 
 * Only single pool. No way to add equipment from different vrfs.
 * need 10G+ free space on block device
-* SSD block device highly recommended
+* SSD block device highly recommended. Start more that 2 minutes.
 
 Install monitoring
 -------
 
-Read *data/prometheus/etc/Readme.md* and setup export metrics from docker host
+Read `data/prometheus/etc/Readme.md` and setup export metrics from docker host
 
-Run compose file *docker-compose-infra.yml*
+Run compose file `docker-compose-infra.yml`
 ```
 docker-compose -f docker-compose-infra.yml -d
 ```
@@ -80,7 +83,8 @@ Open URL:
 FAQ:
 ----
 
-Q: What it looks like default output of docker-compose ps when all works as intended 
+Q: What it looks like default output of `docker-compose ps`
+ when all works as intended 
 
 A:
 
@@ -95,7 +99,7 @@ noc-dc_chwriter_1                  /usr/bin/python /opt/noc/s ...   Up          
 noc-dc_classifier-default_1        /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
 noc-dc_clickhouse_1                /entrypoint.sh                   Up             8123/tcp, 9000/tcp, 9009/tcp                                            
 noc-dc_consul_1                    consul agent -server -boot ...   Up             8300/tcp, 8301/tcp, 8301/udp, 8302/tcp, 8302/udp,                       
-                                                                                   0.0.0.0:8500->8500/tcp, 8600/tcp, 8600/udp                              
+......                                                                                   0.0.0.0:8500->8500/tcp, 8600/tcp, 8600/udp                              
 noc-dc_correlator-default_1        /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
 noc-dc_datasource_1                /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
 noc-dc_datastream_1                /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
@@ -129,11 +133,12 @@ noc-dc_web_1                       /usr/bin/python /opt/noc/s ...   Up          
 
 Q: Can i setup my ssl certificate?
 
-A: Yes you can. you have to put it in data/nginx/ssl and name it noc.crt and noc.key
+A: Yes you can. you have to put it in data/nginx/ssl
+   and name it `noc.crt` and `noc.key`
 
 Q: I need add my hosts.
 
-A: Read *data/noc/import/Readme.md* file
+A: Read `data/noc/import/Readme.md` file
 
 Q: Can i use my own databases instead of new ? 
 
@@ -147,11 +152,17 @@ Take a backup or shutdown your current noc and copy
 /var/lib/clickhouse -> data/clickhouse
 /var/lib/mongo -> data/mongo
 ```
+fix permission
+```shell script
+./pre.sh -p perm
+```
+
 update passwords in `noc.conf` and start noc with 
 ```
 docker-compose up -d 
 ```
-Thats it. Be aware that your copy will be doing same jobs. And that can lead to a extreme server load. But here is a tric.
+Thats it. Be aware that your copy will be doing same jobs.
+And that can lead to a extreme server load. But here is a tric.
 You can run 
 ```
 docker-compose run migrate python commands/deactivate.py
@@ -160,8 +171,10 @@ It will unschedule all discovery jobs so you can run your copy without worries
 
 Q: Can i change files in that NOC install ?
 
-A: Yes. Just add them as a volumes. For example you want to change script sa/profiles/MikroTik/RouterOS/get_version.py 
-You have to open with text editor file `docker-compose.yaml` and find `activator-default` section it will looks like
+A: Yes. Just add them as a volumes. For example you want to
+change script sa/profiles/MikroTik/RouterOS/get_version.py 
+You have to open with text editor file `docker-compose.yaml` and
+find `activator-default` section it will looks like
 ```yaml
   activator-default:
     image: registry.getnoc.com/noc/noc/code:19.2-dev
@@ -199,11 +212,13 @@ and restart noc with
 ```
 docker-compose up -d 
 ```
-Thats it. Be aware of if you need to add new script it has to be added to several services. Also you need discovery, sae and web.
+Thats it. Be aware of if you need to add new script it has to be added
+to several services. Also you need discovery, sae and web.
 
 Q: How to make \ restore a backup.
 
-A: Use *backup.sh* and *restore.sh* scripts from ./backup directory. Read ./backup/Readme.md first!
+A: Use `backup.sh` and `restore.sh` scripts from `./backup` directory.
+   Read `./backup/Readme.md` first!
 
 Q: Sentry not work after first run. 
 
