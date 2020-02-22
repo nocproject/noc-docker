@@ -45,6 +45,10 @@ SETUPPROMGRAFANA() {
     cd "$TMPPATH" && git clone -q https://code.getnoc.com/noc/grafana-selfmon-dashboards.git .
     cp -f -r "$TMPPATH"/dashboards/* "$INSTALLPATH"/data/promgrafana/etc/dashboards
     cp -f -r "$TMPPATH"/provisioning/* "$INSTALLPATH"/data/promgrafana/etc/provisioning
+    if [ ! -f "$INSTALLPATH"/data/grafana/etc/provisioning/datasources/NocDS.yml ]
+        then
+           cp -f -r "$INSTALLPATH"/data/grafana/etc/provisioning/datasources/NocDS.yml.example "$INSTALLPATH"/data/grafana/etc/provisioning/datasources/NocDS.yml
+    fi
 }
 
 SETUPPROMRULES() {
