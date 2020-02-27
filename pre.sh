@@ -40,7 +40,7 @@ SETPERMISSION() {
 }
 
 SETUPPROMGRAFANA() {
-    echo "Setup GRAFANA dashboards from code.getnoc.com"
+    echo "Setup GRAFANA dashboards from code.getnoc.com/noc/grafana-selfmon-dashboards"
     echo "---"
     cd "$TMPPATH" && git clone -q https://code.getnoc.com/noc/grafana-selfmon-dashboards.git .
     cp -f -r "$TMPPATH"/dashboards/* "$INSTALLPATH"/data/promgrafana/etc/dashboards
@@ -48,7 +48,7 @@ SETUPPROMGRAFANA() {
 }
 
 SETUPPROMRULES() {
-    echo "Setup PROMETHEUS alert rules from code.getnoc.com"
+    echo "Setup PROMETHEUS alert rules from code.getnoc.com/noc/noc-prometheus-alerts.git"
     echo "---"
     cd "$TMPPATH1" && git clone -q https://code.getnoc.com/noc/noc-prometheus-alerts.git .
     cp -f "$TMPPATH1"/*.yml "$INSTALLPATH"/data/prometheus/etc/rules.d
