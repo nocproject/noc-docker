@@ -25,7 +25,7 @@ lint_bash:
   before_script:
     - apk update && apk add bash shellcheck
   script:
-    - shellcheck pre.sh
+    - shellcheck pre.sh ./backup/backup.sh ./backup/restore.sh
   rules:
     - changes:
       - pre.sh
