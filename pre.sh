@@ -91,7 +91,9 @@ SETUPENV() {
     if [ ! -f "$INSTALLPATH"/.env ]
         then
             echo "Setup COMPOSEPATH=$INSTALLPATH in $INSTALLPATH/.env"
-            echo "COMPOSEPATH=$INSTALLPATH" > "$INSTALLPATH"/.env
+            { echo "COMPOSEPATH=$INSTALLPATH"
+              echo "COMPOSE_HTTP_TIMEOUT=300"
+            } >> "$INSTALLPATH"/.env
     fi
 }
 
