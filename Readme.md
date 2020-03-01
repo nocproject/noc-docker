@@ -34,7 +34,6 @@ Check "docker" daemon is running
 Preparing to launch containers:
 ```
 export DOCKER_CLIENT_TIMEOUT=200
-export COMPOSE_HTTP_TIMEOUT=200
 docker-compose up --no-start
 ```
 
@@ -45,7 +44,11 @@ docker-compose up migrate
 Wait for process to finish and than run noc itself
 
 ```
+<<<<<<< HEAD
 docker-compose up -d 
+=======
+export DOCKER_CLIENT_TIMEOUT=120 && docker-compose up -d 
+>>>>>>> Update Readme.md
 ```
 Be aware that command will run lots of noc daemons and intended
 to be pretty slow.  
