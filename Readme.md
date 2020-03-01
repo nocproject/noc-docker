@@ -29,7 +29,6 @@ see URL: https://docs.docker.com/compose/install/
 Preparing to launch containers:
 ```
 export DOCKER_CLIENT_TIMEOUT=120
-export COMPOSE_HTTP_TIMEOUT=120
 docker-compose up --no-start
 ```
 
@@ -40,7 +39,7 @@ docker-compose up migrate
 Wait for process to finish and than run noc itself
 
 ```
-export DOCKER_CLIENT_TIMEOUT=120 COMPOSE_HTTP_TIMEOUT=120 && docker-compose up -d 
+export DOCKER_CLIENT_TIMEOUT=120 && docker-compose up -d 
 ```
 Be aware that command will run lots of noc daemons and intended to be pretty slow. 
 On my laptops it took at about 2 minutes to get everything started
