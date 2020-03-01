@@ -171,11 +171,11 @@ if [ -n "$PARAM_P" ]
             then
                 SETUPENV
         else
-            echo "Unknown parameter"
+            echo "Unknown parameter for -p"
             echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
         fi
 else
-    echo "No  parameters found."
+    echo "No -p parameters found."
     echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
 fi
 
