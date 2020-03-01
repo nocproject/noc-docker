@@ -33,7 +33,7 @@ Check "docker" daemon is running
 
 Preparing to launch containers:
 ```
-export DOCKER_CLIENT_TIMEOUT=120
+export DOCKER_CLIENT_TIMEOUT=200
 docker-compose up --no-start
 ```
 
