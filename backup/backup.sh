@@ -6,7 +6,7 @@
 
 BACKUPDATA() {
     # backup ./data
-    FILES="$BACKUPPATH/docker-compose.yml	$BACKUPPATH/docker-compose-infra.yml"
+    FILES="$BACKUPPATH/../docker-compose.yml	$BACKUPPATH/../docker-compose-infra.yml"
     for file in ${FILES};
     do
         if docker-compose -f "$file" --project-directory=.. ps | grep Up ;
@@ -17,26 +17,32 @@ BACKUPDATA() {
             exit
         fi 
     done
-    echo "Backup rersistent to: ""$BACKUPPATH"/backup/data-"$(date +%Y%m%d-%H-%M)".tar.gz
+    echo "Backup rersistent to: ""$BACKUPPATH"/data-"$(date +%Y%m%d-%H-%M)".tar.gz
     echo "---"
-    tar -cvpzf "$BACKUPPATH"/backup/data-"$(date +%Y%m%d-%H-%M)".tar.gz --one-file-system -C "$BACKUPPATH"/data/ ./
+    tar -cvpzf "$BACKUPPATH"/../data-"$(date +%Y%m%d-%H-%M)".tar.gz --one-file-system -C "$BACKUPPATH"/../data/ ./
 }
 
 BACKUPIMAGES() {
-    FILES="$BACKUPPATH/docker-compose.yml	$BACKUPPATH/docker-compose-infra.yml"
-    echo "Backup docker images to: "$BACKUPPATH/backup
+    FILES="$BACKUPPATH/../docker-compose.yml	$BACKUPPATH/../docker-compose-infra.yml"
+    echo "Backup docker images to: ""$BACKUPPATH"
     echo "---"
     for file in ${FILES};
     do
-      IMAGES=$(grep image "$file" | awk -e '{print $2}' | sort | uniq  )
+        IMAGES=$(grep image "$file" | grep -v COMPOSETAG | awk -e '{print $2}' | sort | uniq  )
         for image in ${IMAGES};
-           do
-               # todo get $COMPOSETAG from .env file or save all NOC images
-               NAMEIMAGE=$( echo "$image" | sed 's/[:\/]/_/g' )
-               docker save "$image" | gzip > "$BACKUPPATH""/backup/image-""$NAMEIMAGE"".tar.gz"
-           done
+            do
+                NAMEIMAGE=$( echo "$image" | sed 's/[:\/]/_/g' )
+                docker save "$image" | gzip > "$BACKUPPATH""/image-""$NAMEIMAGE"".tar.gz"
+            done
     done
-
+    # backup all NOC images
+    # todo get $COMPOSETAG from .env file or save all NOC images
+    IMAGESNOC=$(docker image ls --format '{{.Repository}}-{{.Tag}}' | grep 'registry.getnoc.com/noc/noc/')
+    for imagesnoc in ${IMAGESNOC}
+        do
+            NAMEIMAGE=$( echo "$imagesnoc" | sed 's/[:\/]/_/g' )
+            docker save "$image" | gzip > "$BACKUPPATH""/image-""$NAMEIMAGE"".tar.gz"
+        done
 }
 
 while [ -n "$1" ]
@@ -59,8 +65,8 @@ done
 
 if [ -z "$BACKUPPATH" ]
     then
-        BACKUPPATH=$PWD/..
-        echo "Backup NOC-DC to: $BACKUPPATH/backup"
+        BACKUPPATH=$PWD
+        echo "Backup NOC-DC to: $BACKUPPATH"
         echo "---"
 fi
 
