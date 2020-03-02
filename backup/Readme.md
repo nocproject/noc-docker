@@ -19,27 +19,28 @@ What Backup.sh does:
 * then script creates tar.gz files using the "docker save" command
 * after that script creates data-<data and time create backup>.tar.gz file in ./data/ directory
 
-1. Check that the NOC-DC service is not working
+1. Check that the NOC-DC service is not running
 
 2. If not, install exec-bit on script: 
-```
-chmod +x backup.sh
-```
-3. Run backup.sh script
+ ```
+ chmod +x backup.sh
+ ```
+3. Check you in './backup' dir. *NOT START SCRIPT IN OTHER DIR!!!* 
+4. Run backup.sh script
    
    If you need backup data and images
 ```
-# ./backup.sh all
+# ./backup.sh -p all
 ```
 
    If you need backup only data
 ```
-# ./backup.sh data
+# ./backup.sh -p data
 ```
 
    If you need backup only images
 ```
-# ./backup.sh images
+# ./backup.sh -p images
 ```
 4. Check result
 ```
