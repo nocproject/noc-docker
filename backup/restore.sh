@@ -6,9 +6,6 @@
 # -f - install dir
 # -d - file with data archive
 
-PARAM_F=/opt/noc-dc
-
-
 RESTOREDATA() {
     # check NOC is not running
     FILES="$PARAM_F/docker-compose.yml	$PARAM_F/docker-compose-infra.yml"
