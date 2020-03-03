@@ -12,3 +12,13 @@ then run
 ~~~
 docker-compose up import-default
 ~~~
+
+Manual method
+----
+Open `Main/setup/CSV Import/Export` in NOC menu or
+
+```djangourlpath
+https://0.0.0.0/#main.csv
+```
+
+Choice `sa.managedobject` and upload you .csv file with host records. 

@@ -40,15 +40,17 @@ SETPERMISSION() {
 }
 
 SETUPPROMGRAFANA() {
-    echo "Clone GRAFANA dashboards from code.getnoc.com"
-    cd "$TMPPATH" && git clone https://code.getnoc.com/noc/grafana-selfmon-dashboards.git .
+    echo "Setup GRAFANA dashboards from code.getnoc.com/noc/grafana-selfmon-dashboards"
+    echo "---"
+    cd "$TMPPATH" && git clone -q https://code.getnoc.com/noc/grafana-selfmon-dashboards.git .
     cp -f -r "$TMPPATH"/dashboards/* "$INSTALLPATH"/data/promgrafana/etc/dashboards
     cp -f -r "$TMPPATH"/provisioning/* "$INSTALLPATH"/data/promgrafana/etc/provisioning
 }
 
 SETUPPROMRULES() {
-    echo "Clone PROMETHEUS alert rules from code.getnoc.com"
-    cd "$TMPPATH1" && git clone https://code.getnoc.com/noc/noc-prometheus-alerts.git .
+    echo "Setup PROMETHEUS alert rules from code.getnoc.com/noc/noc-prometheus-alerts.git"
+    echo "---"
+    cd "$TMPPATH1" && git clone -q https://code.getnoc.com/noc/noc-prometheus-alerts.git .
     cp -f "$TMPPATH1"/*.yml "$INSTALLPATH"/data/prometheus/etc/rules.d
 }
 
@@ -59,8 +61,9 @@ SETUPSENTRY() {
             GENERATE_PASSWORD="$(dd if=/dev/urandom bs=1 count=32 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)"
 
             echo "Setup Sentry env in $INSTALLPATH/data/sentry/sentry.env"
-            echo "after firsh start need run command for for run migration and setup admin user\passwd"
+            echo "after firsh start container need run command for make migration and setup admin user\passwd"
             echo "cd $INSTALLPATH && docker-compose exec sentry sentry upgrade"
+            echo "---"
             { echo SENTRY_POSTGRES_HOST=sentry-postgres
               echo SENTRY_DB_NAME=sentry
               echo SENTRY_DB_USER=sentry
@@ -80,6 +83,7 @@ SETUPNOCCONF() {
     if [ ! -f "$INSTALLPATH"/data/noc/etc/noc.conf ]
         then
             echo "Copy " "$INSTALLPATH"/data/noc/etc/noc.conf.example " to " "$INSTALLPATH"/data/noc/etc/noc.conf
+            echo "---"
             # shellcheck disable=SC2086
             cp $INSTALLPATH/data/noc/etc/noc.conf.example $INSTALLPATH/data/noc/etc/noc.conf
     fi
@@ -91,23 +95,52 @@ SETUPENV() {
     if [ ! -f "$INSTALLPATH"/.env ]
         then
             echo "Setup COMPOSEPATH=$INSTALLPATH in $INSTALLPATH/.env"
-            echo "COMPOSEPATH=$INSTALLPATH" > "$INSTALLPATH"/.env
+            echo "---"
+            { echo "COMPOSEPATH=$INSTALLPATH"
+              echo "COMPOSETAG=$PARAM_TAG"
+            } >> "$INSTALLPATH"/.env
     fi
 }
 
-# Setup $INSTALLPATH from second param
-if [ -n "$2" ]
+while [ -n "$1" ]
+do
+    case "$1" in
+        -t) PARAM_TAG="$2"
+            #echo "Found the -t option, with parameter value $PARAM_TAG"
+            shift ;;
+        -p) PARAM_P="$2"
+            #echo "Found the -p option, with parameter value $PARAM_P"
+            shift ;;
+        -d) INSTALLPATH="$2"
+            #echo "Found the -d option, with parameter value $INSTALLPATH"
+            shift ;;
+        -h) echo "Example: ./pre.sh -p all -d /opt/noc-dc -t stable"
+            shift ;;
+        --) shift
+            break ;;
+        *) echo "Example: ./pre.sh -p all -d /opt/noc-dc -t stable";;
+    esac
+    shift
+done
+
+if [ -z "$INSTALLPATH" ]
     then
-        echo "Setup NOC-DC to $2"
-        INSTALLPATH="$2"
-    else
         INSTALLPATH=/opt/noc-dc
-        echo "Setup NOC-DC to $INSTALLPATH"
+        echo "Setup NOC-DC to: $INSTALLPATH"
+        echo "---"
 fi
 
-if [ -n "$1" ]
+if [ -z "$PARAM_TAG" ]
     then
-        if [ "$1" = "all" ]
+        PARAM_TAG="stable"
+        echo "Setup Docker use image with tag: $PARAM_TAG"
+        echo "See all tags in https://code.getnoc.com/noc/noc/container_registry"
+        echo "---"
+fi
+
+if [ -n "$PARAM_P" ]
+    then
+        if [ "$PARAM_P" = "all" ]
             then
                 CREATEDIR
                 SETUPENV
@@ -116,35 +149,33 @@ if [ -n "$1" ]
                 SETUPPROMRULES
                 SETUPNOCCONF
                 SETUPSENTRY
-        elif [ "$1" = "perm" ]
+        elif [ "$PARAM_P" = "perm" ]
             then
                 CREATEDIR
                 SETPERMISSION
-        elif [ "$1" = "grafana" ]
+        elif [ "$PARAM_P" = "grafana" ]
             then
                 CREATEDIR
                 SETUPPROMGRAFANA
-        elif [ "$1" = "promrules" ]
+        elif [ "$PARAM_P" = "promrules" ]
             then
                 CREATEDIR
                 SETUPPROMRULES
-        elif [ "$1" = "nocconf" ]
+        elif [ "$PARAM_P" = "nocconf" ]
             then
                 SETUPNOCCONF
-        elif [ "$1" = "sentry" ]
+        elif [ "$PARAM_P" = "sentry" ]
             then
                 SETUPSENTRY
-        elif [ "$1" = "env" ]
+        elif [ "$PARAM_P" = "env" ]
             then
                 SETUPENV
-        elif [ "$1" = "help" ]
-            then
-                echo "pre.sh <all,env,perm,grafana,promrules,nocconf,sentry> <path to install>"
         else
-            echo "Unknown parameter"
+            echo "Unknown parameter for -p"
             echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
         fi
 else
-    echo "No  parameters found."
+    echo "No -p parameters found."
     echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
 fi
+
