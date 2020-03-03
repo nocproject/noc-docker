@@ -38,7 +38,7 @@ RESTOREIMAGES() {
     for f in ${FILES};
     do
 	# load docker image from path
-	docker load < $PARAM_F"/backup/""$f"
+	docker load < "$PARAM_F""/backup/""$f"
     done
 
 }
