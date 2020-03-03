@@ -2,6 +2,7 @@
 
 # setup permissions
 # setup promgrafana dashboards\sources
+# setuo sentry env
 
 TMPPATH=$(mktemp -d -p /tmp)
 TMPPATH1=$(mktemp -d -p /tmp)
