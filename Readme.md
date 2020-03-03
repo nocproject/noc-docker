@@ -13,18 +13,23 @@ cd /opt/noc-dc
 ```
 Run *pre.sh* script for make dirs\permissions\config
 ```
-./pre.sh all
+./pre.sh -p all
 ```
-If you need change default install path to other run *pre.sh* with second parameter
+If you need change default install path to other or
+ other image run `pre.sh` with parameter `-d` or `-t`
 ```bash
-./pre.sh all /opt/noc-dc
+./pre.sh -p all -d /opt/noc-dc -t stable
 ```
+All tags for -t parameter:
+https://code.getnoc.com/noc/noc/container_registry
 
-Check *./data/noc/etc/noc.conf* and edit config if needed
+Check `./data/noc/etc/noc.conf` and edit config if needed
 
 Install *docker-compose*:
 
 see URL: https://docs.docker.com/compose/install/
+
+Check "docker" daemon is running
 
 Preparing to launch containers:
 ```
@@ -39,9 +44,10 @@ docker-compose up migrate
 Wait for process to finish and than run noc itself
 
 ```
-export DOCKER_CLIENT_TIMEOUT=120 && docker-compose up -d 
+docker-compose up -d 
 ```
-Be aware that command will run lots of noc daemons and intended to be pretty slow. 
+Be aware that command will run lots of noc daemons and intended
+to be pretty slow.  
 On my laptops it took at about 2 minutes to get everything started
 
 Go to https://0.0.0.0 default credentials
@@ -54,17 +60,17 @@ Password: admin
 # Limitations
 
 * Only single node. No way to scale noc daemons to multihost.
-* Databases in docker. That is known to be not the best option
+* Databases outside container in `./data/...` . 
 * Only single pool. No way to add equipment from different vrfs.
 * need 10G+ free space on block device
-* SSD block device highly recommended
+* SSD block device highly recommended. Start more that 2 minutes.
 
 Install monitoring
 -------
 
-Read *data/prometheus/etc/Readme.md* and setup export metrics from docker host
+Read `data/prometheus/etc/Readme.md` and setup export metrics from docker host
 
-Run compose file *docker-compose-infra.yml*
+Run compose file `docker-compose-infra.yml`
 ```
 docker-compose -f docker-compose-infra.yml -d
 ```
@@ -76,59 +82,61 @@ Open URL:
 FAQ:
 ----
 
-Q: What it looks like default output of docker-compose ps when all works as intended 
+Q: What it looks like default output of `docker-compose ps`
+ when all works as intended 
 
 A:
 ```
-% docker-compose ps   
-              Name                            Command                  State                                        Ports                                  
------------------------------------------------------------------------------------------------------------------------------------------------------------
-noc-dc_activator-default_1         /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_bi_1                        /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_card_1                      /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_chwriter_1                  /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_classifier-default_1        /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_clickhouse_1                /entrypoint.sh                   Up             8123/tcp, 9000/tcp, 9009/tcp                                            
-noc-dc_consul_1                    consul agent -server -boot ...   Up             8300/tcp, 8301/tcp, 8301/udp, 8302/tcp, 8302/udp,                       
-                                                                                   0.0.0.0:8500->8500/tcp, 8600/tcp, 8600/udp                              
-noc-dc_correlator-default_1        /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_datasource_1                /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_datastream_1                /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_discovery-default_1         /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_escalator_1                 /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_grafanads_1                 /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_login_1                     /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_mailsender_1                /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_mib_1                       /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_migrate_1                   sh -c set -xe && /usr/bin/ ...   Exit 0                                                                
-noc-dc_mongo_1                     docker-entrypoint.sh --wir ...   Up             27017/tcp                                                               
-noc-dc_mongodb-repl-set-init_1     sh /rs-init.sh                   Exit 0                                                                                 
-noc-dc_mrt_1                       /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_nbi_1                       /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_nginx_1                     nginx -g daemon off;             Up             0.0.0.0:8443->443/tcp, 80/tcp                                           
-noc-dc_nginx_openssl_1             sh -c set -xe; if [ ! -f / ...   Exit 0                                                                                 
-noc-dc_nsqd_1                      /nsqd --lookupd-tcp-addres ...   Up             4150/tcp, 4151/tcp, 4160/tcp, 4161/tcp, 4170/tcp, 4171/tcp              
-noc-dc_nsqlookupd_1                /nsqlookupd                      Up             4150/tcp, 4151/tcp, 4160/tcp, 4161/tcp, 4170/tcp, 4171/tcp              
-noc-dc_ping-default_1              /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_postgres_1                  docker-entrypoint.sh postgres    Up (healthy)   5432/tcp                                                                
-noc-dc_redis_1                     docker-entrypoint.sh redis ...   Up             6379/tcp                                                                
-noc-dc_sae_1                       /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_scheduler_1                 /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_selfmon_1                   /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_syslogcollector-default_1   /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_tgsender_1                  /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_traefik_1                   /traefik - traefik - --web ...   Up             0.0.0.0:1200->1200/tcp, 80/tcp, 0.0.0.0:8080->8080/tcp                  
-noc-dc_trapcollector-default_1     /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                                                
-noc-dc_web_1                       /usr/bin/python /opt/noc/s ...   Up             1200/tcp                                      
+% docker ps --format "{{.Names}}: {{.Status}}\t{{.Ports}}"
+noc-dc_nginx_1:                 Up 2 minutes	80/tcp, 0.0.0.0:443->443/tcp
+noc-dc_traefik_1:               Up 2 minutes	0.0.0.0:1200->1200/tcp, 80/tcp,
+                                    0.0.0.0:8080->8080/tcp
+noc-dc_ping-default_1:          Up 2 minutes	1200/tcp
+noc-dc_trapcollector-default_1: Up 2 minutes	0.0.0.0:162->162/udp, 1200/tcp
+noc-dc_syslogcollector-default_1: Up 2 minutes	0.0.0.0:514->514/udp, 1200/tcp
+noc-dc_web_1:                   Up 2 minutes	1200/tcp
+noc-dc_card_1:                  Up 2 minutes	1200/tcp
+noc-dc_nbi_1:                   Up 2 minutes	1200/tcp
+noc-dc_chwriter_1:              Up 3 minutes	1200/tcp
+noc-dc_escalator_1:             Up 3 minutes	1200/tcp
+noc-dc_classifier-default_1:    Up 3 minutes	1200/tcp
+noc-dc_selfmon_1:               Up 3 minutes	1200/tcp
+noc-dc_correlator-default_1:    Up 3 minutes	1200/tcp
+noc-dc_nsqd_1:                  Up 4 minutes	4150-4151/tcp, 
+                                                4160-4161/tcp, 4170-4171/tcp
+noc-dc_bi_1:                    Up 3 minutes	1200/tcp
+noc-dc_mailsender_1:            Up 3 minutes	1200/tcp
+noc-dc_tgsender_1:              Up 3 minutes	1200/tcp
+noc-dc_sae_1:                   Up 3 minutes	1200/tcp
+noc-dc_datastream_1:            Up 3 minutes	1200/tcp
+noc-dc_datasource_1:            Up 3 minutes	1200/tcp
+noc-dc_login_1:                 Up 3 minutes	1200/tcp
+noc-dc_mib_1:                   Up 3 minutes	1200/tcp
+noc-dc_mrt_1:                   Up 3 minutes	1200/tcp
+noc-dc_scheduler_1:             Up 3 minutes	1200/tcp
+noc-dc_grafanads_1:             Up 3 minutes	1200/tcp
+noc-dc_discovery-default_1:     Up 3 minutes	1200/tcp
+noc-dc_nsqlookupd_1:            Up 4 minutes	4150-4151/tcp, 4160-4161/tcp,
+                                                4170-4171/tcp
+noc-dc_clickhouse_1:            Up 4 minutes	8123/tcp, 9000/tcp, 9009/tcp
+noc-dc_grafana_1:               Up 4 minutes	3000/tcp
+noc-dc_activator-default_1:     Up 4 minutes	1200/tcp
+noc-dc_consul_1:                Up 4 minutes	8300-8302/tcp, 8301-8302/udp,
+                                                8600/tcp, 8600/udp, 
+                                                0.0.0.0:8500->8500/tcp
+noc-dc_mongo_1:                 Up 4 minutes	27017/tcp
+noc-dc_postgres_1:              Up 4 minutes (healthy)	5432/tcp
+noc-dc_redis_1:                 Up 4 minutes	6379/tcp                            
 ```
 
 Q: Can i setup my ssl certificate?
 
-A: Yes you can. you have to put it in data/nginx/ssl and name it noc.crt and noc.key
+A: Yes you can. you have to put it in data/nginx/ssl
+   and name it `noc.crt` and `noc.key`
 
 Q: I need add my hosts.
 
-A: Read *data/noc/import/Readme.md* file
+A: Read `data/noc/import/Readme.md` file
 
 Q: Can i use my own databases instead of new ? 
 
@@ -142,11 +150,17 @@ Take a backup or shutdown your current noc and copy
 /var/lib/clickhouse -> data/clickhouse
 /var/lib/mongo -> data/mongo
 ```
+fix permission
+```shell script
+./pre.sh -p perm
+```
+
 update passwords in `noc.conf` and start noc with 
 ```
 docker-compose up -d 
 ```
-Thats it. Be aware that your copy will be doing same jobs. And that can lead to a extreme server load. But here is a tric.
+Thats it. Be aware that your copy will be doing same jobs.
+And that can lead to a extreme server load. But here is a tric.
 You can run 
 ```
 docker-compose run migrate python commands/deactivate.py
@@ -155,8 +169,10 @@ It will unschedule all discovery jobs so you can run your copy without worries
 
 Q: Can i change files in that NOC install ?
 
-A: Yes. Just add them as a volumes. For example you want to change script sa/profiles/MikroTik/RouterOS/get_version.py 
-You have to open with text editor file `docker-compose.yaml` and find `activator-default` section it will looks like
+A: Yes. Just add them as a volumes. For example you want to
+change script sa/profiles/MikroTik/RouterOS/get_version.py 
+You have to open with text editor file `docker-compose.yaml` and
+find `activator-default` section it will looks like
 ```yaml
   activator-default:
     image: registry.getnoc.com/noc/noc/code:19.2-dev
@@ -194,11 +210,13 @@ and restart noc with
 ```
 docker-compose up -d 
 ```
-Thats it. Be aware of if you need to add new script it has to be added to several services. Also you need discovery, sae and web.
+Thats it. Be aware of if you need to add new script it has to be added
+to several services. Also you need discovery, sae and web.
 
 Q: How to make \ restore a backup.
 
-A: Use *backup.sh* and *restore.sh* scripts from ./backup directory. Read ./backup/Readme.md first!
+A: Use `backup.sh` and `restore.sh` scripts from `./backup` directory.
+   Read `./backup/Readme.md` first!
 
 Q: Sentry not work after first run. 
 
