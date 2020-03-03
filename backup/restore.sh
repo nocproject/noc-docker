@@ -6,12 +6,12 @@
 # -f - install dir
 # -d - file with data archive
 
-INSTALLPATH=/opt/noc-dc
+PARAM_F=/opt/noc-dc
 
 
 RESTOREDATA() {
     # check NOC is not running
-    FILES="$INSTALLPATH/../docker-compose.yml	$BACKUPPATH/../docker-compose-infra.yml"
+    FILES="$PARAM_F/docker-compose.yml	$PARAM_F/docker-compose-infra.yml"
     for file in ${FILES};
     do
         if docker-compose -f "$file" --project-directory=.. ps | grep Up ;
@@ -23,23 +23,25 @@ RESTOREDATA() {
         fi
     done
     # restore ./data
-    if ! [ -f "$INSTALLPATH"/backup/data.tar.gz ]
+    if ! [ -f "$PARAM_F"/backup/"$PARAM_D" ]
     then
-        echo "Restore file: $INSTALLPATH/backup/$PARAM_D not found"
+        echo "Restore file: $PARAM_F/backup/$PARAM_D not found"
         exit
     fi
-    tar -xvpzf $INSTALLPATH/backup/$PARAM_D -C "$INSTALLPATH"/data
+    echo "Restore NOC-DC from file : ""$PARAM_D" to "$PARAM_F/data"
+    echo "---"
+    tar -xvpzf "$PARAM_F"/backup/"$PARAM_D" -C "$PARAM_F"/data
 }
 
 RESTOREIMAGES() {
     # restore docker image
-    echo "Restore NOC-DC data to: $INSTALLPATH"
+    echo "Restore NOC-DC data to: $PARAM_F"
     echo "---"
-    FILES=$(find "$INSTALLPATH""/backup" -name "image-*.tar.gz" -type f -printf "%f\t" )
+    FILES=$(find "$PARAM_F""/backup" -name "image-*.tar.gz" -type f -printf "%f\t" )
     for f in ${FILES};
     do
 	# load docker image from path
-	docker load < $INSTALLPATH"/backup/""$f"
+	docker load < $PARAM_F"/backup/""$f"
     done
 
 }
@@ -68,8 +70,8 @@ done
 
 if [ -z "$PARAM_F" ]
     then
-        INSTALLPATH=/opt/noc-dc
-        echo "Restore NOC-DC to: ""$INSTALLPATH"
+        PARAM_F=/opt/noc-dc
+        echo "Work dir NOC-DC is: ""$PARAM_F"
         echo "---"
 fi
 
