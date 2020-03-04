@@ -90,7 +90,6 @@ Q: What it looks like default output of `docker-compose ps`
  when all works as intended 
 
 A:
-
 ```
 % docker ps --format "{{.Names}}: {{.Status}}\t{{.Ports}}"
 noc-dc_nginx_1:                 Up 2 minutes	80/tcp, 0.0.0.0:443->443/tcp
