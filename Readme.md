@@ -79,7 +79,6 @@ FAQ:
 Q: What it looks like default output of docker-compose ps when all works as intended 
 
 A:
-
 ```
 % docker-compose ps   
               Name                            Command                  State                                        Ports                                  
