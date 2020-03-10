@@ -19,7 +19,7 @@ BACKUPDATA() {
     done
     echo "Backup rersistent to: ""$BACKUPPATH"/data-"$(date +%Y%m%d-%H-%M)".tar.gz
     echo "---"
-    tar -cvpzf "$BACKUPPATH"/../data-"$(date +%Y%m%d-%H-%M)".tar.gz --one-file-system -C "$BACKUPPATH"/../data/ ./
+    tar -cvpzf "$BACKUPPATH"/backup/data-"$(date +%Y%m%d-%H-%M)".tar.gz --one-file-system -C "$BACKUPPATH"/../data/ ./
 }
 
 BACKUPIMAGES() {
