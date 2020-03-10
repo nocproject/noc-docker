@@ -1,58 +1,90 @@
-#!/bin/bash
+#!/bin/sh
 
 # Script backup persistent ./data  and docker images for noc
 # Stop NOC before start backup. Use: docker-compose -f docker-compose.yml down
 # 
 
-INSTALLPATH=/opt/noc-dc
-
-function BACKUPDATA {
+BACKUPDATA() {
     # backup ./data
-    FILES="$INSTALLPATH/docker-compose.yml	$INSTALLPATH/docker-compose-infra.yml"
+    FILES="$BACKUPPATH/../docker-compose.yml	$BACKUPPATH/../docker-compose-infra.yml"
     for file in ${FILES};
     do
-        if docker-compose -f "$file" ps | grep Up ; 
+        if docker-compose -f "$file" --project-directory=.. ps | grep Up ;
         then
-    	    echo "Stop NOC-DC and/or NOC-DC-INFA container"
-    	    echo "docker-compose -f ""$file"" stop"
+    	    echo "---"
+    	    echo "You need stop NOC-DC and/or NOC-DC-INFA container"
+    	    echo "cd .. && docker-compose -f ""$file"" stop"
             exit
         fi 
-    
     done
-    tar -cvpzf "$INSTALLPATH"/backup/data-"$(date +%Y%m%d-%H-%M)".tar.gz --one-file-system -C "$INSTALLPATH"/data/ ./
+    echo "Backup rersistent to: ""$BACKUPPATH"/data-"$(date +%Y%m%d-%H-%M)".tar.gz
+    echo "---"
+    tar -cvpzf "$BACKUPPATH"/../data-"$(date +%Y%m%d-%H-%M)".tar.gz --one-file-system -C "$BACKUPPATH"/../data/ ./
 }
 
-function BACKUPIMAGES {
+BACKUPIMAGES() {
+    FILES="$BACKUPPATH/../docker-compose.yml	$BACKUPPATH/../docker-compose-infra.yml"
+    echo "Backup docker images to: ""$BACKUPPATH"
+    echo "---"
+    for file in ${FILES};
+    do
+        IMAGES=$(grep image "$file" | grep -v COMPOSETAG | awk -e '{print $2}' | sort | uniq  )
+        for image in ${IMAGES};
+            do
+                NAMEIMAGE=$( echo "$image" | sed 's/[:\/]/_/g' )
+                docker save "$image" | gzip > "$BACKUPPATH""/image-""$NAMEIMAGE"".tar.gz"
+            done
+    done
+    # backup all NOC images
+    # todo get $COMPOSETAG from .env file or save all NOC images
+    IMAGESNOC=$(docker image ls --format '{{.Repository}}-{{.Tag}}' | grep 'registry.getnoc.com/noc/noc/')
+    for imagesnoc in ${IMAGESNOC}
+        do
+            NAMEIMAGE=$( echo "$imagesnoc" | sed 's/[:\/]/_/g' )
+            docker save "$image" | gzip > "$BACKUPPATH""/image-""$NAMEIMAGE"".tar.gz"
+        done
+}
 
-FILES="$INSTALLPATH/docker-compose.yml	$INSTALLPATH/docker-compose-infra.yml"
-
-for file in ${FILES};
+while [ -n "$1" ]
 do
-  IMAGES=$(grep image "$file" | awk -e '{print $2}' | sort | uniq  )
-    for image in ${IMAGES};
-       do
-           NAMEIMAGE=$( echo "$image" | sed 's/[:\/]/_/g' )
-           docker save "$image" | gzip > $INSTALLPATH"/backup/image-""$NAMEIMAGE"".tar.gz"
-       done
+    case "$1" in
+        -p) PARAM_P="$2"
+            #echo "Found the -p option, with parameter value $PARAM_P"
+            shift ;;
+        -d) BACKUPPATH="$2"
+            #echo "Found the -d option, with parameter value $BACKUPPATH"
+            shift ;;
+        -h) echo "Example: ./backup.sh -p all -d /opt/noc-dc"
+            shift ;;
+        --) shift
+            break ;;
+        *) echo "Example: ./backup.sh -p all -d /opt/noc-dc";;
+    esac
+    shift
 done
 
-}
-
-if [ -n "$1" ]
+if [ -z "$BACKUPPATH" ]
     then
-        if [ "$1" = "all" ]
+        BACKUPPATH=$PWD
+        echo "Backup NOC-DC to: $BACKUPPATH"
+        echo "---"
+fi
+
+if [ -n "$PARAM_P" ]
+    then
+        if [ "$PARAM_P" = "all" ]
             then
                 BACKUPDATA
                 BACKUPIMAGES
-        elif [ "$1" = "data" ]
+        elif [ "$PARAM_P" = "data" ]
             then
                 BACKUPDATA
-        elif [ "$1" = "images" ]
+        elif [ "$PARAM_P" = "images" ]
             then
                 BACKUPIMAGES
         else
-            echo "Unknown parameter.  Use: all, data, images"
+            echo "Unknown parameter. Use: ./backup.sh -p <all|data|images>"
         fi
 else
-    echo "No restore parameters found. Use: all, data, images" 
+    echo "No -p parameters found. Use: ./backup.sh -p <all|data|images>"
 fi
