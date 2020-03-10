@@ -22,10 +22,10 @@ RESTOREDATA() {
     # restore ./data
     if ! [ -f "$PARAM_F"/backup/"$PARAM_D" ]
     then
-        echo "Restore file: $PARAM_F/backup/$PARAM_D not found"
+        echo "Restore file: $PARAM_F/$PARAM_D not found"
         exit
     fi
-    echo "Restore NOC-DC from file : ""$PARAM_D" to "$PARAM_F/data"
+    echo "Restore NOC-DC from file : ""$PARAM_D" to "$PARAM_F/../data"
     echo "---"
     tar -xvpzf "$PARAM_F"/backup/"$PARAM_D" -C "$PARAM_F"/data
 }
@@ -50,7 +50,7 @@ do
             #echo "Found the -p option, with parameter value $PARAM_P"
             shift ;;
         -f) PARAM_F="$2"
-            #echo "Found the -d option, with parameter value $BACKUPPATH"
+            echo "Found the -f option, full path to docker-compose.yml file"
             shift ;;
         -d) PARAM_D="$2"
             shift ;;
@@ -67,7 +67,7 @@ done
 
 if [ -z "$PARAM_F" ]
     then
-        PARAM_F=/opt/noc-dc
+        PARAM_F=$PWD/../
         echo "Work dir NOC-DC is: ""$PARAM_F"
         echo "---"
 fi
