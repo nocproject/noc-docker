@@ -29,6 +29,8 @@ lint_bash:
   rules:
     - changes:
       - pre.sh
+      - ./backup/backup.sh
+      - ./backup/restore.sh
   tags:
     - docker
     
