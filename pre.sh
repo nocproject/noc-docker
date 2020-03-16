@@ -2,6 +2,7 @@
 
 # setup permissions
 # setup promgrafana dashboards\sources
+# setuo sentry env
 
 TMPPATH=$(mktemp -d -p /tmp)
 TMPPATH1=$(mktemp -d -p /tmp)
@@ -98,6 +99,7 @@ SETUPENV() {
             echo "---"
             { echo "COMPOSEPATH=$INSTALLPATH"
               echo "NOC_VERSION_TAG=$PARAM_TAG"
+              echo "COMPOSE_HTTP_TIMEOUT=300"
             } >> "$INSTALLPATH"/.env
     fi
 }

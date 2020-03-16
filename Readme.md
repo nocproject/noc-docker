@@ -34,7 +34,6 @@ Check "docker" daemon is running
 Preparing to launch containers:
 ```
 export DOCKER_CLIENT_TIMEOUT=200
-export COMPOSE_HTTP_TIMEOUT=200
 docker-compose up --no-start
 ```
 
@@ -87,7 +86,6 @@ Q: What it looks like default output of `docker-compose ps`
  when all works as intended 
 
 A:
-
 ```
 % docker ps --format "{{.Names}}: {{.Status}}\t{{.Ports}}"
 noc-dc_nginx_1:                 Up 2 minutes	80/tcp, 0.0.0.0:443->443/tcp
