@@ -98,7 +98,7 @@ SETUPENV() {
             echo "Setup COMPOSEPATH=$INSTALLPATH in $INSTALLPATH/.env"
             echo "---"
             { echo "COMPOSEPATH=$INSTALLPATH"
-              echo "COMPOSETAG=$PARAM_TAG"
+              echo "NOC_VERSION_TAG=$PARAM_TAG"
               echo "COMPOSE_HTTP_TIMEOUT=300"
             } >> "$INSTALLPATH"/.env
     fi
