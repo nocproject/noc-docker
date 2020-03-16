@@ -26,6 +26,12 @@ volumes:
       device: $COMPOSEPATH/./data/clickhouse/etc
       o: bind
       type: bind
+  clickhouse_log:
+    driver: local
+    driver_opts:
+      device: $COMPOSEPATH/data/clickhouse/log
+      o: bind
+      type: bind
   nsq_data:
     driver: local
     driver_opts:
@@ -218,7 +224,6 @@ services:
     labels:
       traefik.enable: false
 
-  # TODO make logs avalaible
   clickhouse:
     image: yandex/clickhouse-server:latest
     hostname: clickhouse
@@ -229,6 +234,7 @@ services:
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - clickhouse_etc:/etc/clickhouse-server
+      - clickhouse_log:/var/log/clickhouse-server
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
