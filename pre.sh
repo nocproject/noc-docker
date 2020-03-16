@@ -98,6 +98,7 @@ SETUPENV() {
             echo "---"
             { echo "COMPOSEPATH=$INSTALLPATH"
               echo "NOC_VERSION_TAG=$PARAM_TAG"
+              echo "COMPOSE_HTTP_TIMEOUT=300"
               echo "# logging driver: json-file, local, journald"
               echo "COMPOSE_LOG_DRIVER=json-file"
               echo "COMPOSE_LOG_MAX_SIZE=1m"

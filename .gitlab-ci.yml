@@ -7,9 +7,9 @@ variables:
   GIT_STRATEGY: clone
   
 stages:
+  - lint
   - .pre
   - test
-  - lint
 
 clear_stage:
   stage: .pre
