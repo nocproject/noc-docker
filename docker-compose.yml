@@ -278,6 +278,7 @@ services:
 
   card:
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    hostname: card
     restart: "always"
     depends_on:
       - mongo
@@ -371,11 +372,7 @@ services:
       traefik.enable: false
 
   datasource:
-<<<<<<< HEAD
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
-=======
-    image: registry.getnoc.com/noc/noc/code:$COMPOSETAG
->>>>>>> Allow use param in ./pre.sh
     restart: "always"
     hostname: datasource
     depends_on:
@@ -449,11 +446,7 @@ services:
       traefik.enable: false
 
   ping-default:
-<<<<<<< HEAD
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
-=======
-    image: registry.getnoc.com/noc/noc/code:$COMPOSETAG
->>>>>>> Allow use param in ./pre.sh
     hostname: ping
     restart: "always"
     command: /usr/bin/python /opt/noc/services/ping/service.py
@@ -470,11 +463,7 @@ services:
       traefik.enable: false
 
   classifier-default:
-<<<<<<< HEAD
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
-=======
-    image: registry.getnoc.com/noc/noc/code:$COMPOSETAG
->>>>>>> Allow use param in ./pre.sh
     hostname: classifier
     restart: "always"
     mem_limit: 120m
@@ -492,11 +481,7 @@ services:
       traefik.enable: false
 
   correlator-default:
-<<<<<<< HEAD
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
-=======
-    image: registry.getnoc.com/noc/noc/code:$COMPOSETAG
->>>>>>> Allow use param in ./pre.sh
     hostname: correlator
     restart: "always"
     mem_limit: 120m
@@ -514,11 +499,7 @@ services:
       traefik.enable: false
 
   chwriter:
-<<<<<<< HEAD
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
-=======
-    image: registry.getnoc.com/noc/noc/code:$COMPOSETAG
->>>>>>> Allow use param in ./pre.sh
     hostname: chwriter
     restart: "always"
     depends_on:
@@ -535,11 +516,7 @@ services:
       traefik.enable: false
 
   escalator:
-<<<<<<< HEAD
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
-=======
-    image: registry.getnoc.com/noc/noc/code:$COMPOSETAG
->>>>>>> Allow use param in ./pre.sh
     hostname: escalator
     restart: "always"
     depends_on:
@@ -555,11 +532,7 @@ services:
       traefik.enable: false
 
   scheduler:
-<<<<<<< HEAD
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
-=======
-    image: registry.getnoc.com/noc/noc/code:$COMPOSETAG
->>>>>>> Allow use param in ./pre.sh
     hostname: scheduler
     restart: "always"
     depends_on:
@@ -575,11 +548,7 @@ services:
       traefik.enable: false
 
   selfmon:
-<<<<<<< HEAD
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
-=======
-    image: registry.getnoc.com/noc/noc/code:$COMPOSETAG
->>>>>>> Allow use param in ./pre.sh
     hostname: selfmon
     restart: "always"
     mem_limit: 110m
@@ -596,11 +565,7 @@ services:
       traefik.enable: false
 
   mib:
-<<<<<<< HEAD
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
-=======
-    image: registry.getnoc.com/noc/noc/code:$COMPOSETAG
->>>>>>> Allow use param in ./pre.sh
     hostname: mib
     restart: "always"
     mem_limit: 100m
@@ -615,11 +580,7 @@ services:
       traefik.enable: false
 
   mailsender:
-<<<<<<< HEAD
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
-=======
-    image: registry.getnoc.com/noc/noc/code:$COMPOSETAG
->>>>>>> Allow use param in ./pre.sh
     hostname: mailsender
     restart: "always"
     mem_limit: 52m
@@ -634,11 +595,7 @@ services:
       traefik.enable: false
 
   tgsender:
-<<<<<<< HEAD
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
-=======
-    image: registry.getnoc.com/noc/noc/code:$COMPOSETAG
->>>>>>> Allow use param in ./pre.sh
     hostname: tgsender
     restart: "always"
     mem_limit: 52m
@@ -653,11 +610,7 @@ services:
       traefik.enable: false
 
   syslogcollector-default:
-<<<<<<< HEAD
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
-=======
-    image: registry.getnoc.com/noc/noc/code:$COMPOSETAG
->>>>>>> Allow use param in ./pre.sh
     hostname: syslogcollector
     restart: "always"
     depends_on:
@@ -675,11 +628,7 @@ services:
       traefik.enable: false
 
   trapcollector-default:
-<<<<<<< HEAD
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
-=======
-    image: registry.getnoc.com/noc/noc/code:$COMPOSETAG
->>>>>>> Allow use param in ./pre.sh
     hostname: trapcollector
     restart: "always"
     depends_on:
