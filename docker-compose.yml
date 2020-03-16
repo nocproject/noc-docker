@@ -98,6 +98,11 @@ services:
       MONGO_INITDB_DATABASE: noc
       MONGO_INITDB_ROOT_USERNAME: noc
       MONGO_INITDB_ROOT_PASSWORD: noc
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -115,6 +120,11 @@ services:
       MONGO_REPL_SET_NAME: noc
       MONGO_REPL_SET_HOSTS: mongo
     entrypoint: sh /rs-init.sh
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -133,6 +143,11 @@ services:
       interval: 3s
       timeout: 3s
       retries: 100
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -155,6 +170,11 @@ services:
       - -ui
     volumes:
       - consul_data:/data
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.protocol: http
       traefik.backend: consul
@@ -190,6 +210,11 @@ services:
       "
     env_file:
       - ./data/noc/etc/noc.conf
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -204,12 +229,22 @@ services:
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - clickhouse_etc:/etc/clickhouse-server
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
   redis:
     image: redis:5-alpine
     hostname: redis
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -217,6 +252,11 @@ services:
     image: nsqio/nsq:v1.1.0
     hostname: nsqlookupd
     command: /nsqlookupd
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -228,6 +268,11 @@ services:
     command: /nsqd --lookupd-tcp-address=nsqlookupd:4160 --mem-queue-size=10000
     volumes:
       - nsq_data:/data
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -249,6 +294,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.protocol: http
       traefik.backend: web
@@ -268,6 +318,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.protocol: http
       traefik.backend: login
@@ -290,6 +345,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.protocol: http
       traefik.backend: card
@@ -309,6 +369,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.protocol: http
       traefik.backend: mrt
@@ -328,6 +393,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.protocol: http
       traefik.backend: grafanads
@@ -348,6 +418,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.protocol: http
       traefik.backend: bi
@@ -368,6 +443,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -383,6 +463,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -398,6 +483,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -416,6 +506,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -429,6 +524,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -442,6 +542,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -459,6 +564,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -477,6 +587,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -495,6 +610,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -512,6 +632,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -528,6 +653,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -544,6 +674,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -561,6 +696,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -576,6 +716,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -591,6 +736,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -606,6 +756,11 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -624,6 +779,11 @@ services:
       - noc_custom:/opt/noc_custom:ro
     ports:
       - 514:514/udp
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -642,6 +802,11 @@ services:
       - noc_custom:/opt/noc_custom:ro
     ports:
       - 162:162/udp
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -664,6 +829,11 @@ services:
       "
     volumes:
       - nginx_ssl:/etc/nginx/ssl
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
 
@@ -682,6 +852,11 @@ services:
       - nginx_ssl:/etc/nginx/ssl:ro
     labels:
       traefik.enable: false
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
 
   traefik:
     image: traefik:1.7-alpine
@@ -709,6 +884,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.protocol: http
       traefik.port: "8080"
@@ -725,6 +905,11 @@ services:
       - grafana_db:/var/lib/grafana
       - grafana_plugins:/var/lib/grafana/plugins
     # comment "environment" if node doesn't have access to internet
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX
+        max-file: $COMPOSE_LOG_MAX_FILE
     environment:
       GF_INSTALL_PLUGINS: grafana-simple-json-datasource,
                           vertamedia-clickhouse-datasource
@@ -739,6 +924,11 @@ services:
 #      - ./data/noc/etc/noc.conf
 #    volumes:
 #      - ./data/noc/import/sa.managedobject.csv:/tmp/sa.managedobject.csv
+#    logging:
+#      driver: $COMPOSE_LOG_DRIVER
+#      options:
+#        max-size: $COMPOSE_LOG_MAX
+#        max-file: $COMPOSE_LOG_MAX_FILE
 #    labels:
 #      traefik.enable: false
 
@@ -756,5 +946,10 @@ services:
 #      - ./data/noc/networkscan/networkscan.py:/opt/noc/commands/networkscan.py
 #      - ./data/noc/networkscan/nets.conf:/tmp/nets.conf
 #      - ./data/noc/networkscan/excludenets.conf:/tmp/excludenets.conf
+#    logging:
+#      driver: $COMPOSE_LOG_DRIVER
+#      options:
+#        max-size: $COMPOSE_LOG_MAX
+#        max-file: $COMPOSE_LOG_MAX_FILE
 #    labels:
 #      traefik.enable: false
