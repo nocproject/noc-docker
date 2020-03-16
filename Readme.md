@@ -44,15 +44,7 @@ docker-compose up migrate
 Wait for process to finish and than run noc itself
 
 ```
-<<<<<<< HEAD
-<<<<<<< HEAD
 docker-compose up -d 
-=======
-export DOCKER_CLIENT_TIMEOUT=120 && docker-compose up -d 
->>>>>>> Update Readme.md
-=======
-docker-compose up -d 
->>>>>>> Allow use param in ./pre.sh
 ```
 Be aware that command will run lots of noc daemons and intended
 to be pretty slow.  
