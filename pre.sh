@@ -98,6 +98,10 @@ SETUPENV() {
             echo "---"
             { echo "COMPOSEPATH=$INSTALLPATH"
               echo "NOC_VERSION_TAG=$PARAM_TAG"
+              echo "# logging driver: json-file, local, journald"
+              echo "COMPOSE_LOG_DRIVER=json-file"
+              echo "COMPOSE_LOG_MAX_SIZE=1m"
+              echo "COMPOSE_LOG_MAX_FILE=1"
             } >> "$INSTALLPATH"/.env
     fi
 }
