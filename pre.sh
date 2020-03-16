@@ -101,7 +101,7 @@ SETUPENV() {
               echo "COMPOSE_HTTP_TIMEOUT=300"
               echo "# logging driver: json-file, local, journald"
               echo "COMPOSE_LOG_DRIVER=json-file"
-              echo "COMPOSE_LOG_MAX_SIZE=1m"
+              echo "COMPOSE_LOG_MAX_SIZE=10m"
               echo "COMPOSE_LOG_MAX_FILE=1"
             } >> "$INSTALLPATH"/.env
     fi
