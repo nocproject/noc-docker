@@ -18,6 +18,7 @@ CREATEDIR() {
     mkdir -p "$INSTALLPATH"/data/prometheus/etc/rules.d
     mkdir -p "$INSTALLPATH"/data/consul
     mkdir -p "$INSTALLPATH"/data/clickhouse/data
+    mkdir -p "$INSTALLPATH"/data/clickhouse/log
     mkdir -p "$INSTALLPATH"/data/nsq
     mkdir -p "$INSTALLPATH"/data/mongo
     mkdir -p "$INSTALLPATH"/data/noc/custom
@@ -30,6 +31,7 @@ CREATEDIR() {
 
 SETPERMISSION() {
     chown 101 -R "$INSTALLPATH"/data/clickhouse/data
+    chown 101 -R "$INSTALLPATH"/data/clickhouse/log
     chown 999 -R "$INSTALLPATH"/data/postgres
     chown 999 -R "$INSTALLPATH"/data/mongo
     chown 472 -R "$INSTALLPATH"/data/grafana/
