@@ -93,7 +93,7 @@ services:
     restart: "no"
     volumes:
       - ./files/mongo-init.js:/docker-entrypoint-initdb.d/01mongo-init.js
-      - mongo_data:/./data/db
+      - mongo_data:/data/db
     environment:
       MONGO_INITDB_DATABASE: noc
       MONGO_INITDB_ROOT_USERNAME: noc
