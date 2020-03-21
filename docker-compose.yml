@@ -23,7 +23,7 @@ volumes:
   clickhouse_etc:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/./data/clickhouse/etc
+      device: $COMPOSEPATH/data/clickhouse/etc
       o: bind
       type: bind
   nsq_data:
