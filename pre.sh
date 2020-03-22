@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# setup permissions
-# setup promgrafana dashboards\sources
-
 TMPPATH=$(mktemp -d -p /tmp)
 TMPPATH1=$(mktemp -d -p /tmp)
 
@@ -40,7 +37,7 @@ SETPERMISSION() {
 }
 
 SETUPPROMGRAFANA() {
-    echo "Setup GRAFANA dashboards from code.getnoc.com/noc/grafana-selfmon-dashboards"
+    echo "GRAFANA dashboards download from code.getnoc.com/noc/grafana-selfmon-dashboards"
     echo "---"
     cd "$TMPPATH" && git clone -q https://code.getnoc.com/noc/grafana-selfmon-dashboards.git .
     cp -f -r "$TMPPATH"/dashboards/* "$INSTALLPATH"/data/promgrafana/etc/dashboards
@@ -48,7 +45,7 @@ SETUPPROMGRAFANA() {
 }
 
 SETUPPROMRULES() {
-    echo "Setup PROMETHEUS alert rules from code.getnoc.com/noc/noc-prometheus-alerts.git"
+    echo "PROMETHEUS alert rules download from code.getnoc.com/noc/noc-prometheus-alerts.git"
     echo "---"
     cd "$TMPPATH1" && git clone -q https://code.getnoc.com/noc/noc-prometheus-alerts.git .
     cp -f "$TMPPATH1"/*.yml "$INSTALLPATH"/data/prometheus/etc/rules.d
@@ -60,8 +57,8 @@ SETUPSENTRY() {
 # @TODO
             GENERATE_PASSWORD="$(dd if=/dev/urandom bs=1 count=32 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)"
 
-            echo "Setup Sentry env in $INSTALLPATH/data/sentry/sentry.env"
-            echo "after firsh start container need run command for make migration and setup admin user\passwd"
+            echo "Sentry env write in $INSTALLPATH/data/sentry/sentry.env"
+            echo "after first start container need run command to make migration by setting up admin user passwd"
             echo "cd $INSTALLPATH && docker-compose exec sentry sentry upgrade"
             echo "---"
             { echo SENTRY_POSTGRES_HOST=sentry-postgres
@@ -94,7 +91,7 @@ SETUPNOCCONF() {
 SETUPENV() {
     if [ ! -f "$INSTALLPATH"/.env ]
         then
-            echo "Setup COMPOSEPATH=$INSTALLPATH in $INSTALLPATH/.env"
+            echo "Writed COMPOSEPATH=$INSTALLPATH in $INSTALLPATH/.env"
             echo "---"
             { echo "COMPOSEPATH=$INSTALLPATH"
               echo "NOC_VERSION_TAG=$PARAM_TAG"
@@ -131,14 +128,14 @@ done
 if [ -z "$INSTALLPATH" ]
     then
         INSTALLPATH=/opt/noc-dc
-        echo "Setup NOC-DC to: $INSTALLPATH"
+        echo "NOC-DC install in: $INSTALLPATH"
         echo "---"
 fi
 
 if [ -z "$PARAM_TAG" ]
     then
         PARAM_TAG="stable"
-        echo "Setup Docker use image with tag: $PARAM_TAG"
+        echo "Docker use image with tag: $PARAM_TAG"
         echo "See all tags in https://code.getnoc.com/noc/noc/container_registry"
         echo "---"
 fi
