@@ -97,7 +97,7 @@ services:
     environment:
       MONGO_INITDB_DATABASE: noc
       MONGO_INITDB_ROOT_USERNAME: noc
-      MONGO_INITDB_ROOT_PASSWORD: noc
+      MONGO_INITDB_ROOT_PASSWORD: $NOC_MONGO_PASSWORD
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -116,7 +116,7 @@ services:
       - ./files/rs-init.sh:/rs-init.sh
     environment:
       MONGO_INITDB_ROOT_USERNAME: noc
-      MONGO_INITDB_ROOT_PASSWORD: noc
+      MONGO_INITDB_ROOT_PASSWORD: $NOC_MONGO_PASSWORD
       MONGO_REPL_SET_NAME: noc
       MONGO_REPL_SET_HOSTS: mongo
     entrypoint: sh /rs-init.sh
@@ -135,10 +135,11 @@ services:
     environment:
       POSTGRES_USER: noc
       POSTGRES_DB: noc
-      POSTGRES_PASSWORD: noc
+      POSTGRES_PASSWORD: $NOC_PG_PASSWORD
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
+      # TODO need setup username\passwd for check script
       test: ["CMD", "su", "-", "postgres", "-c", "psql -U noc -l | grep noc"]
       interval: 3s
       timeout: 3s

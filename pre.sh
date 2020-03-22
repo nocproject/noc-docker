@@ -92,14 +92,18 @@ SETUPENV() {
     if [ ! -f "$INSTALLPATH"/.env ]
         then
             echo "Writed COMPOSEPATH=$INSTALLPATH in $INSTALLPATH/.env"
+            echo "You can change the parameters OC_PG_PASSWORD\NOC_MONGO_PASSWORD if you want"
             echo "---"
             { echo "COMPOSEPATH=$INSTALLPATH"
-              echo "NOC_VERSION_TAG=$PARAM_TAG"
               echo "COMPOSE_HTTP_TIMEOUT=300"
               echo "# logging driver: json-file, local, journald"
               echo "COMPOSE_LOG_DRIVER=json-file"
               echo "COMPOSE_LOG_MAX_SIZE=10m"
               echo "COMPOSE_LOG_MAX_FILE=1"
+              echo "# NOC env"
+              echo "NOC_VERSION_TAG=$PARAM_TAG"
+              echo "NOC_PG_PASSWORD=noc"
+              echo "NOC_MONGO_PASSWORD=noc"
             } >> "$INSTALLPATH"/.env
     fi
 }
