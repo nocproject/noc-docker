@@ -164,6 +164,7 @@ do
         -c) NOC_CODE_PATH="$2"
             shift ;;
         -h) echo "Example: ./pre.sh -p all -d /opt/noc-dc -t stable"
+            exit
             shift ;;
         --) shift
             break ;;
