@@ -228,7 +228,9 @@ if [ -n "$PARAM_P" ]
                 SETUPSENTRY
         elif [ "$PARAM_P" = "env" ]
             then
+                CREATEDIR
                 SETUPENV
+                SETPERMISSION
         else
             echo "Unknown parameter for -p"
             echo "Use one of: all,env,perm,grafana,promrules,sentry"
