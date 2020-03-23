@@ -82,7 +82,10 @@ SETUPSENTRY() {
 # need check $INSTALLPATH == $COMPOSEPATH and make warning if not
 SETUPENV() {
     GENERATED_PG_PASSWORD="$(dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)"
-    GENERATED_MONGO_PASSWORD="$(dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)"
+    # TODO
+    # fix created mongo container with NOC_MONGO_PASSWORD instean "noc"
+    # GENERATED_MONGO_PASSWORD="$(dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)"
+    GENERATED_MONGO_PASSWORD=noc
 
     if [ ! -f "$INSTALLPATH"/.env ]
         then
