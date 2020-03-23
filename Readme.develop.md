@@ -11,7 +11,7 @@ Code from https://code.getnoc.com/noc/noc.git copy to
 Custom
 ----
 Use ./data/noc/custom if need make:
-* adapter for new HW
+* adapter for new HW: https://kb.nocproject.org/pages/viewpage.action?pageId=22971074
 * handler
 * commands
 * etc
