@@ -18,6 +18,8 @@ CREATEDIR() {
     mkdir -p "$INSTALLPATH"/data/nsq
     mkdir -p "$INSTALLPATH"/data/mongo
     mkdir -p "$INSTALLPATH"/data/noc/custom
+    mkdir -p "$INSTALLPATH"/data/noc/etc
+    mkdir -p "$INSTALLPATH"/data/noc/code
     mkdir -p "$INSTALLPATH"/data/postgres
     mkdir -p "$INSTALLPATH"/data/nginx/ssl
     mkdir -p "$INSTALLPATH"/data/grafana/plugins
@@ -76,19 +78,12 @@ SETUPSENTRY() {
     fi
 }
 
-SETUPNOCCONF() {
-    if [ ! -f "$INSTALLPATH"/data/noc/etc/noc.conf ]
-        then
-            echo "Copy " "$INSTALLPATH"/data/noc/etc/noc.conf.example " to " "$INSTALLPATH"/data/noc/etc/noc.conf
-            echo "---"
-            # shellcheck disable=SC2086
-            cp $INSTALLPATH/data/noc/etc/noc.conf.example $INSTALLPATH/data/noc/etc/noc.conf
-    fi
-}
-
 # @TODO
 # need check $INSTALLPATH == $COMPOSEPATH and make warning if not
 SETUPENV() {
+    GENERATED_PG_PASSWORD="$(dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)"
+    GENERATED_MONGO_PASSWORD="$(dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)"
+
     if [ ! -f "$INSTALLPATH"/.env ]
         then
             echo "Writed COMPOSEPATH=$INSTALLPATH in $INSTALLPATH/.env"
@@ -102,10 +97,50 @@ SETUPENV() {
               echo "COMPOSE_LOG_MAX_FILE=1"
               echo "# NOC env"
               echo "NOC_VERSION_TAG=$PARAM_TAG"
-              echo "NOC_PG_PASSWORD=noc"
-              echo "NOC_MONGO_PASSWORD=noc"
+              echo "# Important!!! NOC_PG_PASSWORD must by similar in .data/noc/etc/noc.conf file"
+              echo "NOC_PG_PASSWORD=$GENERATED_PG_PASSWORD"
+              echo "# Important!!! NOC_MONGO_PASSWORD must by similar in .data/noc/etc/noc.conf file"
+              echo "NOC_MONGO_PASSWORD=$GENERATED_MONGO_PASSWORD"
             } >> "$INSTALLPATH"/.env
     fi
+
+    # make noc.conf
+   if [ ! -f "$INSTALLPATH"/data/noc/etc/noc.conf ]
+      then
+          echo "Write $INSTALLPATH/data/noc/etc/noc.conf"
+          echo "You can change the parameters NOC_PG_PASSWORD\NOC_MONGO_PASSWORD if you want"
+          echo "---"
+          { echo "NOC_CONFIG=env:///NOC"
+            echo "NOC_MONGO_ADDRESSES=mongo:27017"
+            echo "NOC_PG_ADDRESSES=postgres:5432"
+            echo "NOC_CLICKHOUSE_RW_ADDRESSES=clickhouse:8123"
+            echo "NOC_CLICKHOUSE_RO_ADDRESSES=clickhouse:8123"
+            echo "NOC_CUSTOMIZATION_CUSTOM_PATH=/opt/noc_custom"
+            echo "NOC_FEATURES_CONSUL_HEALTHCHECKS=true"
+            echo "NOC_FEATURES_SERVICE_REGISTRATION=true"
+            echo "NOC_INSTALLATION_NAME=NOC-DC"
+            echo "NOC_PG_DB=noc"
+            echo "# Important!!! NOC_PG_PASSWORD must by similar in .env file"
+            echo "NOC_PG_PASSWORD=$GENERATED_PG_PASSWORD"
+            echo "NOC_PG_USER=noc"
+            echo "NOC_POOL=default"
+            echo "NOC_MONGO_USER=noc"
+            echo "# Important!!! NOC_MONGO_PASSWORD must by similar in .env file"
+            echo "NOC_MONGO_PASSWORD=$GENERATED_MONGO_PASSWORD"
+            echo "NOC_NSQD_ADDRESSES=nsqd:4150"
+            echo "NOC_NSQD_HTTP_ADDRESSES=nsqd:4151"
+            echo "NOC_NSQLOOKUPD_ADDRESSES=nsqlookupd:4160"
+            echo "NOC_NSQLOOKUPD_HTTP_ADDRESSES=nsqlookupd:4161"
+            echo "NOC_SELFMON_ENABLE_FM=true"
+            echo "NOC_SELFMON_ENABLE_INVENTORY=true"
+            echo "NOC_SELFMON_ENABLE_TASK=true"
+            echo "NOC_FEATURES_SENTRY=false"
+            echo "# setup Sentry DSN (Deprecated) http://<ip<:9000/settings/sentry/projects/<NAMEPROJECT>/keys/"
+            echo "# NOC_SENTRY_URL=http://6ab3d0b0702d44d0acee73298a5bb40f:43d1cb7adc1946488ac9bba1d5e0dc58@sentry:9000/2"
+            echo "TZ=Europe/Moscow"
+            echo "LC_LANG=en_US.UTF-8"
+          } >> $INSTALLPATH/data/noc/etc/noc.conf
+   fi
 }
 
 while [ -n "$1" ]
@@ -153,7 +188,6 @@ if [ -n "$PARAM_P" ]
                 SETPERMISSION
                 SETUPPROMGRAFANA
                 SETUPPROMRULES
-                SETUPNOCCONF
                 SETUPSENTRY
         elif [ "$PARAM_P" = "perm" ]
             then
@@ -167,9 +201,6 @@ if [ -n "$PARAM_P" ]
             then
                 CREATEDIR
                 SETUPPROMRULES
-        elif [ "$PARAM_P" = "nocconf" ]
-            then
-                SETUPNOCCONF
         elif [ "$PARAM_P" = "sentry" ]
             then
                 SETUPSENTRY
@@ -178,10 +209,10 @@ if [ -n "$PARAM_P" ]
                 SETUPENV
         else
             echo "Unknown parameter for -p"
-            echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
+            echo "Use one of: all,env,perm,grafana,promrules,sentry"
         fi
 else
     echo "No -p parameters found."
-    echo "Use one of: all,env,perm,grafana,promrules,nocconf,sentry"
+    echo "Use one of: all,env,perm,grafana,promrules,sentry"
 fi
 

@@ -195,6 +195,7 @@ services:
         condition: service_started
     command: >
       sh -c "set -xe
+      && env
       && /usr/bin/python ./commands/migrate.py
       && ./noc ensure-indexes
       && /usr/bin/python ./commands/migrate-ch.py
