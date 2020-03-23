@@ -80,7 +80,7 @@ docker.compose:
     # need auth in registry
     # docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY or use
     - rm /home/gitlab-runner/.docker/config.json || true
-    - ./pre.sh -p nocconf -d $PWD
+    - ./pre.sh -p env -d $PWD
     - env
     - ./pre.sh -p sentry -d $PWD
     - ./pre.sh -p env -d $PWD
