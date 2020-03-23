@@ -2,6 +2,7 @@
 
 TMPPATH=$(mktemp -d -p /tmp)
 TMPPATH1=$(mktemp -d -p /tmp)
+TMPPATH2=$(mktemp -d -p /tmp)
 
 CREATEDIR() {
     mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/datasources
@@ -83,7 +84,7 @@ SETUPSENTRY() {
 SETUPENV() {
     GENERATED_PG_PASSWORD="$(dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)"
     # TODO
-    # fix created mongo container with NOC_MONGO_PASSWORD instean "noc"
+    # need fix created mongo container with NOC_MONGO_PASSWORD instean "noc"
     # GENERATED_MONGO_PASSWORD="$(dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)"
     GENERATED_MONGO_PASSWORD=noc
 
@@ -98,8 +99,10 @@ SETUPENV() {
               echo "COMPOSE_LOG_DRIVER=json-file"
               echo "COMPOSE_LOG_MAX_SIZE=10m"
               echo "COMPOSE_LOG_MAX_FILE=1"
-              echo "# NOC env"
+              echo "### NOC env ###"
               echo "NOC_VERSION_TAG=$PARAM_TAG"
+              echo "# NOC_CODE_PATH '/home' for PROD or '/opt/noc' for DEV"
+              echo "NOC_CODE_PATH=$NOC_CODE_PATH"
               echo "# Important!!! NOC_PG_PASSWORD must by similar in .data/noc/etc/noc.conf file"
               echo "NOC_PG_PASSWORD=$GENERATED_PG_PASSWORD"
               echo "# Important!!! NOC_MONGO_PASSWORD must by similar in .data/noc/etc/noc.conf file"
@@ -142,7 +145,7 @@ SETUPENV() {
             echo "# NOC_SENTRY_URL=http://6ab3d0b0702d44d0acee73298a5bb40f:43d1cb7adc1946488ac9bba1d5e0dc58@sentry:9000/2"
             echo "TZ=Europe/Moscow"
             echo "LC_LANG=en_US.UTF-8"
-          } >> $INSTALLPATH/data/noc/etc/noc.conf
+          } >> "$INSTALLPATH"/data/noc/etc/noc.conf
    fi
 }
 
@@ -158,7 +161,9 @@ do
         -d) INSTALLPATH="$2"
             #echo "Found the -d option, with parameter value $INSTALLPATH"
             shift ;;
-        -h) echo "Example: ./pre.sh -p all -d /opt/noc-dc -t stable"
+        -c) NOC_CODE_PATH="$2"
+            shift ;;
+        -h) echo "Example: ./pre.sh -p all -d /opt/noc-dc -t stable -c dev"
             shift ;;
         --) shift
             break ;;
@@ -180,6 +185,19 @@ if [ -z "$PARAM_TAG" ]
         echo "Docker use image with tag: $PARAM_TAG"
         echo "See all tags in https://code.getnoc.com/noc/noc/container_registry"
         echo "---"
+fi
+
+# Generate DEV or PROD env
+if [ "$NOC_CODE_PATH" = "dev" ]
+    then
+        NOC_CODE_PATH=/opt/noc
+        # checkout NOC code to ./data/noc/code
+        echo "NOC code download from code.getnoc.com/noc/noc.git"
+        echo "---"
+        cd "$TMPPATH2" && git clone -q https://code.getnoc.com/noc/noc.git .
+        cp -rf "$TMPPATH2"/* "$INSTALLPATH"/data/noc/code
+    else
+        NOC_CODE_PATH=/home
 fi
 
 if [ -n "$PARAM_P" ]
