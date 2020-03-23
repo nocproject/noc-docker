@@ -56,6 +56,7 @@ do
             shift ;;
         -h) echo "Example: ./restore.sh -p images"
             echo "Example: ./restore.sh -p data -f /opt/noc-dc -d data-yyyymmdd-hh-mm.tar.gz"
+            exit
             shift ;;
         --) shift
             break ;;

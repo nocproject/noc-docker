@@ -55,6 +55,7 @@ do
             #echo "Found the -d option, with parameter value $BACKUPPATH"
             shift ;;
         -h) echo "Example: ./backup.sh -p all -d /opt/noc-dc"
+            exit
             shift ;;
         --) shift
             break ;;
