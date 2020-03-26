@@ -107,6 +107,7 @@ SETUPENV() {
               echo "NOC_CODE_PATH=$NOC_CODE_PATH"
               echo "# Important!!! NOC_PG_PASSWORD must by similar in .data/noc/etc/noc.conf file"
               echo "NOC_PG_PASSWORD=$GENERATED_PG_PASSWORD"
+              echo "PGPASSWORD=$GENERATED_PG_PASSWORD"
               echo "# Important!!! NOC_MONGO_PASSWORD must by similar in .data/noc/etc/noc.conf file"
               echo "NOC_MONGO_PASSWORD=$GENERATED_MONGO_PASSWORD"
             } >> "$INSTALLPATH"/.env

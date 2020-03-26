@@ -21,14 +21,11 @@ services:
     hostname: mongorestore
     command: >
       sh -c "
-      env
-      && echo "-----------------------"
-      && mongorestore /home/ --verbose=5 --host=mongo --drop --port=27017 -u noc -p noc -d noc
+      mongorestore /home --host=mongo --drop --port=27017 -u noc -p noc -d noc
       "
     restart: "no"
     volumes:
       - mongo_data_restore:/home
-    #environment:
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -44,7 +41,7 @@ services:
       sh -c "
       env
       && echo "-----------------------"
-      && psql -h postgres < /home/developer_postgres_dump_2020_03_20.dump
+      && cat /home/developer_postgres_dump_2020_03_20.dump | psql -h postgres -U noc
       "
     restart: "no"
     volumes:
@@ -53,6 +50,7 @@ services:
       POSTGRES_USER: noc
       POSTGRES_DB: noc
       POSTGRES_PASSWORD: $NOC_PG_PASSWORD
+      PGPASSWORD: $NOC_PG_PASSWORD
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
