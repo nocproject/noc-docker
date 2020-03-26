@@ -8,7 +8,8 @@ If you need FULL develop environment
 Code from https://code.getnoc.com/noc/noc.git copy to
 `./data/noc/code` and connected to '/opt/noc' in container.
 
-Database restore
+
+Restore database from dump
 ----
 If you need restore database - put file in directory
 ```shell script
@@ -17,10 +18,22 @@ If you need restore database - put file in directory
 ```
 and run
 ```shell script
-docker-compose -f docker-compose-dev.yml up
+docker-compose up -d mongodb-repl-set-init
+docker-compose up -d mongo 
+docker-compose up -d postgres
+docker-compose -f docker-compose-restoredb.yml up 
+docker-compose up -d
 ```
 
+Create database dump
+----
 
+```shell script
+docker-compose up -d mongo 
+docker-compose up -d postgres
+docker-compose -f docker-compose-dumpdb.yml up 
+docker-compose up -d
+```
 
 Custom
 ----
