@@ -18,6 +18,8 @@ CREATEDIR() {
     mkdir -p "$INSTALLPATH"/data/clickhouse/data
     mkdir -p "$INSTALLPATH"/data/nsq
     mkdir -p "$INSTALLPATH"/data/mongo
+    mkdir -p "$INSTALLPATH"/data/mongorestore
+    mkdir -p "$INSTALLPATH"/data/postgresrestore
     mkdir -p "$INSTALLPATH"/data/noc/custom
     mkdir -p "$INSTALLPATH"/data/noc/etc
     mkdir -p "$INSTALLPATH"/data/noc/code
