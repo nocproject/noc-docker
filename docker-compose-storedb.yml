@@ -14,3 +14,49 @@ volumes:
       device: $COMPOSEPATH/data/postgresrestore
       o: bind
       type: bind
+
+services:
+  mongostore:
+    image: mongo:4.0
+    hostname: mongostore
+    command: >
+      sh -c "set -xe
+      && ANAME=/home/mongodb-`date +%Y%m%d-%H-%M`.archive
+      && mongodump --host=mongo -u noc -p noc -d noc --archive=$$ANAME
+      "
+    restart: "no"
+    volumes:
+      - mongo_data_restore:/home
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX_SIZE
+        max-file: $COMPOSE_LOG_MAX_FILE
+    labels:
+      traefik.enable: false
+
+  postgresstore:
+    image: postgres:9.6
+    hostname: postgresstore
+    command: >
+      sh -c "
+      env
+      && echo "-----------------------"
+      && cat /home/developer_postgres_dump_2020_03_20.dump | psql -h postgres -U noc pg-'date +%Y%m%d-%H-%M'.tar.gz
+      "
+    restart: "no"
+    volumes:
+      - postgres_data_restore:/home
+    environment:
+      POSTGRES_USER: noc
+      POSTGRES_DB: noc
+      POSTGRES_PASSWORD: $NOC_PG_PASSWORD
+      PGPASSWORD: $NOC_PG_PASSWORD
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX_SIZE
+        max-file: $COMPOSE_LOG_MAX_FILE
+    labels:
+      traefik.enable: false
+

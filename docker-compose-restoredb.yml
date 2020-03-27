@@ -38,8 +38,8 @@ services:
     image: postgres:9.6
     hostname: postgresrestore
     command: >
-      sh -c "
-      env
+      sh -c "set -xe
+      && env
       && echo "-----------------------"
       && cat /home/developer_postgres_dump_2020_03_20.dump | psql -h postgres -U noc
       "
