@@ -42,7 +42,7 @@ services:
       sh -c "set -xe
       && env
       && echo "-----------------------"
-      && pg_dump -h postgres -U noc noc > /home/pg-`date +%Y%m%d-%H-%M`.dump
+      && pg_dump -h postgres -U noc -Fc noc > /home/pg-`date +%Y%m%d-%H-%M`.dump
       "
     restart: "no"
     volumes:
