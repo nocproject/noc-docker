@@ -59,4 +59,3 @@ services:
         max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
-
