@@ -1,0 +1,16 @@
+---
+version: "2.4"
+
+volumes:
+  mongo_data_restore:
+    driver: local
+    driver_opts:
+      device: $COMPOSEPATH/data/mongorestore
+      o: bind
+      type: bind
+  postgres_data_restore:
+    driver: local
+    driver_opts:
+      device: $COMPOSEPATH/data/postgresrestore
+      o: bind
+      type: bind
