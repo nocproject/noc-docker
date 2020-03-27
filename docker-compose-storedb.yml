@@ -39,10 +39,10 @@ services:
     image: postgres:9.6
     hostname: postgresstore
     command: >
-      sh -c "
-      env
+      sh -c "set -xe
+      && env
       && echo "-----------------------"
-      && cat /home/developer_postgres_dump_2020_03_20.dump | psql -h postgres -U noc pg-'date +%Y%m%d-%H-%M'.tar.gz
+      && pg_dump -h postgres -U noc noc > /home/pg-`date +%Y%m%d-%H-%M`.dump
       "
     restart: "no"
     volumes:
