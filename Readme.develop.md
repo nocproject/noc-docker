@@ -8,6 +8,12 @@ If you need FULL develop environment
 Code from https://code.getnoc.com/noc/noc.git copy to
 `./data/noc/code` and connected to '/opt/noc' in container.
 
+See '.env' file for volume mount path:
+```shell script
+# NOC_CODE_PATH '/home' for PROD or '/opt/noc' for DEV
+NOC_CODE_PATH=/home
+
+```  
 
 Restore database from dump
 ----
@@ -70,7 +76,7 @@ docker-compose -f docker-compose-restoredb.yml up
 
 Custom
 ----
-Use ./data/noc/custom if need make:
+Use ./data/noc/custom if need make custom:
 * adapter for new hardware. See doc  
   https://kb.nocproject.org/pages/viewpage.action?pageId=22971074
 * handler
