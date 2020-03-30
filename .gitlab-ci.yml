@@ -87,9 +87,8 @@ docker.compose:
     - ./pre.sh -p env -d $PWD
     - docker-compose down -v --remove-orphans
     - docker-compose -f docker-compose-infra.yml down -v  --remove-orphans
-    - rm -f ./data/sentry/sentry.env
-    - rm -f ./data/noc/etc/noc.conf
-    - rm -f ./.env
+    - chmod +x clean.sh
+    - ./clean.sh -p all
  #   - rm -rf ./*
   #artifacts:
    # untracked: true
@@ -108,8 +107,7 @@ docker.compose:
   after_script:
     - docker-compose down -v --remove-orphans
     - docker-compose -f docker-compose-infra.yml down -v  --remove-orphans
-    - rm -f ./data/sentry/sentry.env
-    - rm -f ./data/noc/etc/noc.conf
-    - rm -f ./.env
+    - chmod +x clean.sh
+    - ./clean.sh -p all
   tags:
     - shell
