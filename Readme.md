@@ -72,7 +72,7 @@ Read `data/prometheus/etc/Readme.md` and setup export metrics from docker host
 
 Run compose file `docker-compose-infra.yml`
 ```
-docker-compose -f docker-compose-infra.yml -d
+docker-compose -f docker-compose-infra.yml up -d
 ```
 Open URL:
 *  Prometheus: https://0.0.0.0:9090
