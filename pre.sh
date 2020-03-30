@@ -178,7 +178,7 @@ done
 
 if [ -z "$INSTALLPATH" ]
     then
-        INSTALLPATH=/opt/noc-dc
+        INSTALLPATH=$PWD
         echo "NOC-DC install in: $INSTALLPATH"
         echo "---"
 fi

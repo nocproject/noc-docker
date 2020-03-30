@@ -3,22 +3,28 @@
 # Clean custom files genetated ./pre.sh
 
 CLEANENV() {
-  echo "clean env"
-  rm -f $INSTALLPATH/.env
+  echo "clean .env file"
+  echo "---"
+  rm -f "$INSTALLPATH"/.env
 }
 
 CLEANSENTRY() {
-  echo "clean sentry"
-  rm -f $INSTALLPATH/data/sentry/sentry.env
+  echo "clean sentry.env file"
+  echo "---"
+  rm -f "$INSTALLPATH"/data/sentry/sentry.env
 }
 
 CLEANNOC() {
-  echo "clean noc.conf"
-  rm -f $INSTALLPATH/data/noc/noc.conf
+  echo "clean noc.conf file"
+  echo "---"
+  rm -f "$INSTALLPATH"/data/noc/noc.conf
 }
 
 CLEANDB() {
   echo "Remove DB files"
+  echo "---"
+  # rm -rf "$INSTALLPATH"/data/mongo/*
+  # rm -rf "$INSTALLPATH"/data/postgres/*
 }
 
 while [ -n "$1" ]
@@ -29,12 +35,12 @@ do
             shift ;;
         -d) INSTALLPATH="$2"
             shift ;;
-        -h) echo "Example: ./pre.sh -p <all|env|noc|sentry>"
+        -h) echo "Example: ./pre.sh -p <all|env|noc|sentry|db>"
             break
             shift ;;
         --) shift
             break ;;
-        *) echo "Example: ./pre.sh -p <all|env|noc|sentry>";;
+        *) echo "Example: ./pre.sh -p <all|env|noc|sentry|db>";;
     esac
     shift
 done
@@ -42,7 +48,7 @@ done
 if [ -z "$INSTALLPATH" ]
     then
         INSTALLPATH=$PWD
-        echo "Used NOC-DC installpath: $INSTALLPATH"
+        echo "Use NOC-DC installpath: $INSTALLPATH"
         echo "---"
 fi
 
@@ -62,11 +68,14 @@ if [ -n "$PARAM_P" ]
         elif [ "$PARAM_P" = "noc" ]
             then
                 CLEANNOC
+        elif [ "$PARAM_P" = "db" ]
+            then
+                CLEANDB
         else
             echo "Unknown parameter for -p"
-            echo "Use one of: all,env,noc,sentry"
+            echo "Use one of: all,env,noc,sentry,db"
         fi
 else
     echo "No -p parameters found."
-    echo "Use one of: all,env,noc,sentry"
+    echo "Use one of: all,env,noc,sentry,db"
 fi
