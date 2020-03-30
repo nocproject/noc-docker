@@ -34,9 +34,9 @@ SETPERMISSION() {
     chown 101 -R "$INSTALLPATH"/data/clickhouse/data
     chown 999 -R "$INSTALLPATH"/data/postgres
     chown 999 -R "$INSTALLPATH"/data/mongo
-    chown 472 -R "$INSTALLPATH"/data/grafana/
+    chown 472 -R "$INSTALLPATH"/data/grafana
     chown 65534 -R "$INSTALLPATH"/data/prometheus/metrics
-    chown 472 -R "$INSTALLPATH"/data/promgrafana/plugins
+    chown 472 -R "$INSTALLPATH"/data/promgrafana
     chown 999 -R "$INSTALLPATH"/data/sentry/redis
     chown 70 -R "$INSTALLPATH"/data/sentry/pg
 }
