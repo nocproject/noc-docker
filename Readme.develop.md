@@ -124,7 +124,8 @@ A: Run:
 
 Q: I want add new HW support in NOC
 
-A: * add new vendor
+A: 
+   * add new vendor
    * add new object_profile
    * add new dir in sa/profiles
    * read https://kb.nocproject.org/pages/viewpage.action?pageId=22971074
