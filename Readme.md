@@ -75,8 +75,8 @@ Run compose file `docker-compose-infra.yml`
 docker-compose -f docker-compose-infra.yml up -d
 ```
 Open URL:
-*  Prometheus: https://0.0.0.0:9090
-*  Grafana: https://0.0.0.0:3000
+*  Prometheus: http://0.0.0.0:9090
+*  Grafana: http://0.0.0.0:3000
 *  Sentry: https://0.0.0.0:9000
 
 FAQ:
