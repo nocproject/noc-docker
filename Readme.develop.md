@@ -82,3 +82,53 @@ Use ./data/noc/custom if need make custom:
 * handler
 * commands
 * etc
+
+FAQ
+----
+Q: I want fix script `/opt/noc/sa/profiles/MikroTik/RouterOS/get_version.py`.
+ 
+A: Use `./data/noc/custom` directory. This directory is used for priority 
+   file load for activator service. Create directory and `__init__.py` files
+   ```shell script
+   cd ./data/noc/custom
+   mkdir -p ./sa/profiles/MikroTik/RouterOS/
+   touch __init__.py
+   touch ./sa/__init__.py
+   touch ./sa/profiles/__init__.py
+   touch ./sa/profiles/MikroTik/__init__.py
+   touch ./sa/profiles/MikroTik/RouterOS/__init__.py
+   ```
+   Put you version `get_version.py` and restart `activator-default` container
+   ```shell script
+   docker-compose restart activator-default
+   ```
+Q: I need access to code that not worked in `custom` 
+
+A: Run:
+   ```shell script
+   ./pre.sh -p all -c dev
+   ```
+   It download noc code in `./data/noc/code` 
+   Edit `.env` file 
+   ```shell script
+   # NOC_CODE_PATH '/home' for PROD or '/opt/noc' for DEV
+   NOC_CODE_PATH=/opt/noc
+   ```
+   and restart noc-dc
+   ```shell script
+   docker-compose down
+   docker-compose up -d
+   ```
+   Code from `./data/noc/code` mount in `/opt/noc/` in all docker container.
+   Edit and restart container.
+
+Q: I want add new HW support in NOC
+
+A: * add new vendor
+   * add new object_profile
+   * add new dir in sa/profiles
+   * read https://kb.nocproject.org/pages/viewpage.action?pageId=22971074
+   * use 'Q: I want fix script'
+
+Thats it. Be aware of if you need to add new script it has to be added
+to several services. Also you need discovery, sae and web.
