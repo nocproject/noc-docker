@@ -23,6 +23,7 @@ CREATEDIR() {
     mkdir -p "$INSTALLPATH"/data/noc/custom
     mkdir -p "$INSTALLPATH"/data/noc/etc
     mkdir -p "$INSTALLPATH"/data/noc/code
+    mkdir -p "$INSTALLPATH"/data/noc/beef
     mkdir -p "$INSTALLPATH"/data/postgres
     mkdir -p "$INSTALLPATH"/data/nginx/ssl
     mkdir -p "$INSTALLPATH"/data/grafana/plugins
