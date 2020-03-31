@@ -119,7 +119,7 @@ A: Run:
    docker-compose down
    docker-compose up -d
    ```
-   Code from `./data/noc/code` mount in `/opt/noc/` in all docker container.
+   Code from `./data/noc/code` mount in `/opt/noc/` into all docker container.
    Edit and restart container.
 
 Q: I want add new HW support in NOC
