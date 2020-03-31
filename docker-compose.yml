@@ -302,7 +302,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -327,7 +327,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -355,7 +355,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -380,7 +380,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -405,7 +405,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -431,7 +431,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
 
     logging:
       driver: $COMPOSE_LOG_DRIVER
@@ -458,7 +458,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -479,7 +479,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -500,7 +500,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -524,7 +524,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -543,7 +543,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -562,7 +562,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -585,7 +585,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -609,7 +609,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -633,7 +633,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -656,7 +656,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -678,7 +678,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -700,7 +700,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -723,7 +723,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -744,7 +744,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -765,7 +765,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -786,7 +786,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -808,7 +808,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     ports:
       - 514:514/udp
     logging:
@@ -832,7 +832,7 @@ services:
       - ./data/noc/etc/noc.conf
     volumes:
       - noc_custom:/opt/noc_custom:ro
-      - noc_code:/home:ro
+      - noc_code:/$NOC_CODE_PATH:ro
     ports:
       - 162:162/udp
     logging:
