@@ -23,8 +23,18 @@ CLEANNOC() {
 CLEANDB() {
   echo "Remove DB files"
   echo "---"
-  # rm -rf "$INSTALLPATH"/data/mongo/*
-  # rm -rf "$INSTALLPATH"/data/postgres/*
+  echo "You must delete the files yourself!!!"
+  echo "Stop container NOC-DC and do:"
+  echo "rm -rf $INSTALLPATH/data/mongo/*"
+  echo "rm -rf $INSTALLPATH/data/postgres/*"
+  sleep 10
+}
+
+CLEANGRAFANA() {
+    echo "Remove Grafana provision"
+    echo "----"
+    rm -rf "$INSTALLPATH"/data/promgrafana/etc/dashboards
+    rm -rf "$INSTALLPATH"/data/promgrafana/etc/provisioning
 }
 
 while [ -n "$1" ]
@@ -35,12 +45,12 @@ do
             shift ;;
         -d) INSTALLPATH="$2"
             shift ;;
-        -h) echo "Example: ./pre.sh -p <all|env|noc|sentry|db>"
+        -h) echo "Example: ./pre.sh -p <all|env|noc|sentry|grafana|db>"
             break
             shift ;;
         --) shift
             break ;;
-        *) echo "Example: ./pre.sh -p <all|env|noc|sentry|db>";;
+        *) echo "Example: ./pre.sh -p <all|env|noc|sentry|grafana|db>";;
     esac
     shift
 done
@@ -59,9 +69,14 @@ if [ -n "$PARAM_P" ]
                 CLEANENV
                 CLEANSENTRY
                 CLEANNOC
+                CLEANGRAFANA
+                CLEANDB
         elif [ "$PARAM_P" = "sentry" ]
             then
                 CLEANSENTRY
+        elif [ "$PARAM_P" = "grafana" ]
+            then
+                CLEANGRAFANA
         elif [ "$PARAM_P" = "env" ]
             then
                 CLEANENV

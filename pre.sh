@@ -211,10 +211,10 @@ if [ -n "$PARAM_P" ]
             then
                 CREATEDIR
                 SETUPENV
-                SETPERMISSION
                 SETUPPROMGRAFANA
                 SETUPPROMRULES
                 SETUPSENTRY
+                SETPERMISSION
         elif [ "$PARAM_P" = "perm" ]
             then
                 CREATEDIR
