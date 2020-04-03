@@ -940,14 +940,14 @@ services:
     image: traefik:1.7-alpine
     hostname: traefik
     restart: "always"
-    depends_on:
-      - web
-      - login
-      - card
-      - datastream
-      - mrt
-      - bi
-      - grafanads
+#    depends_on:
+#      - web
+#      - login
+#      - card
+#      - datastream
+#      - mrt
+#      - bi
+#      - grafanads
     command: >
       - traefik
       - --web
