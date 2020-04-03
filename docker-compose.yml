@@ -295,13 +295,15 @@ services:
     hostname: web
     restart: "always"
     depends_on:
-      - mongo
       - clickhouse
+      - consul
       - redis
-      - nsqd
-      - nsqlookupd
       - login
       - migrate
+      - mongo
+      - nsqd
+      - nsqlookupd
+      - nginx
     command: /usr/bin/python /opt/noc/services/web/service.py
     mem_limit: 120m
     working_dir: /opt/noc
@@ -327,6 +329,7 @@ services:
     hostname: login
     restart: "always"
     depends_on:
+      - consul
       - mongo
     command: /usr/bin/python /opt/noc/services/login/service.py
     mem_limit: 75m
@@ -354,7 +357,9 @@ services:
     hostname: card
     restart: "always"
     depends_on:
+      - consul
       - mongo
+      - nginx
       - redis
       - login
     command: /usr/bin/python /opt/noc/services/card/service.py
@@ -382,6 +387,7 @@ services:
     hostname: mrt
     restart: "always"
     depends_on:
+      - consul
       - mongo
     command: /usr/bin/python /opt/noc/services/mrt/service.py
     mem_limit: 103m
@@ -408,6 +414,7 @@ services:
     restart: "always"
     hostname: grafanads
     depends_on:
+      - consul
       - mongo
     command: /usr/bin/python /opt/noc/services/grafanads/service.py
     mem_limit: 110m
@@ -434,8 +441,9 @@ services:
     restart: "always"
     hostname: bi
     depends_on:
-      - mongo
+      - consul
       - clickhouse
+      - mongo
     command: /usr/bin/python /opt/noc/services/bi/service.py
     mem_limit: 100m
     working_dir: /opt/noc
@@ -444,7 +452,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -529,10 +536,12 @@ services:
     restart: "always"
     hostname: nbi
     depends_on:
+      - consul
       - mongo
       - clickhouse
       - login
       - nsqd
+      - nginx
     command: /usr/bin/python /opt/noc/services/nbi/service.py
     mem_limit: 100m
     working_dir: /opt/noc
@@ -552,6 +561,9 @@ services:
   activator-default:
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
     hostname: activator
+    depends_on:
+      - consul
+      - discovery-default
     restart: "always"
     command: /usr/bin/python /opt/noc/services/activator/service.py
     mem_limit: 150m
@@ -619,6 +631,7 @@ services:
     restart: "always"
     mem_limit: 120m
     depends_on:
+      - consul
       - mongo
       - redis
       - nsqlookupd
@@ -668,6 +681,7 @@ services:
     hostname: chwriter
     restart: "always"
     depends_on:
+      - consul
       - clickhouse
       - nsqlookupd
       - nsqd
@@ -715,6 +729,7 @@ services:
     hostname: scheduler
     restart: "always"
     depends_on:
+      - consul
       - mongo
       - redis
     command: /usr/bin/python /opt/noc/services/scheduler/service.py
