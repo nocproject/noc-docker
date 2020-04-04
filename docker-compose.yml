@@ -95,7 +95,7 @@ volumes:
 
 
 services:
-########## NOC Components ##########
+  ########## NOC Components ##########
   activator-default:
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
     hostname: activator
@@ -731,7 +731,7 @@ services:
       traefik.frontend.rule: "PathPrefix: /"
       traefik.frontend.entryPoints: noc
 
-########## External Components #########
+  ########## External Components #########
   clickhouse:
     image: yandex/clickhouse-server:latest
     hostname: clickhouse
@@ -963,14 +963,14 @@ services:
     image: traefik:1.7-alpine
     hostname: traefik
     restart: "always"
-#    depends_on:
-#      - web
-#      - login
-#      - card
-#      - datastream
-#      - mrt
-#      - bi
-#      - grafanads
+    # depends_on:
+    #  - web
+    # - login
+    #  - card
+    #  - datastream
+    #  - mrt
+    #  - bi
+    #  - grafanads
     command: >
       - traefik
       - --web
@@ -995,8 +995,6 @@ services:
       traefik.port: "8080"
       traefik.backend: manager
       traefik.frontend.rule: Host:traefik
-
-
 
 #  import-default:
 #    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
