@@ -61,7 +61,7 @@ Password: admin
 
 * Only single node. No way to scale noc daemons to multihost.
 * Databases outside container in `./data/...` . 
-* Only single pool. No way to add equipment from different vrfs.
+* Only single pool "default". No way to add equipment from different vrfs.
 * need 10G+ free space on block device
 * SSD block device highly recommended. Start more that 2 minutes.
 
@@ -72,11 +72,11 @@ Read `data/prometheus/etc/Readme.md` and setup export metrics from docker host
 
 Run compose file `docker-compose-infra.yml`
 ```
-docker-compose -f docker-compose-infra.yml -d
+docker-compose -f docker-compose-infra.yml up -d
 ```
 Open URL:
-*  Prometheus: https://0.0.0.0:9090
-*  Grafana: https://0.0.0.0:3000
+*  Prometheus: http://0.0.0.0:9090
+*  Grafana: http://0.0.0.0:3000
 *  Sentry: https://0.0.0.0:9000
 
 FAQ:
@@ -126,7 +126,7 @@ noc-dc_consul_1:                Up 4 minutes	8300-8302/tcp, 8301-8302/udp,
                                                 0.0.0.0:8500->8500/tcp
 noc-dc_mongo_1:                 Up 4 minutes	27017/tcp
 noc-dc_postgres_1:              Up 4 minutes (healthy)	5432/tcp
-noc-dc_redis_1:                 Up 4 minutes	6379/tcp                            
+noc-dc_redis_1:                 Up 4 minutes	6379/tcp                        
 ```
 
 Q: Can i setup my ssl certificate?
@@ -169,49 +169,7 @@ It will unschedule all discovery jobs so you can run your copy without worries
 
 Q: Can i change files in that NOC install ?
 
-A: Yes. Just add them as a volumes. For example you want to
-change script sa/profiles/MikroTik/RouterOS/get_version.py 
-You have to open with text editor file `docker-compose.yaml` and
-find `activator-default` section it will looks like
-```yaml
-  activator-default:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
-    restart: "always"
-    command: /usr/bin/python /opt/noc/services/activator/service.py
-    mem_limit: 150m
-    environment:
-      NOC_POOL: default
-    env_file:
-      - noc.conf
-    labels:
-      traefik.enable: false
-``` 
-Copy existing script from container to custom/ with 
-```
-docker cp noc-dc_activator-default_1:/opt/noc/sa/profiles/MikroTik/RouterOS/get_version.py custom/
-```
-Change it with text editor and add to docker-compose file like that
-```yaml
-  activator-default:
-    image: registry.getnoc.com/noc/noc/code:19.2-dev
-    restart: "always"
-    command: /usr/bin/python /opt/noc/services/activator/service.py
-    mem_limit: 150m
-    environment:
-      NOC_POOL: default
-    env_file:
-      - noc.conf
-    volumes:
-      - $PWD/custom/get_version.py:/opt/noc/sa/profiles/MikroTik/RouterOS/get_version.py
-    labels:
-      traefik.enable: false
-```
-and restart noc with 
-```
-docker-compose up -d 
-```
-Thats it. Be aware of if you need to add new script it has to be added
-to several services. Also you need discovery, sae and web.
+A: Yes. See Readme.develop.md
 
 Q: How to make \ restore a backup.
 

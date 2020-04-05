@@ -25,10 +25,11 @@ lint_bash:
   before_script:
     - apk update && apk add bash shellcheck
   script:
-    - shellcheck pre.sh ./backup/backup.sh ./backup/restore.sh
+    - shellcheck pre.sh clean.sh ./backup/backup.sh ./backup/restore.sh
   rules:
     - changes:
       - pre.sh
+      - clean.sh
       - ./backup/backup.sh
       - ./backup/restore.sh
   tags:
@@ -80,15 +81,14 @@ docker.compose:
     # need auth in registry
     # docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY or use
     - rm /home/gitlab-runner/.docker/config.json || true
-    - ./pre.sh -p nocconf -d $PWD
+    - ./pre.sh -p env -d $PWD
     - env
     - ./pre.sh -p sentry -d $PWD
     - ./pre.sh -p env -d $PWD
     - docker-compose down -v --remove-orphans
     - docker-compose -f docker-compose-infra.yml down -v  --remove-orphans
-    - rm -f ./data/sentry/sentry.env
-    - rm -f ./data/noc/etc/noc.conf
-    - rm -f ./.env
+    - chmod +x clean.sh
+    - ./clean.sh -p all
  #   - rm -rf ./*
   #artifacts:
    # untracked: true
@@ -107,8 +107,7 @@ docker.compose:
   after_script:
     - docker-compose down -v --remove-orphans
     - docker-compose -f docker-compose-infra.yml down -v  --remove-orphans
-    - rm -f ./data/sentry/sentry.env
-    - rm -f ./data/noc/etc/noc.conf
-    - rm -f ./.env
+    - chmod +x clean.sh
+    - ./clean.sh -p all
   tags:
     - shell
