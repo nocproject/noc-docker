@@ -19,6 +19,7 @@ CREATEDIR() {
     mkdir -p "$INSTALLPATH"/data/postgres
     mkdir -p "$INSTALLPATH"/data/postgresrestore
     mkdir -p "$INSTALLPATH"/data/prometheus/etc/rules.d
+    mkdir -p "$INSTALLPATH"/data/prometheus/etc/rules.custom.d
     mkdir -p "$INSTALLPATH"/data/prometheus/metrics
     mkdir -p "$INSTALLPATH"/data/promgrafana/db
     mkdir -p "$INSTALLPATH"/data/promgrafana/etc/dashboards
