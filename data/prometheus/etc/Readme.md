@@ -41,5 +41,5 @@ See https://docs.docker.com/config/thirdparty/prometheus/
 
 FAQ
 ----
-Q: Can i change alert rules files?
+Q: Can i add alert rules files?
 A: Put you custom rules in `./rules.custom.d/` and restart `prom` container 
