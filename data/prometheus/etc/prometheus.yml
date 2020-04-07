@@ -5,6 +5,7 @@ global:
 
 rule_files:
   - rules.d/*.rules.yml
+  - rules.custom.d/*.rules.yml
 
 remote_write:
   - url: "http://vm:8428/api/v1/write"

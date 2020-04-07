@@ -800,7 +800,6 @@ services:
       GF_INSTALL_PLUGINS: grafana-simple-json-datasource,
                           vertamedia-clickhouse-datasource
 
-
   mongo:
     image: mongo:4.0
     hostname: mongo
