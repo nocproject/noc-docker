@@ -122,6 +122,12 @@ A: Run:
    Code from `./data/noc/code` mount in `/opt/noc/` into all docker container.
    Edit and restart container.
 
+Q: I need python `shell`
+
+A: Use `docker-compose-shell.yml`
+   ```shell script
+   docker-compose -f docker-compose-shell.yml run --rm shell
+   ``` 
 Q: I want add new HW support in NOC
 
 A: 
