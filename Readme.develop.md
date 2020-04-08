@@ -159,7 +159,9 @@ Q: I want to save the results of the script in a file and then print it.
 
 A: The directory `./data/noc/tmp` is connected to the container in
    `/tmp/tmp` and you can see the results of the script in `./data/noc/tmp`
-
+   ```python
+   f = open('/tmp/tmp/object.txt', 'w')
+   ```
 Q: I want add new HW support in NOC
 
 A: 
