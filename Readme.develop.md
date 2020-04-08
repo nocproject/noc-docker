@@ -108,7 +108,8 @@ from noc.ip.models.address import Address
 from noc.core.mongo.connection import connect
 connect()
 for a in Address.objects.filter():
-  a.delete()
+  print a
+  #a.delete()
 ```
 
 FAQ
