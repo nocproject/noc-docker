@@ -83,6 +83,33 @@ Use ./data/noc/custom if need make custom:
 * commands
 * etc
 
+Shell
+----
+"./noc shell" is used to perform operations 
+on making massive changes to monitoring objects or building reports.
+
+See more: https://kb.nocproject.org/pages/viewpage.action?pageId=22971023
+
+```shell script
+docker-compose -f docker-compose-shell.yml run --rm shell
+
+Python 2.7.15 (default, Jan 14 2020, 10:33:49) 
+[GCC 6.4.0] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+```
+
+Example "Remove all collected IP"
+```python
+from noc.ip.models.vrf import VRF
+from noc.ip.models.prefix import Prefix
+from noc.ip.models.address import Address
+from noc.core.mongo.connection import connect
+connect()
+for a in Address.objects.filter():
+  a.delete()
+```
+
 FAQ
 ----
 Q: I want fix script `/opt/noc/sa/profiles/MikroTik/RouterOS/get_version.py`.
@@ -128,6 +155,11 @@ A: Use `docker-compose-shell.yml`
    ```shell script
    docker-compose -f docker-compose-shell.yml run --rm shell
    ``` 
+Q: I want to save the results of the script in a file and then print it.
+
+A: The directory `./data/noc/tmp` is connected to the container in
+   `/tmp/tmp` and you can see the results of the script in `./data/noc/tmp`
+
 Q: I want add new HW support in NOC
 
 A: 

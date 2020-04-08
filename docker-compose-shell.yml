@@ -20,6 +20,13 @@ volumes:
       device: $COMPOSEPATH/data/noc/beef
       o: bind
       type: bind
+  noc_tmp:
+    driver: local
+    driver_opts:
+      device: $COMPOSEPATH/data/noc/tmp
+      o: bind
+      type: bind
+
 
 services:
   shell:
@@ -35,6 +42,7 @@ services:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
       - noc_beef:/var/lib/noc/beef
+      - noc_tmp:/tmp/noc
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:

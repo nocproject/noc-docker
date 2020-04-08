@@ -15,6 +15,7 @@ CREATEDIR() {
     mkdir -p "$INSTALLPATH"/data/noc/code
     mkdir -p "$INSTALLPATH"/data/noc/custom
     mkdir -p "$INSTALLPATH"/data/noc/etc
+    mkdir -p "$INSTALLPATH"/data/noc/tmp
     mkdir -p "$INSTALLPATH"/data/nsq
     mkdir -p "$INSTALLPATH"/data/postgres
     mkdir -p "$INSTALLPATH"/data/postgresrestore
@@ -35,6 +36,7 @@ CREATEDIR() {
 SETPERMISSION() {
     chown 101   -R "$INSTALLPATH"/data/clickhouse/data
     chown 472   -R "$INSTALLPATH"/data/grafana
+    chown 777   -R "$INSTALLPATH"/data/noc/tmp
     chown 472   -R "$INSTALLPATH"/data/promgrafana
     chown 65534 -R "$INSTALLPATH"/data/prometheus/metrics
     chown 70    -R "$INSTALLPATH"/data/sentry/pg
