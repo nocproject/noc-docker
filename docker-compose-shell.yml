@@ -30,12 +30,12 @@ volumes:
 
 services:
   shell:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/dev:$NOC_VERSION_TAG
     restart: "no"
     # volumes:
     #   - /Users/dv/Projects/noc-collections/src:/opt/noc/collections
     working_dir: /opt/noc
-    command: /usr/bin/python
+    command: /usr/bin/ipython
     env_file:
       - ./data/noc/etc/noc.conf
     volumes:
