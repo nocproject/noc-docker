@@ -101,6 +101,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 Example "Remove all collected IP"
 ```python
+# -*- coding: utf-8 -*-
 from noc.ip.models.vrf import VRF
 from noc.ip.models.prefix import Prefix
 from noc.ip.models.address import Address
