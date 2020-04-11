@@ -1,13 +1,17 @@
+---
+version: "2.4"
 
+services:
   import-default:
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
     restart: "no"
-    command: /usr/bin/python ./commands/csv-import.py -r skip sa.managedobject /tmp/sa.managedobject.csv
+    command: >
+      python ./commands/csv-import.py -r skip sa.managedobject /tmp/sa.mo.csv
     working_dir: /opt/noc
     env_file:
       - ./data/noc/etc/noc.conf
     volumes:
-      - ./data/noc/import/sa.managedobject.csv:/tmp/sa.managedobject.csv
+      - ./data/noc/import/sa.managedobject.csv:/tmp/sa.mo.csv
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
