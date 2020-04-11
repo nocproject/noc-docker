@@ -10,8 +10,10 @@ Second - add you host with NAME,IP,LOGIN,PASSWORD,SNMP community, etc in
 
 then run 
 ~~~
-docker-compose up import-default
+docker-compose -f docker-compose-addhosts.yml run --rm import-default
 ~~~
+existing records are updated
+
 
 Manual method
 ----
