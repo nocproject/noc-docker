@@ -19,26 +19,3 @@ services:
         max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
-
-#  networkscan-default:
-#    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
-#    hostname: networkscan
-#    restart: "no"
-#    command: >
-#             python /opt/noc/commands/networkscan.py \
-#             --in /tmp/nets.conf \
-#             --exclude /tmp/excludenets.conf
-#    working_dir: /opt/noc
-#    env_file:
-#      - ./data/noc/etc/noc.conf
-#    volumes:
-#      - ./data/noc/networkscan/networkscan.py:/opt/noc/commands/networkscan.py
-#      - ./data/noc/networkscan/nets.conf:/tmp/nets.conf
-#      - ./data/noc/networkscan/excludenets.conf:/tmp/excludenets.conf
-#    logging:
-#      driver: $COMPOSE_LOG_DRIVER
-#      options:
-#        max-size: $COMPOSE_LOG_MAX_SIZE
-#        max-file: $COMPOSE_LOG_MAX_FILE
-#    labels:
-#      traefik.enable: false
