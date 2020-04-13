@@ -25,9 +25,7 @@ services:
     hostname: networkscan
     restart: "no"
     command: >
-             python /opt/noc/commands/networkscan.py \
-             --in /tmp/nets.conf \
-             --exclude /tmp/excludenets.conf
+      python ./commands/networkscan.py --in /tmp/nets.conf --exclude /tmp/excludenets.conf --pool default --community public
     working_dir: /opt/noc
     env_file:
       - ./data/noc/etc/noc.conf
