@@ -135,7 +135,7 @@ class Command(BaseCommand):
         else:
             self.version = [version]
         self.pool = Pool.objects.get(name=pool)
-        data = "IP;Доступен по ICMP;IP есть в NOC;is_managed;SMNP sysname;SNMP sysObjectId;Vendor;Model;Имя в NOC;pool;tags\n"
+        data = "IP;Ping;NOC IP;is_managed;SMNP sysname;SNMP sysObjectId;Vendor;Model;Name;pool;tags\n"
         # столбцы x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12
         # создание списка наличия мо в noc
         moall = ManagedObject.objects.filter(is_managed=True)
@@ -272,16 +272,16 @@ class Command(BaseCommand):
             self.ioloop.run_sync(self.poll_task)
 
         for x in self.enable_ping:
-            x2 = "Да"
-            x4 = x5 = x6 = x7 = x8 = x9 = x11 = "Не определено"
+            x2 = "Yes"
+            x4 = x5 = x6 = x7 = x8 = x9 = x11 = "Undefined"
             if x in self.hosts_enable:
-                x3 = "Да"
+                x3 = "Yes"
                 x8 = self.mo[x]["name"]
                 x11 = self.mo[x]["is_managed"]
                 if self.mo[x]["tags"]:
                     x9 = ",".join(self.mo[x]["tags"] if self.mo[x]["tags"] else [])
             else:
-                x3 = "Нет"
+                x3 = "No"
             if x in self.enable_snmp:
                 # ['1.3.6.1.2.1.1.2.0', '1.3.6.1.2.1.1.5.0']
                 try:
@@ -291,12 +291,12 @@ class Command(BaseCommand):
                             x6 = p.vendor
                             x7 = p.name
                 except:
-                    x5 = "Не определено"
+                    x5 = "Undefined"
                 try:
                     sysname = self.snmp[x]["1.3.6.1.2.1.1.5.0"]
                     x4 = sysname
                 except:
-                    x4 = "Не определено"
+                    x4 = "Undefined"
             s = ";".join(
                 [
                     x,
