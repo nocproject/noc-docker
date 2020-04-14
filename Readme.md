@@ -5,6 +5,11 @@ Install
 -------
 Disable SELINUX. See distro docs.
 
+If you need use proxy configure bash env:
+```shell script
+export https_proxy=https://<proxyIP>:<proxyPort>
+```
+
 Fork that git repo to your namespace and clone it to your favorite location
 ```
 git clone https://code.getnoc.com/noc/noc-dc.git /opt/noc-dc
