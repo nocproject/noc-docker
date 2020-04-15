@@ -7,6 +7,12 @@ First - you need copy file
 *sa.managedobject.csv.example* to *sa.managedobject.csv*. 
 Second - add you host with NAME,IP,LOGIN,PASSWORD,SNMP community, etc in 
 *sa.managedobject.csv*
+```shell script
+cd ./data/noc/import
+cp sa.managedobject.csv.example sa.managedobject.csv
+```
+
+
 
 then run 
 ~~~
