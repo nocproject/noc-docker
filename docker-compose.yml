@@ -785,6 +785,8 @@ services:
     image: grafana/grafana:6.3.6
     hostname: grafana
     restart: always
+    env_file:
+      - .env.proxy
     volumes:
       - grafana_etc:/etc/grafana
       - grafana_dashboards:/usr/share/grafana/public/dashboards

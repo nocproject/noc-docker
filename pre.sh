@@ -19,7 +19,16 @@ CHECKWAN() {
         else
           echo "Detected proxy:" "$PROXYFORWAN"
           echo "----"
+          {
+            echo "https_proxy=$PROXYFORWAN"
+          } >> "$INSTALLPATH"/.env.proxy
       fi
+    else
+      echo "Proxy not detected."
+      echo "If you have a proxy - configure HTTPS_PROXY parameters"
+      echo "Example: export HTTPS_PROXY=http://<ip>:<port>"
+      echo "----"
+
   fi
 }
 CREATEDIR() {
@@ -130,10 +139,6 @@ SETUPENV() {
             echo "PGPASSWORD=$GENERATED_PG_PASSWORD"
             echo "# Important!!! NOC_MONGO_PASSWORD must by similar in .data/noc/etc/noc.conf file"
             echo "NOC_MONGO_PASSWORD=$GENERATED_MONGO_PASSWORD"
-            if [ -n "$PROXYFORWAN" ]
-              then
-                echo "HTTPS_PROXY=$PROXYFORWAN"
-            fi
           } >> "$INSTALLPATH"/.env
   fi
 
