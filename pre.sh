@@ -10,14 +10,15 @@ CHECKWAN() {
   ping -c 1 -q google.com > /dev/null 2>&1
   if [ ! $? ]
     then
-      if [ -n "$htts_proxy" ]
+      PROXYFORWAN="$HTTPS_PROXY"
+      if [ -z "$PROXYFORWAN" ]
         then
-          echo "You need setup 'https_proxy' parameter"
-          echo "Example: export https_proxy=http://<ip>:<port>"
+          echo "You need setup 'HTTPS_PROXY' parameter"
+          echo "Example: export HTTPS_PROXY=http://<ip>:<port>"
           exit
         else
-          echo "$https_proxy fsdfsdfd"
-          PROXYFORWAN="$HTTPS_PROXY"
+          echo "Detected proxy:" "$PROXYFORWAN"
+          echo "----"
       fi
   fi
 }
@@ -129,7 +130,7 @@ SETUPENV() {
             echo "PGPASSWORD=$GENERATED_PG_PASSWORD"
             echo "# Important!!! NOC_MONGO_PASSWORD must by similar in .data/noc/etc/noc.conf file"
             echo "NOC_MONGO_PASSWORD=$GENERATED_MONGO_PASSWORD"
-            if [ ! -z "$PROXYFORWAN" ]
+            if [ -n "$PROXYFORWAN" ]
               then
                 echo "HTTPS_PROXY=$PROXYFORWAN"
             fi
