@@ -228,6 +228,18 @@ A: You need run
 
    Go to https://0.0.0.0:9000 to login in Sentry
 
+Q: I connect to the Internet through a proxy server.
+   How do I configure the installation of all system components.
+
+A: You need to set the environment variable 
+   HTTPS_PROXY (necessarily in UPPER CASE) 
+   and the script `./pre.sh` uses this variable to configure containers.
+   You can check the current settings by running the command
+   ```shell script
+   env | grep -i proxy
+    HTTP_PROXY=http://<proxyIP>:<proxyPORT>
+   ```
+   If your proxy server address has changed - edit the file `.env.proxy`
 
 Contributing
 ----
