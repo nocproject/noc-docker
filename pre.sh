@@ -23,7 +23,7 @@ CHECKWAN() {
           echo "----"
           {
             echo "https_proxy=$PROXYFORWAN"
-          } >> "$INSTALLPATH"/.env.proxy
+          } > "$INSTALLPATH"/.env.proxy
       fi
     else
       echo "Proxy not detected."
