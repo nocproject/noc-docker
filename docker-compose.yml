@@ -469,6 +469,7 @@ services:
       "
     env_file:
       - ./data/noc/etc/noc.conf
+      - .env.proxy
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
