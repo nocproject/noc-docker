@@ -239,6 +239,7 @@ if [ -n "$PARAM_P" ]
             then
                 CREATEDIR
                 SETUPENV
+                CHECKWAN
                 SETUPPROMGRAFANA
                 SETUPPROMRULES
                 SETUPSENTRY
@@ -250,6 +251,7 @@ if [ -n "$PARAM_P" ]
         elif [ "$PARAM_P" = "grafana" ]
             then
                 CREATEDIR
+                CHECKWAN
                 SETUPPROMGRAFANA
         elif [ "$PARAM_P" = "promrules" ]
             then
