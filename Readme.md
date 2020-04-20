@@ -237,7 +237,7 @@ A: You need to set the environment variable
    You can check the current settings by running the command
    ```shell script
    env | grep -i proxy
-    HTTP_PROXY=http://<proxyIP>:<proxyPORT>
+    HTTPS_PROXY=http://<proxyIP>:<proxyPORT>
    ```
    If your proxy server address has changed - edit the file `.env.proxy`
 
