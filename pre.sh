@@ -7,6 +7,7 @@ TMPPATH2=$(mktemp -d -p /tmp)
 CHECKWAN() {
   echo "Check internet connection"
   echo "----"
+  touch "$INSTALLPATH"/.env.proxy
   ping -c 1 -q google.com > /dev/null 2>&1
   if [ $? ]
     then
