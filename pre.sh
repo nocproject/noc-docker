@@ -8,7 +8,7 @@ CHECKWAN() {
   echo "Check internet connection"
   echo "----"
   ping -c 1 -q google.com > /dev/null 2>&1
-  if [ ! $? ]
+  if [ $? ]
     then
       PROXYFORWAN="$HTTPS_PROXY"
       if [ -z "$PROXYFORWAN" ]
@@ -18,6 +18,7 @@ CHECKWAN() {
           exit
         else
           echo "Detected proxy:" "$PROXYFORWAN"
+          echo "Create .env.proxy file"
           echo "----"
           {
             echo "https_proxy=$PROXYFORWAN"
