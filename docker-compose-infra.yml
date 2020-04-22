@@ -92,6 +92,8 @@ services:
     image: grafana/grafana:6.3.6
     restart: always
     hostname: prometheusgrafana
+    env_file:
+      - .env.proxy
     volumes:
       - promgrafana_etc/:/etc/grafana
       - promgrafana_db:/var/lib/grafana/
