@@ -117,3 +117,11 @@ A: You need to set the environment variable
     HTTPS_PROXY=http://<proxyIP>:<proxyPORT>
    ```
    If your proxy server address has changed - edit the file `.env.proxy`
+   
+Q: I want use RU language in interface
+
+A: Edit `./data/noc/ent/noc.conf`
+   ```
+   NOC_LANGUAGE=ru
+   NOC_LANGUAGE_CODE=ru
+   ```
