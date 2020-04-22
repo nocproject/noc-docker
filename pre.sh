@@ -166,7 +166,7 @@ SETUPENV() {
           echo "NOC_POOL=default"
           echo "# en/ru only"
           echo "NOC_LANGUAGE=en"
-          echo "NOC_LANGUGAGE_CODE=en"
+          echo "NOC_LANGUAGE_CODE=en"
           echo "NOC_MONGO_USER=noc"
           echo "# Important!!! NOC_MONGO_PASSWORD must by similar in .env file"
           echo "NOC_MONGO_PASSWORD=$GENERATED_MONGO_PASSWORD"
