@@ -123,5 +123,9 @@ Q: I want use RU language in interface
 A: Edit `./data/noc/ent/noc.conf`
    ```
    NOC_LANGUAGE=ru
+   NOC_BI_LANGUAGE=ru
+   NOC_CARD_LANGUAGE=ru
+   NOC_LOGIN_LANGUAGE=ru
+   NOC_WEB_LANGUAGE=ru
    NOC_LANGUAGE_CODE=ru
    ```
