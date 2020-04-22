@@ -120,7 +120,7 @@ A: You need to set the environment variable
    
 Q: I want use RU language in interface
 
-A: Edit `./data/noc/ent/noc.conf`
+A: Edit `./data/noc/etc/noc.conf`
    ```
    NOC_LANGUAGE=ru
    NOC_BI_LANGUAGE=ru
