@@ -121,6 +121,8 @@ Open URL:
 *  Grafana: http://0.0.0.0:3000
 *  Sentry: https://0.0.0.0:9000
 
+More info about monitoring noc: 
+https://kb.nocproject.org/pages/viewpage.action?pageId=29982977
 
 Contributing
 ----
