@@ -972,7 +972,11 @@ services:
     hostname: nsqd
     depends_on:
       - nsqlookupd
-    command: /nsqd --lookupd-tcp-address=nsqlookupd:4160 --mem-queue-size=10000
+    command: >
+             /nsqd
+             --lookupd-tcp-address=nsqlookupd:4160
+             --mem-queue-size=10000
+             --data-path=/data
     volumes:
       - nsq_data:/data
     healthcheck:
