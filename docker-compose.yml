@@ -832,6 +832,11 @@ services:
       MONGO_INITDB_DATABASE: noc
       MONGO_INITDB_ROOT_USERNAME: noc
       MONGO_INITDB_ROOT_PASSWORD: $NOC_MONGO_PASSWORD
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
