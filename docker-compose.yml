@@ -913,6 +913,10 @@ services:
       - nginx_ssl:/etc/nginx/ssl:ro
     labels:
       traefik.enable: false
+    healthcheck:
+      test: ["CMD", "curl", "-f", "--insecure", "http://0.0.0.0"]
+      interval: 30s
+      retries: 3
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -927,6 +931,11 @@ services:
     command: /nsqd --lookupd-tcp-address=nsqlookupd:4160 --mem-queue-size=10000
     volumes:
       - nsq_data:/data
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "localhost:4151/ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
