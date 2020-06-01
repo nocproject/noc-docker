@@ -913,7 +913,7 @@ services:
     labels:
       traefik.enable: false
     healthcheck:
-      test: ["CMD", "curl", "-f", "--insecure", "http://0.0.0.0"]
+      test: ["CMD", "curl", "-f", "http://0.0.0.0"]
       interval: 30s
       retries: 3
     logging:
