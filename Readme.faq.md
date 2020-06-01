@@ -1,5 +1,17 @@
 FAQ:
 ----
+Q: To run `noc-dc`, I use a laptop without an ssd disk or an old server.
+   When I start, I see intensive use of the drive that lasts more
+   than 10 minutes. what should I do?
+
+A: `noc-dc` consists of more than 30 containers,
+    which leads to a very high load on the disk subsystem. 
+    If you have a laptop or not very productive equipment, 
+    use the `slowstart.sh` script to run `noc-dc`.
+```shell script
+chmod +x ./slowstart.sh
+./slowstart.sh
+``` 
 
 Q: What it looks like default output of `docker-compose ps`
  when all works as intended 
