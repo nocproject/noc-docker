@@ -112,6 +112,11 @@ services:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
       - noc_beef:/var/lib/noc/beef
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://activator:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -137,6 +142,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://bi:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -166,6 +176,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://card:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -195,6 +210,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://chwriter:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -222,6 +242,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://classifier:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -247,6 +272,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://correlator:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -274,6 +304,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://datasource:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -301,6 +336,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://datastream:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -328,6 +368,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://discovery:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -355,6 +400,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://escalator:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -380,6 +430,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://grafanads:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -411,6 +466,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://login:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -439,6 +499,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://mailsender:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -464,6 +529,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://mib:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -525,6 +595,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://mrt:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -554,6 +629,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://nbi:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -577,6 +657,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://ping:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -604,6 +689,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://sae:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -631,6 +721,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://scheduler:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -658,6 +753,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://selfmon:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -683,6 +783,11 @@ services:
       - noc_code:/$NOC_CODE_PATH:ro
     ports:
       - 514:514/udp
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://syslogcollector:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -705,6 +810,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://tgsender:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -730,6 +840,11 @@ services:
       - noc_code:/$NOC_CODE_PATH:ro
     ports:
       - 162:162/udp
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://trapcollector:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -757,6 +872,11 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://web:1200/health/"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
