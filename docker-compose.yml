@@ -933,8 +933,8 @@ services:
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "localhost:4151/ping"]
       interval: 30s
-      timeout: 5s
-      retries: 3
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -947,6 +947,11 @@ services:
     image: nsqio/nsq:v1.1.0
     hostname: nsqlookupd
     command: /nsqlookupd
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "localhost:4161/ping"]
+      interval: 30s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -982,6 +987,11 @@ services:
   redis:
     image: redis:5-alpine
     hostname: redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
