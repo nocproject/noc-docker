@@ -805,6 +805,10 @@ services:
       - grafana_db:/var/lib/grafana
       - grafana_plugins:/var/lib/grafana/plugins
     # comment "environment" if node doesn't have access to internet
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f localhost:3000/api/health && echo 'ready'"]
+      interval: 10s
+      retries: 30
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
