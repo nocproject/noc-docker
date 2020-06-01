@@ -1014,14 +1014,13 @@ services:
     #  - bi
     #  - grafanads
     command: >
-      - traefik
-      - --web
-      - --web.metrics.prometheus
-      - --web.metrics.prometheus.buckets="0.1,0.3,1.2,5.0"
-      - --docker
-      - --entryPoints='Name:noc Address::1200'
-      - --accesslog
-      - --ping
+             traefik
+             --web
+             --web.metrics.prometheus
+             --web.metrics.prometheus.buckets="0.1,0.3,1.2,5.0"
+             --docker
+             --entryPoints='Name:noc Address::1200'
+             --accesslog
     ports:
       - 8080:8080
       - 1200:1200
@@ -1029,7 +1028,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
     healthcheck:
-      test: ["CMD", "traefik", "healthcheck"]
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
       interval: 30s
       timeout: 3s
       retries: 3
