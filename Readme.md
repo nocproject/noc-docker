@@ -94,7 +94,7 @@ If you have IDE HDD or notebook use `slowstart.sh`. see `Readme.faq.md`
 ./slowstart.sh
 ```
 
-If you have SDD blockdevice: 
+If you have SSD blockdevice: 
 ```
 docker-compose up -d 
 ```
