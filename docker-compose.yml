@@ -1019,6 +1019,7 @@ services:
       - --docker
       - --entryPoints='Name:noc Address::1200'
       - --accesslog
+      - --ping
     ports:
       - 8080:8080
       - 1200:1200
@@ -1026,7 +1027,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
     healthcheck:
-      test: ["CMD", "traefik" ,"healthcheck"]
+      test: ["CMD", "traefik", "healthcheck"]
       interval: 30s
       timeout: 3s
       retries: 3
