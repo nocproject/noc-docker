@@ -7,17 +7,17 @@ rule_files:
   - rules.d/*.rules.yml
   - rules.custom.d/*.rules.yml
 
-remote_write:
-  - url: "http://vm:8428/api/v1/write"
-    queue_config:
-      max_samples_per_send: 10000
+#remote_write:
+#  - url: "http://vm:8428/api/v1/write"
+#    queue_config:
+#      max_samples_per_send: 10000
 
 scrape_configs:
-  - job_name: 'prometheus'
-    static_configs:
-      - targets: ['127.0.0.1:9090']
-        labels:
-           env: 'infrastructure'
+#  - job_name: 'prometheus'
+#    static_configs:
+#      - targets: ['127.0.0.1:9090']
+#        labels:
+#           env: 'infrastructure'
 
     # see Readme.md
   - job_name: 'docker'
