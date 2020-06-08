@@ -64,29 +64,29 @@ volumes:
       type: bind
 
 services:
-  prom:
-    image: prom/prometheus:v2.11.1
-    restart: always
-    hostname: prom
-    volumes:
-      - prometheus_etc:/etc/prometheus
-      - prometheus_metrics:/prometheus-data
-    command: >
-        --config.file=/etc/prometheus/prometheus.yml
-        --storage.tsdb.path=/prometheus-data
-        --storage.tsdb.retention.time=12h
-        --web.external-url=https://prom:9090
-        --query.max-concurrency=40
-        --query.timeout=20s
-    ports:
-      - "9090:9090"
-    logging:
-      driver: $COMPOSE_LOG_DRIVER
-      options:
-        max-size: $COMPOSE_LOG_MAX_SIZE
-        max-file: $COMPOSE_LOG_MAX_FILE
-    labels:
-      - traefik.enable=false
+#  prom:
+#    image: prom/prometheus:v2.11.1
+#    restart: always
+#    hostname: prom
+#    volumes:
+#      - prometheus_etc:/etc/prometheus
+#      - prometheus_metrics:/prometheus-data
+#    command: >
+#        --config.file=/etc/prometheus/prometheus.yml
+#        --storage.tsdb.path=/prometheus-data
+#        --storage.tsdb.retention.time=12h
+#        --web.external-url=https://prom:9090
+#        --query.max-concurrency=40
+#        --query.timeout=20s
+#    ports:
+#      - "9090:9090"
+#    logging:
+#      driver: $COMPOSE_LOG_DRIVER
+#      options:
+#        max-size: $COMPOSE_LOG_MAX_SIZE
+#        max-file: $COMPOSE_LOG_MAX_FILE
+#    labels:
+#      - traefik.enable=false
 
   promgrafana:
     image: grafana/grafana:6.3.6
@@ -120,7 +120,7 @@ services:
     container_name: vm
     hostname: vm
     restart: always
-    image: victoriametrics/victoria-metrics:v1.34.5
+    image: victoriametrics/victoria-metrics:v1.36.3
     volumes:
       - promvm_data:/storage
     logging:
@@ -172,8 +172,7 @@ services:
     restart: always
     hostname: prommongo
     command: >
-        -mongodb.uri=mongodb://noc:noc@mongo:27017
-         # TODO get login\passwd from noc env
+        -mongodb.uri=mongodb://noc:$NOC_MONGO_PASSWORD@mongo:27017
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
