@@ -2,28 +2,22 @@
 version: '2.4'
 
 volumes:
-  vmagent_etc:
+#  prometheus_metrics:
+#    driver: local
+#    driver_opts:
+#      device: $COMPOSEPATH/data/prometheus/metrics
+#      o: bind
+#      type: bind
+  prometheus_etc:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/vmagent/etc
+      device: $COMPOSEPATH/data/prometheus/etc
       o: bind
       type: bind
-  vmagent_data:
+  promvm_data:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/vmagent/data
-      o: bind
-      type: bind
-  vmalert_etc:
-    driver: local
-    driver_opts:
-      device: $COMPOSEPATH/data/vmalert/etc
-      o: bind
-      type: bind
-  vm_metrics:
-    driver: local
-    driver_opts:
-      device: $COMPOSEPATH/data/vmmetrics
+      device: $COMPOSEPATH/data/promvm
       o: bind
       type: bind
   promgrafana_etc:
@@ -70,6 +64,30 @@ volumes:
       type: bind
 
 services:
+#  prom:
+#    image: prom/prometheus:v2.11.1
+#    restart: always
+#    hostname: prom
+#    volumes:
+#      - prometheus_etc:/etc/prometheus
+#      - prometheus_metrics:/prometheus-data
+#    command: >
+#        --config.file=/etc/prometheus/prometheus.yml
+#        --storage.tsdb.path=/prometheus-data
+#        --storage.tsdb.retention.time=12h
+#        --web.external-url=https://prom:9090
+#        --query.max-concurrency=40
+#        --query.timeout=20s
+#    ports:
+#      - "9090:9090"
+#    logging:
+#      driver: $COMPOSE_LOG_DRIVER
+#      options:
+#        max-size: $COMPOSE_LOG_MAX_SIZE
+#        max-file: $COMPOSE_LOG_MAX_FILE
+#    labels:
+#      - traefik.enable=false
+
   promgrafana:
     image: grafana/grafana:6.3.6
     restart: always
@@ -102,16 +120,13 @@ services:
     container_name: vm
     hostname: vm
     restart: always
-    image: victoriametrics/victoria-metrics:v1.37.1
-    env_file:
-      - .env.infra
+    image: victoriametrics/victoria-metrics:v1.37.0
     volumes:
-      - vm_metrics:/storage
+      - promvm_data:/storage
     command: >
         -storageDataPath=/storage
+        -retentionPeriod=3
         -httpListenAddr=:8428
-        -envflag.enable
-        -envflag.prefix=vm_
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -120,44 +135,37 @@ services:
     labels:
       - traefik.enable=false
 
-  vmalert:
-    container_name: vmalert
-    hostname: vmalert
-    restart: always
-    image: victoriametrics/vmalert:v1.37.1
-    env_file:
-      - .env.infra
-    volumes:
-      - vmalert_etc:/rules:ro
-    command: >
-      -datasource.url=http://vm:8428
-      -notifier.url=http://alertmanager:9093
-      -remoteWrite.url=http://vm:8428
-      -envflag.prefix=vmalert_
-      -envflag.enable
-    logging:
-      driver: $COMPOSE_LOG_DRIVER
-      options:
-        max-size: $COMPOSE_LOG_MAX_SIZE
-        max-file: $COMPOSE_LOG_MAX_FILE
-    labels:
-      - traefik.enable=false
+#  vmalert:
+#    container_name: vmalert
+#    hostname: vmalert
+#    restart: always
+#    image: victoriametrics/vmalert:v1.37.0
+#    volumes:
+#      - promvm_data:/storage
+#    command: >
+#        -storageDataPath=/storage
+#        -retentionPeriod=3
+#        -httpListenAddr=:8428
+#    logging:
+#      driver: $COMPOSE_LOG_DRIVER
+#      options:
+#        max-size: $COMPOSE_LOG_MAX_SIZE
+#        max-file: $COMPOSE_LOG_MAX_FILE
+#    labels:
+#      - traefik.enable=false
 
   vmagent:
     container_name: vmagent
     hostname: vmagent
     restart: always
-    image: victoriametrics/vmagent:v1.37.1
-    env_file:
-      - .env.infra
+    image: victoriametrics/vmagent:v1.37.0
     volumes:
-      - vmagent_etc:/etc/prometheus
-      - vmagent_data:/vmagent-remotewrite-data
+      - prometheus_etc:/etc/prometheus
     command: >
         -promscrape.config=/etc/prometheus/prometheus.yml
+        -remoteWrite.url=https://vm:8428/api/v1/write
         -envflag.enable
-        -remoteWrite.url=http://vm:8428/api/v1/write
-        -envflag.prefix=vmagent_
+#        -selfScrapeInterval=10s
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
