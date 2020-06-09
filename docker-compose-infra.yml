@@ -163,9 +163,17 @@ services:
       - prometheus_etc:/etc/prometheus
     command: >
         -promscrape.config=/etc/prometheus/prometheus.yml
-        -remoteWrite.url=http://vm:8428/api/v1/write
         -envflag.enable
-#        -selfScrapeInterval=10s
+        -remoteWrite.url=http://vm:8428/api/v1/write
+        -envflag.prefix=vmagent_
+    environment:
+#TODO вынести в .env и прописать доку
+      vmagent_loggerLevel: INFO
+#TODO вынести в .env и прописать доку
+      vmagent_promscrape_suppressScrapeErrors:  "false"
+#TODO вынести в .env и прописать доку
+      vmagent_promscrape_consulSDCheckInterval: 10s
+
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
