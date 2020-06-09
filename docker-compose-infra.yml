@@ -135,24 +135,33 @@ services:
     labels:
       - traefik.enable=false
 
-#  vmalert:
-#    container_name: vmalert
-#    hostname: vmalert
-#    restart: always
-#    image: victoriametrics/vmalert:v1.37.0
-#    volumes:
-#      - promvm_data:/storage
-#    command: >
-#        -storageDataPath=/storage
-#        -retentionPeriod=3
-#        -httpListenAddr=:8428
-#    logging:
-#      driver: $COMPOSE_LOG_DRIVER
-#      options:
-#        max-size: $COMPOSE_LOG_MAX_SIZE
-#        max-file: $COMPOSE_LOG_MAX_FILE
-#    labels:
-#      - traefik.enable=false
+  vmalert:
+    container_name: vmalert
+    hostname: vmalert
+    restart: always
+    image: victoriametrics/vmalert:v1.37.0
+    volumes:
+      - prometheus_etc:/rules:ro
+    command: >
+      -datasource.url=http://vm:8428
+      -notifier.url=http://alertmanager:9093
+      -envflag.enable
+      -rule /rules/rules.custom.d/*.rules.yml
+      -remoteWrite.url=http://vm:8428/api/v1/write
+      -envflag.prefix=vmalert_
+#      -rule /rules/rules.d/*.rules.yml
+    environment:
+#TODO вынести в .env и прописать доку
+      vmalert_loggerLevel: INFO
+#TODO вынести в .env и прописать доку
+      vmalert_rule_validateTemplates: "false"
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX_SIZE
+        max-file: $COMPOSE_LOG_MAX_FILE
+    labels:
+      - traefik.enable=false
 
   vmagent:
     container_name: vmagent
