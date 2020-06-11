@@ -50,17 +50,16 @@ CREATEDIR() {
   mkdir -p "$INSTALLPATH"/data/nsq
   mkdir -p "$INSTALLPATH"/data/postgres
   mkdir -p "$INSTALLPATH"/data/postgresrestore
-  mkdir -p "$INSTALLPATH"/data/prometheus/etc/rules.d
-  mkdir -p "$INSTALLPATH"/data/prometheus/etc/rules.custom.d
-  mkdir -p "$INSTALLPATH"/data/prometheus/metrics
   mkdir -p "$INSTALLPATH"/data/promgrafana/db
   mkdir -p "$INSTALLPATH"/data/promgrafana/etc/dashboards
   mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/dashboards
   mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/datasources
   mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/notifiers
   mkdir -p "$INSTALLPATH"/data/promgrafana/plugins
-  mkdir -p "$INSTALLPATH"/data/vmmetrics
   mkdir -p "$INSTALLPATH"/data/vmalert/etc
+  mkdir -p "$INSTALLPATH"/data/vmalert/etc/rules.d
+  mkdir -p "$INSTALLPATH"/data/vmalert/etc/rules.custom.d
+  mkdir -p "$INSTALLPATH"/data/vmmetrics
   mkdir -p "$INSTALLPATH"/data/sentry/pg
   mkdir -p "$INSTALLPATH"/data/sentry/redis
 }

@@ -14,6 +14,12 @@ volumes:
       device: $COMPOSEPATH/data/vmagent/etc
       o: bind
       type: bind
+  vmalert_etc:
+    driver: local
+    driver_opts:
+      device: $COMPOSEPATH/data/vmalert/etc
+      o: bind
+      type: bind
   vm_metrics:
     driver: local
     driver_opts:
@@ -146,7 +152,7 @@ services:
     env_file:
       - .env.infra
     volumes:
-      - vmagent_etc:/rules:ro
+      - vmalert_etc:/rules:ro
     command: >
       -datasource.url=http://vm:8428
       -notifier.url=http://alertmanager:9093
