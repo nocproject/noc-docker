@@ -14,10 +14,10 @@ volumes:
       device: $COMPOSEPATH/data/prometheus/etc
       o: bind
       type: bind
-  promvm_data:
+  vm_metrics:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/promvm
+      device: $COMPOSEPATH/data/vmmetrics
       o: bind
       type: bind
   promgrafana_etc:
@@ -124,11 +124,12 @@ services:
     env_file:
       - .env.infra
     volumes:
-      - promvm_data:/storage
+      - vm_metrics:/storage
     command: >
         -storageDataPath=/storage
-        -retentionPeriod=3
         -httpListenAddr=:8428
+        -envflag.enable
+        -envflag.prefix=vm_
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -149,9 +150,9 @@ services:
     command: >
       -datasource.url=http://vm:8428
       -notifier.url=http://alertmanager:9093
-      -envflag.enable
       -remoteWrite.url=http://vm:8428/api/v1/write
       -envflag.prefix=vmalert_
+      -envflag.enable
       -rule /rules/rules.custom.d/*.rules.yml
 #      -rule /rules/rules.d/*.rules.yml
     logging:
