@@ -8,10 +8,10 @@ volumes:
 #      device: $COMPOSEPATH/data/prometheus/metrics
 #      o: bind
 #      type: bind
-  prometheus_etc:
+  vmagent_etc:
     driver: local
     driver_opts:
-      device: $COMPOSEPATH/data/prometheus/etc
+      device: $COMPOSEPATH/data/vmagent/etc
       o: bind
       type: bind
   vm_metrics:
@@ -146,7 +146,7 @@ services:
     env_file:
       - .env.infra
     volumes:
-      - prometheus_etc:/rules:ro
+      - vmagent_etc:/rules:ro
     command: >
       -datasource.url=http://vm:8428
       -notifier.url=http://alertmanager:9093
@@ -171,7 +171,7 @@ services:
     env_file:
       - .env.infra
     volumes:
-      - prometheus_etc:/etc/prometheus
+      - vmagent_etc:/etc/prometheus
     command: >
         -promscrape.config=/etc/prometheus/prometheus.yml
         -envflag.enable
