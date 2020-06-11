@@ -6,6 +6,8 @@ CLEANENV() {
   echo "clean .env file"
   echo "---"
   rm -f "$INSTALLPATH"/.env
+  rm -f "$INSTALLPATH"/.env.proxy
+  rm -f "$INSTALLPATH"/.env.infra
 }
 
 CLEANSENTRY() {
