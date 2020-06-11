@@ -5,10 +5,11 @@ TMPPATH1=$(mktemp -d)
 TMPPATH2=$(mktemp -d)
 
 CHECKWAN() {
-  echo "Checking internet connection"
+  echo "Check internet connection"
   echo "----"
   touch "$INSTALLPATH"/.env.proxy
-  if ! ping -c 1 -q google.com > /dev/null 2>&1
+  ping -c 1 -q google.com > /dev/null 2>&1
+  if [ $? -ne 0 ]
     then
       echo "Internet connection not found"
       echo "Checking proxy ..."
@@ -27,6 +28,11 @@ CHECKWAN() {
             echo "https_proxy=$PROXYFORWAN"
           } > "$INSTALLPATH"/.env.proxy
       fi
+    else
+      echo "Proxy not detected."
+      echo "If you have a proxy - configure HTTPS_PROXY parameters"
+      echo "Example: export HTTPS_PROXY=http://<ip>:<port>"
+      echo "----"
   fi
 }
 
@@ -185,6 +191,22 @@ SETUPENV() {
           echo "LC_LANG=en_US.UTF-8"
         } >> "$INSTALLPATH"/data/noc/etc/noc.conf
   fi
+
+  # make .env.infra
+  if [ ! -f "$INSTALLPATH"/.env.infra ]
+    then
+        echo "Write $INSTALLPATH/.env.infra"
+        echo "You can change the parameters for infra monitoring if you want"
+        echo "---"
+        { echo "### vmagent ###"
+          echo "vmagent_loggerLevel=INFO"
+          echo "vmagent_promscrape.suppressScrapeErrors=True"
+          echo "vmagent_promscrape.consulSDCheckInterval=10s"
+          echo "### vmalert ###"
+          echo "vmalert_loggerLevel=INFO"
+          echo "vmalert_rule.validateTemplates=True"
+        } >> "$INSTALLPATH"/.env.infra
+  fi
 }
 
 while [ -n "$1" ]
@@ -279,7 +301,5 @@ if [ -n "$PARAM_P" ]
 else
     echo "No -p parameters found."
     echo "Use one of: all,env,perm,grafana,promrules,sentry"
-    exit
 fi
 
-echo "Configuring NOC-DC finished."

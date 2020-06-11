@@ -121,6 +121,8 @@ services:
     hostname: vm
     restart: always
     image: victoriametrics/victoria-metrics:v1.37.0
+    env_file:
+      - .env.infra
     volumes:
       - promvm_data:/storage
     command: >
@@ -140,21 +142,18 @@ services:
     hostname: vmalert
     restart: always
     image: victoriametrics/vmalert:v1.37.0
+    env_file:
+      - .env.infra
     volumes:
       - prometheus_etc:/rules:ro
     command: >
       -datasource.url=http://vm:8428
       -notifier.url=http://alertmanager:9093
       -envflag.enable
-      -rule /rules/rules.custom.d/*.rules.yml
       -remoteWrite.url=http://vm:8428/api/v1/write
       -envflag.prefix=vmalert_
+      -rule /rules/rules.custom.d/*.rules.yml
 #      -rule /rules/rules.d/*.rules.yml
-    environment:
-#TODO вынести в .env и прописать доку
-      vmalert_loggerLevel: INFO
-#TODO вынести в .env и прописать доку
-      vmalert_rule_validateTemplates: "false"
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -168,6 +167,8 @@ services:
     hostname: vmagent
     restart: always
     image: victoriametrics/vmagent:v1.37.0
+    env_file:
+      - .env.infra
     volumes:
       - prometheus_etc:/etc/prometheus
     command: >
@@ -175,14 +176,6 @@ services:
         -envflag.enable
         -remoteWrite.url=http://vm:8428/api/v1/write
         -envflag.prefix=vmagent_
-    environment:
-#TODO вынести в .env и прописать доку
-      vmagent_loggerLevel: INFO
-#TODO вынести в .env и прописать доку
-      vmagent_promscrape_suppressScrapeErrors:  "false"
-#TODO вынести в .env и прописать доку
-      vmagent_promscrape_consulSDCheckInterval: 10s
-
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
