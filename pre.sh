@@ -200,11 +200,11 @@ SETUPENV() {
         echo "---"
         { echo "### vmagent ###"
           echo "vmagent_loggerLevel=INFO"
-          echo "vmagent_promscrape.suppressScrapeErrors=True"
-          echo "vmagent_promscrape.consulSDCheckInterval=10s"
+          echo "vmagent_promscrape_suppressScrapeErrors=True"
+          echo "vmagent_promscrape_consulSDCheckInterval=10s"
           echo "### vmalert ###"
           echo "vmalert_loggerLevel=INFO"
-          echo "vmalert_rule.validateTemplates=True"
+          echo "vmalert_rule_validateTemplates=True"
         } >> "$INSTALLPATH"/.env.infra
   fi
 }
