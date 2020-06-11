@@ -117,14 +117,13 @@ Password: admin
 Install monitoring
 -------
 
-Read `data/prometheus/etc/Readme.md` and setup export metrics from docker host
+Read `data/vmagent/etc/Readme.md` and setup export metrics from docker host
 
 Run compose file `docker-compose-infra.yml`
 ```
 docker-compose -f docker-compose-infra.yml up -d
 ```
 Open URL:
-*  Prometheus: http://0.0.0.0:9090
 *  Grafana: http://0.0.0.0:3000
 *  Sentry: https://0.0.0.0:9000
 
