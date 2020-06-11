@@ -59,7 +59,7 @@ CREATEDIR() {
   mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/datasources
   mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/notifiers
   mkdir -p "$INSTALLPATH"/data/promgrafana/plugins
-  mkdir -p "$INSTALLPATH"/data/promvm
+  mkdir -p "$INSTALLPATH"/data/vmmetrics
   mkdir -p "$INSTALLPATH"/data/sentry/pg
   mkdir -p "$INSTALLPATH"/data/sentry/redis
 }
@@ -198,7 +198,9 @@ SETUPENV() {
         echo "Write $INSTALLPATH/.env.infra"
         echo "You can change the parameters for infra monitoring if you want"
         echo "---"
-        { echo "### vmagent ###"
+        { echo "### vm metrics ###"
+          echo "vm_retentionPeriod=3"
+          echo "### vmagent ###"
           echo "vmagent_loggerLevel=INFO"
           echo "vmagent_promscrape_suppressScrapeErrors=False"
           echo "vmagent_promscrape_consulSDCheckInterval=10s"
