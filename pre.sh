@@ -60,6 +60,7 @@ CREATEDIR() {
   mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/notifiers
   mkdir -p "$INSTALLPATH"/data/promgrafana/plugins
   mkdir -p "$INSTALLPATH"/data/vmmetrics
+  mkdir -p "$INSTALLPATH"/data/vmalert/etc
   mkdir -p "$INSTALLPATH"/data/sentry/pg
   mkdir -p "$INSTALLPATH"/data/sentry/redis
 }
@@ -87,7 +88,7 @@ SETUPPROMRULES() {
   echo "PROMETHEUS alert rules download from code.getnoc.com/noc/noc-prometheus-alerts.git"
   echo "---"
   cd "$TMPPATH1" && git clone -q https://code.getnoc.com/noc/noc-prometheus-alerts.git .
-  cp -f "$TMPPATH1"/*.yml "$INSTALLPATH"/data/prometheus/etc/rules.d
+  cp -f "$TMPPATH1"/*.yml "$INSTALLPATH"/data/vmalert/etc/rules.d
 }
 
 SETUPSENTRY() {
