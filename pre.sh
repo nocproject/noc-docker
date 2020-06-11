@@ -200,7 +200,7 @@ SETUPENV() {
         echo "---"
         { echo "### vmagent ###"
           echo "vmagent_loggerLevel=INFO"
-          echo "vmagent_promscrape_suppressScrapeErrors=True"
+          echo "vmagent_promscrape_suppressScrapeErrors=False"
           echo "vmagent_promscrape_consulSDCheckInterval=10s"
           echo "### vmalert ###"
           echo "vmalert_loggerLevel=INFO"
