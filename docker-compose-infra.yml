@@ -2,16 +2,16 @@
 version: '2.4'
 
 volumes:
-#  prometheus_metrics:
-#    driver: local
-#    driver_opts:
-#      device: $COMPOSEPATH/data/prometheus/metrics
-#      o: bind
-#      type: bind
   vmagent_etc:
     driver: local
     driver_opts:
       device: $COMPOSEPATH/data/vmagent/etc
+      o: bind
+      type: bind
+  vmagent_data:
+    driver: local
+    driver_opts:
+      device: $COMPOSEPATH/data/vmagent/data
       o: bind
       type: bind
   vmalert_etc:
@@ -70,30 +70,6 @@ volumes:
       type: bind
 
 services:
-#  prom:
-#    image: prom/prometheus:v2.11.1
-#    restart: always
-#    hostname: prom
-#    volumes:
-#      - prometheus_etc:/etc/prometheus
-#      - prometheus_metrics:/prometheus-data
-#    command: >
-#        --config.file=/etc/prometheus/prometheus.yml
-#        --storage.tsdb.path=/prometheus-data
-#        --storage.tsdb.retention.time=12h
-#        --web.external-url=https://prom:9090
-#        --query.max-concurrency=40
-#        --query.timeout=20s
-#    ports:
-#      - "9090:9090"
-#    logging:
-#      driver: $COMPOSE_LOG_DRIVER
-#      options:
-#        max-size: $COMPOSE_LOG_MAX_SIZE
-#        max-file: $COMPOSE_LOG_MAX_FILE
-#    labels:
-#      - traefik.enable=false
-
   promgrafana:
     image: grafana/grafana:6.3.6
     restart: always
@@ -159,8 +135,6 @@ services:
       -remoteWrite.url=http://vm:8428/api/v1/write
       -envflag.prefix=vmalert_
       -envflag.enable
-      -rule /rules/rules.custom.d/*.rules.yml
-#      -rule /rules/rules.d/*.rules.yml
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -178,6 +152,7 @@ services:
       - .env.infra
     volumes:
       - vmagent_etc:/etc/prometheus
+      - vmagent_data:/vmagent-remotewrite-data
     command: >
         -promscrape.config=/etc/prometheus/prometheus.yml
         -envflag.enable
