@@ -9,13 +9,16 @@ CHECKWAN() {
   echo "----"
   touch "$INSTALLPATH"/.env.proxy
   ping -c 1 -q google.com > /dev/null 2>&1
-  if [ $? ]
+  if [ $? -ne 0 ]
     then
+      echo "Internet connection not found"
+      echo "Checking proxy ..."
       PROXYFORWAN="$HTTPS_PROXY"
       if [ -z "$PROXYFORWAN" ]
         then
           echo "You need setup 'HTTPS_PROXY' parameter"
           echo "Example: export HTTPS_PROXY=http://<ip>:<port>"
+          echo "Break!!!"
           exit
         else
           echo "Detected proxy:" "$PROXYFORWAN"
@@ -30,9 +33,9 @@ CHECKWAN() {
       echo "If you have a proxy - configure HTTPS_PROXY parameters"
       echo "Example: export HTTPS_PROXY=http://<ip>:<port>"
       echo "----"
-
   fi
 }
+
 CREATEDIR() {
   mkdir -p "$INSTALLPATH"/data/clickhouse/data
   mkdir -p "$INSTALLPATH"/data/consul
@@ -187,6 +190,22 @@ SETUPENV() {
           echo "TZ=Europe/Moscow"
           echo "LC_LANG=en_US.UTF-8"
         } >> "$INSTALLPATH"/data/noc/etc/noc.conf
+  fi
+
+  # make .env.infra
+  if [ ! -f "$INSTALLPATH"/.env.infra ]
+    then
+        echo "Write $INSTALLPATH/.env.infra"
+        echo "You can change the parameters for infra monitoring if you want"
+        echo "---"
+        { echo "### vmagent ###"
+          echo "vmagent_loggerLevel=INFO"
+          echo "vmagent_promscrape.suppressScrapeErrors=True"
+          echo "vmagent_promscrape.consulSDCheckInterval=10s"
+          echo "### vmalert ###"
+          echo "vmalert_loggerLevel=INFO"
+          echo "vmalert_rule.validateTemplates=True"
+        } >> "$INSTALLPATH"/.env.infra
   fi
 }
 
