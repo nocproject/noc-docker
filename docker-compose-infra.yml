@@ -102,7 +102,7 @@ services:
     container_name: vm
     hostname: vm
     restart: always
-    image: victoriametrics/victoria-metrics:v1.37.0
+    image: victoriametrics/victoria-metrics:v1.37.1
     env_file:
       - .env.infra
     volumes:
@@ -124,7 +124,7 @@ services:
     container_name: vmalert
     hostname: vmalert
     restart: always
-    image: victoriametrics/vmalert:v1.37.0
+    image: victoriametrics/vmalert:v1.37.1
     env_file:
       - .env.infra
     volumes:
@@ -147,7 +147,7 @@ services:
     container_name: vmagent
     hostname: vmagent
     restart: always
-    image: victoriametrics/vmagent:v1.37.0
+    image: victoriametrics/vmagent:v1.37.1
     env_file:
       - .env.infra
     volumes:
