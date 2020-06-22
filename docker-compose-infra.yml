@@ -132,7 +132,7 @@ services:
     command: >
       -datasource.url=http://vm:8428
       -notifier.url=http://alertmanager:9093
-      -remoteWrite.url=http://vm:8428/api/v1/write
+      -remoteWrite.url=http://vm:8428
       -envflag.prefix=vmalert_
       -envflag.enable
     logging:
