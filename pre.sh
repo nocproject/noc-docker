@@ -31,7 +31,7 @@ CHECKWAN() {
       echo "Proxy not detected."
       echo "If you have a proxy - configure HTTPS_PROXY parameters"
       echo "Example: export HTTPS_PROXY=http://<ip>:<port>"
-      echo "and run script again or edit "$INSTALLPATH"/.env.proxy"
+      echo "and run script again or edit $INSTALLPATH/.env.proxy"
       echo "----"
   fi
 }
