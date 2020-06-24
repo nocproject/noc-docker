@@ -1,8 +1,8 @@
 #!/bin/sh
 
-TMPPATH=$(mktemp -d -p /tmp)
-TMPPATH1=$(mktemp -d -p /tmp)
-TMPPATH2=$(mktemp -d -p /tmp)
+TMPPATH=$(mktemp -d)
+TMPPATH1=$(mktemp -d)
+TMPPATH2=$(mktemp -d)
 
 CHECKWAN() {
   echo "Check internet connection"
