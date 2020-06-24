@@ -37,32 +37,34 @@ CHECKWAN() {
 }
 
 CREATEDIR() {
-  mkdir -p "$INSTALLPATH"/data/clickhouse/data
-  mkdir -p "$INSTALLPATH"/data/consul
-  mkdir -p "$INSTALLPATH"/data/grafana/plugins
-  mkdir -p "$INSTALLPATH"/data/mongo
-  mkdir -p "$INSTALLPATH"/data/mongorestore
-  mkdir -p "$INSTALLPATH"/data/nginx/ssl
-  mkdir -p "$INSTALLPATH"/data/noc/beef
-  mkdir -p "$INSTALLPATH"/data/noc/code
-  mkdir -p "$INSTALLPATH"/data/noc/custom
-  mkdir -p "$INSTALLPATH"/data/noc/etc
-  mkdir -p "$INSTALLPATH"/data/nsq
-  mkdir -p "$INSTALLPATH"/data/postgres
-  mkdir -p "$INSTALLPATH"/data/postgresrestore
-  mkdir -p "$INSTALLPATH"/data/promgrafana/db
-  mkdir -p "$INSTALLPATH"/data/promgrafana/etc/dashboards
-  mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/dashboards
-  mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/datasources
-  mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/notifiers
-  mkdir -p "$INSTALLPATH"/data/promgrafana/plugins
-  mkdir -p "$INSTALLPATH"/data/vmagent/data
-  mkdir -p "$INSTALLPATH"/data/vmalert/etc
-  mkdir -p "$INSTALLPATH"/data/vmalert/etc/rules.d
-  mkdir -p "$INSTALLPATH"/data/vmalert/etc/rules.custom.d
-  mkdir -p "$INSTALLPATH"/data/vmmetrics
-  mkdir -p "$INSTALLPATH"/data/sentry/pg
-  mkdir -p "$INSTALLPATH"/data/sentry/redis
+  echo "Created directory"
+  echo "----"
+  mkdir -p -v "$INSTALLPATH"/data/clickhouse/data
+  mkdir -p -v "$INSTALLPATH"/data/consul
+  mkdir -p -v "$INSTALLPATH"/data/grafana/plugins
+  mkdir -p -v "$INSTALLPATH"/data/mongo
+  mkdir -p -v "$INSTALLPATH"/data/mongorestore
+  mkdir -p -v "$INSTALLPATH"/data/nginx/ssl
+  mkdir -p -v "$INSTALLPATH"/data/noc/beef
+  mkdir -p -v "$INSTALLPATH"/data/noc/code
+  mkdir -p -v "$INSTALLPATH"/data/noc/custom
+  mkdir -p -v "$INSTALLPATH"/data/noc/etc
+  mkdir -p -v "$INSTALLPATH"/data/nsq
+  mkdir -p -v "$INSTALLPATH"/data/postgres
+  mkdir -p -v "$INSTALLPATH"/data/postgresrestore
+  mkdir -p -v "$INSTALLPATH"/data/promgrafana/db
+  mkdir -p -v "$INSTALLPATH"/data/promgrafana/etc/dashboards
+  mkdir -p -v "$INSTALLPATH"/data/promgrafana/etc/provisioning/dashboards
+  mkdir -p -v "$INSTALLPATH"/data/promgrafana/etc/provisioning/datasources
+  mkdir -p -v "$INSTALLPATH"/data/promgrafana/etc/provisioning/notifiers
+  mkdir -p -v "$INSTALLPATH"/data/promgrafana/plugins
+  mkdir -p -v "$INSTALLPATH"/data/vmagent/data
+  mkdir -p -v "$INSTALLPATH"/data/vmalert/etc
+  mkdir -p -v "$INSTALLPATH"/data/vmalert/etc/rules.d
+  mkdir -p -v "$INSTALLPATH"/data/vmalert/etc/rules.custom.d
+  mkdir -p -v "$INSTALLPATH"/data/vmmetrics
+  mkdir -p -v "$INSTALLPATH"/data/sentry/pg
+  mkdir -p -v "$INSTALLPATH"/data/sentry/redis
 }
 
 SETPERMISSION() {
