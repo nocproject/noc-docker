@@ -221,7 +221,7 @@ services:
   # cd $INSTALLPATH && docker-compose exec sentry sentry upgrade
   # for run migration and setup admin user\passwd
   sentry:
-    image: sentry
+    image: sentry:9
     hostname: sentry
     restart: always
     links:
@@ -246,7 +246,7 @@ services:
         hard: 40000
 
   sentry-cron:
-    image: sentry
+    image: sentry:9
     hostname: sentry-cron
     restart: always
     links:
@@ -264,7 +264,7 @@ services:
       - traefik.enable=false
 
   sentry-worker:
-    image: sentry
+    image: sentry:9
     hostname: sentry-worker
     restart: always
     links:
