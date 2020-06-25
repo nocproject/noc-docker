@@ -102,7 +102,7 @@ services:
       - consul
       - discovery-default
     restart: "always"
-    command: /usr/bin/python /opt/noc/services/activator/service.py
+    command: /usr/bin/python3 /opt/noc/services/activator/service.py
     mem_limit: 150m
     working_dir: /opt/noc
     env_file:
@@ -132,7 +132,7 @@ services:
       - consul
       - clickhouse
       - mongo
-    command: /usr/bin/python /opt/noc/services/bi/service.py
+    command: /usr/bin/python3 /opt/noc/services/bi/service.py
     mem_limit: 100m
     working_dir: /opt/noc
     env_file:
@@ -167,7 +167,7 @@ services:
       - nginx
       - redis
       - login
-    command: /usr/bin/python /opt/noc/services/card/service.py
+    command: /usr/bin/python3 /opt/noc/services/card/service.py
     mem_limit: 140m
     working_dir: /opt/noc
     env_file:
@@ -201,7 +201,7 @@ services:
       - clickhouse
       - nsqlookupd
       - nsqd
-    command: /usr/bin/python /opt/noc/services/chwriter/service.py
+    command: /usr/bin/python3 /opt/noc/services/chwriter/service.py
     mem_limit: 90m
     working_dir: /opt/noc
     env_file:
@@ -233,7 +233,7 @@ services:
       - redis
       - nsqlookupd
       - nsqd
-    command: /usr/bin/python /opt/noc/services/classifier/service.py
+    command: /usr/bin/python3 /opt/noc/services/classifier/service.py
     working_dir: /opt/noc
     env_file:
       - ./data/noc/etc/noc.conf
@@ -263,7 +263,7 @@ services:
       - redis
       - nsqlookupd
       - nsqd
-    command: /usr/bin/python /opt/noc/services/correlator/service.py
+    command: /usr/bin/python3 /opt/noc/services/correlator/service.py
     working_dir: /opt/noc
     env_file:
       - ./data/noc/etc/noc.conf
@@ -289,7 +289,7 @@ services:
     hostname: datasource
     depends_on:
       - mongo
-    command: /usr/bin/python /opt/noc/services/datasource/service.py
+    command: /usr/bin/python3 /opt/noc/services/datasource/service.py
     mem_limit: 300m
     working_dir: /opt/noc
     env_file:
@@ -316,7 +316,7 @@ services:
     hostname: datastream
     depends_on:
       - mongo
-    command: /usr/bin/python /opt/noc/services/datastream/service.py
+    command: /usr/bin/python3 /opt/noc/services/datastream/service.py
     mem_limit: 110m
     working_dir: /opt/noc
     env_file:
@@ -341,7 +341,7 @@ services:
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
     hostname: discovery
     restart: "always"
-    command: /usr/bin/python /opt/noc/services/discovery/service.py
+    command: /usr/bin/python3 /opt/noc/services/discovery/service.py
     mem_limit: 150m
     working_dir: /opt/noc
     env_file:
@@ -369,7 +369,7 @@ services:
     depends_on:
       - nsqlookupd
       - nsqd
-    command: /usr/bin/python /opt/noc/services/escalator/service.py
+    command: /usr/bin/python3 /opt/noc/services/escalator/service.py
     mem_limit: 90m
     working_dir: /opt/noc
     env_file:
@@ -397,7 +397,7 @@ services:
     depends_on:
       - consul
       - mongo
-    command: /usr/bin/python /opt/noc/services/grafanads/service.py
+    command: /usr/bin/python3 /opt/noc/services/grafanads/service.py
     mem_limit: 110m
     working_dir: /opt/noc
     env_file:
@@ -429,7 +429,7 @@ services:
     depends_on:
       - consul
       - mongo
-    command: /usr/bin/python /opt/noc/services/login/service.py
+    command: /usr/bin/python3 /opt/noc/services/login/service.py
     mem_limit: 75m
     working_dir: /opt/noc
     env_file:
@@ -462,7 +462,7 @@ services:
     mem_limit: 52m
     depends_on:
       - mongo
-    command: /usr/bin/python /opt/noc/services/mailsender/service.py
+    command: /usr/bin/python3 /opt/noc/services/mailsender/service.py
     working_dir: /opt/noc
     env_file:
       - ./data/noc/etc/noc.conf
@@ -489,7 +489,7 @@ services:
     mem_limit: 100m
     depends_on:
       - mongo
-    command: /usr/bin/python /opt/noc/services/mib/service.py
+    command: /usr/bin/python3 /opt/noc/services/mib/service.py
     working_dir: /opt/noc
     env_file:
       - ./data/noc/etc/noc.conf
@@ -522,11 +522,11 @@ services:
     command: >
       sh -c "set -xe
       && env
-      && /usr/bin/python ./commands/migrate.py
+      && /usr/bin/python3 ./commands/migrate.py
       && ./noc ensure-indexes
-      && /usr/bin/python ./commands/migrate-ch.py
+      && /usr/bin/python3 ./commands/migrate-ch.py
       && cp ./requirements/collections.json /tmp/collections.json
-      && /usr/bin/python ./scripts/deploy/install-packages /tmp/collections.json
+      && /usr/bin/python3 ./scripts/deploy/install-packages /tmp/collections.json
       && ./noc collection sync
       && ./noc sync-perm
       && ./noc sync-mibs
@@ -534,7 +534,7 @@ services:
       && echo 'cG9vbHM6CiAgZGVmYXVsdDoKICAgIGRlc2NyaXB0aW9uOiBkZWZhdWx0Cg==' \
       |base64 -d > /opt/noc/etc/noc.yml
       && cat /opt/noc/etc/noc.yml
-      && /usr/bin/python ./scripts/deploy/apply-pools
+      && /usr/bin/python3 ./scripts/deploy/apply-pools
       "
     env_file:
       - ./data/noc/etc/noc.conf
@@ -554,7 +554,7 @@ services:
     depends_on:
       - consul
       - mongo
-    command: /usr/bin/python /opt/noc/services/mrt/service.py
+    command: /usr/bin/python3 /opt/noc/services/mrt/service.py
     mem_limit: 103m
     working_dir: /opt/noc
     env_file:
@@ -590,7 +590,7 @@ services:
       - login
       - nsqd
       - nginx
-    command: /usr/bin/python /opt/noc/services/nbi/service.py
+    command: /usr/bin/python3 /opt/noc/services/nbi/service.py
     mem_limit: 100m
     working_dir: /opt/noc
     env_file:
@@ -615,7 +615,7 @@ services:
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
     hostname: ping
     restart: "always"
-    command: /usr/bin/python /opt/noc/services/ping/service.py
+    command: /usr/bin/python3 /opt/noc/services/ping/service.py
     privileged: true
     mem_limit: 50m
     depends_on:
@@ -646,7 +646,7 @@ services:
     depends_on:
       - mongo
       - redis
-    command: /usr/bin/python /opt/noc/services/sae/service.py
+    command: /usr/bin/python3 /opt/noc/services/sae/service.py
     mem_limit: 85m
     working_dir: /opt/noc
     env_file:
@@ -675,7 +675,7 @@ services:
       - consul
       - mongo
       - redis
-    command: /usr/bin/python /opt/noc/services/scheduler/service.py
+    command: /usr/bin/python3 /opt/noc/services/scheduler/service.py
     mem_limit: 150m
     working_dir: /opt/noc
     env_file:
@@ -705,7 +705,7 @@ services:
       - mongo
       - nsqlookupd
       - nsqd
-    command: /usr/bin/python /opt/noc/services/selfmon/service.py
+    command: /usr/bin/python3 /opt/noc/services/selfmon/service.py
     working_dir: /opt/noc
     env_file:
       - ./data/noc/etc/noc.conf
@@ -732,7 +732,7 @@ services:
     depends_on:
       - nsqd
       - datastream
-    command: /usr/bin/python /opt/noc/services/syslogcollector/service.py
+    command: /usr/bin/python3 /opt/noc/services/syslogcollector/service.py
     mem_limit: 80m
     working_dir: /opt/noc
     env_file:
@@ -762,7 +762,7 @@ services:
     mem_limit: 52m
     depends_on:
       - mongo
-    command: /usr/bin/python /opt/noc/services/tgsender/service.py
+    command: /usr/bin/python3 /opt/noc/services/tgsender/service.py
     working_dir: /opt/noc
     env_file:
       - ./data/noc/etc/noc.conf
@@ -789,7 +789,7 @@ services:
     depends_on:
       - nsqd
       - datastream
-    command: /usr/bin/python /opt/noc/services/trapcollector/service.py
+    command: /usr/bin/python3 /opt/noc/services/trapcollector/service.py
     mem_limit: 80m
     working_dir: /opt/noc
     env_file:
@@ -826,7 +826,7 @@ services:
       - nsqd
       - nsqlookupd
       - nginx
-    command: /usr/bin/python /opt/noc/services/web/service.py
+    command: /usr/bin/python3 /opt/noc/services/web/service.py
     mem_limit: 120m
     working_dir: /opt/noc
     env_file:
