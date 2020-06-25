@@ -309,3 +309,4 @@ else
     echo "Use one of: all,env,perm,grafana,promrules,sentry"
 fi
 
+echo "Configuring NOC-DC finished."
