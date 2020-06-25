@@ -301,6 +301,7 @@ if [ -n "$PARAM_P" ]
 else
     echo "No -p parameters found."
     echo "Use one of: all,env,perm,grafana,promrules,sentry"
+    exit
 fi
 
 echo "Configuring NOC-DC finished."
