@@ -8,14 +8,16 @@ CHECKWAN() {
   echo "Check internet connection"
   echo "----"
   touch "$INSTALLPATH"/.env.proxy
-  ping -c 1 -q google.com > /dev/null 2>&1
-  if [ $? ]
+  if ! ping -c 1 -q google.com > /dev/null 2>&1
     then
+      echo "Internet connection not found"
+      echo "Checking proxy ..."
       PROXYFORWAN="$HTTPS_PROXY"
       if [ -z "$PROXYFORWAN" ]
         then
           echo "You need setup 'HTTPS_PROXY' parameter"
           echo "Example: export HTTPS_PROXY=http://<ip>:<port>"
+          echo "Break!!!"
           exit
         else
           echo "Detected proxy:" "$PROXYFORWAN"
@@ -29,10 +31,11 @@ CHECKWAN() {
       echo "Proxy not detected."
       echo "If you have a proxy - configure HTTPS_PROXY parameters"
       echo "Example: export HTTPS_PROXY=http://<ip>:<port>"
+      echo "and run script again or edit $INSTALLPATH/.env.proxy"
       echo "----"
-
   fi
 }
+
 CREATEDIR() {
   mkdir -p "$INSTALLPATH"/data/clickhouse/data
   mkdir -p "$INSTALLPATH"/data/consul
