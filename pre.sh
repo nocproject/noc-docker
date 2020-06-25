@@ -5,7 +5,7 @@ TMPPATH1=$(mktemp -d)
 TMPPATH2=$(mktemp -d)
 
 CHECKWAN() {
-  echo "Check internet connection"
+  echo "Checking internet connection"
   echo "----"
   touch "$INSTALLPATH"/.env.proxy
   if ! ping -c 1 -q google.com > /dev/null 2>&1
@@ -27,12 +27,6 @@ CHECKWAN() {
             echo "https_proxy=$PROXYFORWAN"
           } > "$INSTALLPATH"/.env.proxy
       fi
-    else
-      echo "Proxy not detected."
-      echo "If you have a proxy - configure HTTPS_PROXY parameters"
-      echo "Example: export HTTPS_PROXY=http://<ip>:<port>"
-      echo "and run script again or edit $INSTALLPATH/.env.proxy"
-      echo "----"
   fi
 }
 
@@ -285,5 +279,7 @@ if [ -n "$PARAM_P" ]
 else
     echo "No -p parameters found."
     echo "Use one of: all,env,perm,grafana,promrules,sentry"
+    exit
 fi
 
+echo "Configuring NOC-DC finished."
