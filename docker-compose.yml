@@ -887,6 +887,7 @@ services:
     depends_on:
       - nginx_openssl
       - traefik
+      - grafana
     volumes:
       - ./data/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - nginx_ssl:/etc/nginx/ssl:ro
