@@ -860,10 +860,6 @@ services:
       MONGO_REPL_SET_NAME: noc
       MONGO_REPL_SET_HOSTS: mongo
     entrypoint: sh /rs-init.sh
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://0.0.0.0"]
-      interval: 30s
-      retries: 3
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
