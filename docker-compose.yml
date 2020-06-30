@@ -775,7 +775,7 @@ services:
       - -ui
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8500"]
-      interval: 1m
+      interval: 10s
       timeout: 5s
       retries: 3
     volumes:
