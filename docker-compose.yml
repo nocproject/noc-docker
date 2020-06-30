@@ -193,9 +193,9 @@ services:
       clickhouse:
         condition: service_healthy
       nsqlookupd:
-          condition: service_started
+        condition: service_started
       nsqd:
-          condition: service_started
+        condition: service_started
     command: /usr/bin/python3 /opt/noc/services/chwriter/service.py
     mem_limit: 90m
     working_dir: /opt/noc
@@ -465,8 +465,8 @@ services:
       && /usr/bin/python3 ./commands/migrate.py
       && ./noc ensure-indexes
       && /usr/bin/python3 ./commands/migrate-ch.py
-      && cp ./requirements/collections.json /tmp/collections.json
-      && /usr/bin/python3 ./scripts/deploy/install-packages /tmp/collections.json
+      && cp ./requirements/collections.json /tmp/collection.json
+      && /usr/bin/python3 ./scripts/deploy/install-packages /tmp/collection.json
       && ./noc collection sync
       && ./noc sync-perm
       && ./noc sync-mibs
