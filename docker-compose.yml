@@ -100,10 +100,8 @@ services:
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
     hostname: activator
     depends_on:
-      consul:
-        condition: service_started
-      discovery-default:
-        condition: service_healthy
+      - consul
+      - discovery-default
     restart: "always"
     command: /usr/bin/python3 /opt/noc/services/activator/service.py
     mem_limit: 150m
@@ -127,12 +125,9 @@ services:
     restart: "always"
     hostname: bi
     depends_on:
-      consul:
-        condition: service_started
-      mongo:
-        condition: service_healthy
-      clickhouse:
-        condition: service_healthy
+      - consul
+      - clickhouse
+      - mongo
     command: /usr/bin/python3 /opt/noc/services/bi/service.py
     mem_limit: 100m
     working_dir: /opt/noc
@@ -158,14 +153,11 @@ services:
     hostname: card
     restart: "always"
     depends_on:
-      consul:
-        condition: service_started
-      mongo:
-        condition: service_healthy
-      nginx:
-        condition: service_healthy
-      login:
-        condition: service_healthy
+      - consul
+      - mongo
+      - nginx
+      - redis
+      - login
     command: /usr/bin/python3 /opt/noc/services/card/service.py
     mem_limit: 140m
     working_dir: /opt/noc
@@ -191,14 +183,10 @@ services:
     hostname: chwriter
     restart: "always"
     depends_on:
-      consul:
-        condition: service_started
-      clickhouse:
-        condition: service_healthy
-      nsqlookupd:
-        condition: service_started
-      nsqd:
-        condition: service_started
+      - consul
+      - clickhouse
+      - nsqlookupd
+      - nsqd
     command: /usr/bin/python3 /opt/noc/services/chwriter/service.py
     mem_limit: 90m
     working_dir: /opt/noc
