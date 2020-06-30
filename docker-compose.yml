@@ -562,6 +562,33 @@ services:
     labels:
       traefik.enable: false
 
+  noc-code-cythonize:
+    image: registry.getnoc.com/noc/noc/dev:$NOC_VERSION_TAG
+    restart: "no"
+    hostname: noc-code-cythonize
+    # command: /usr/bin/cythonize -i speedup/*.pyx
+    entrypoint:
+      - "/bin/sh"
+      - -ecx
+      - |
+        apk add --no-cache --virtual .build-deps  \
+        cython \
+        cython-dev \
+        gcc \
+        && /usr/bin/cythonize -i speedup/*.pyx
+    working_dir: /opt/noc
+    env_file:
+      - ./data/noc/etc/noc.conf
+    volumes:
+      - noc_code:/$NOC_CODE_PATH:rw
+    logging:
+      driver: $COMPOSE_LOG_DRIVER
+      options:
+        max-size: $COMPOSE_LOG_MAX_SIZE
+        max-file: $COMPOSE_LOG_MAX_FILE
+    labels:
+      traefik.enable: false
+
   ping-default:
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
     hostname: ping
