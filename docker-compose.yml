@@ -567,15 +567,15 @@ services:
     restart: "no"
     hostname: noc-code-cythonize
     # command: /usr/bin/cythonize -i speedup/*.pyx
-    entrypoint:
-      - "/bin/sh"
-      - -ecx
-      - |
-        apk add --no-cache --virtual .build-deps  \
+    command: >
+      sh -c "set -xe
+        ls /opt/noc/speedup/*.so || apk add --no-cache --virtual .build-deps  \
         cython \
+        musl-dev \
         cython-dev \
+        python3-dev \
         gcc \
-        && /usr/bin/cythonize -i speedup/*.pyx
+        && /usr/bin/cythonize -i speedup/*.pyx"
     working_dir: /opt/noc
     env_file:
       - ./data/noc/etc/noc.conf
