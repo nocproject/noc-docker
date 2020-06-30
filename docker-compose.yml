@@ -100,7 +100,8 @@ services:
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
     hostname: activator
     depends_on:
-      - consul
+      consul:
+        condition: service_started
       - discovery-default
     restart: "always"
     command: /usr/bin/python3 /opt/noc/services/activator/service.py
@@ -125,9 +126,12 @@ services:
     restart: "always"
     hostname: bi
     depends_on:
-      - consul
-      - clickhouse
-      - mongo
+      consul:
+        condition: service_started
+      mongo:
+        condition: service_healthy
+      clickhouse:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/bi/service.py
     mem_limit: 100m
     working_dir: /opt/noc
@@ -153,11 +157,14 @@ services:
     hostname: card
     restart: "always"
     depends_on:
-      - consul
-      - mongo
-      - nginx
-      - redis
-      - login
+      consul:
+        condition: service_started
+      mongo:
+        condition: service_healthy
+      nginx:
+        condition: service_healthy
+      login:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/card/service.py
     mem_limit: 140m
     working_dir: /opt/noc
@@ -183,10 +190,14 @@ services:
     hostname: chwriter
     restart: "always"
     depends_on:
-      - consul
-      - clickhouse
-      - nsqlookupd
-      - nsqd
+      consul:
+        condition: service_started
+      clickhouse:
+        condition: service_healthy
+      nsqlookupd:
+        condition: service_started
+      nsqd:
+        condition: service_started
     command: /usr/bin/python3 /opt/noc/services/chwriter/service.py
     mem_limit: 90m
     working_dir: /opt/noc
@@ -741,6 +752,13 @@ services:
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - clickhouse_etc:/etc/clickhouse-server
+    healthcheck:
+      # "clickhouse", "client", "-u ${CLICKHOUSE_USER}", \
+      # "--password ${CLICKHOUSE_PASSWORD}", "-q 'SELECT 1'"
+      test: ["CMD", "wget", "--spider", "-q", "localhost:8123/ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -766,6 +784,11 @@ services:
       - -bind={{ GetInterfaceIP "eth0" }}
       - -client=0.0.0.0
       - -ui
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8500"]
+      interval: 1m
+      timeout: 5s
+      retries: 3
     volumes:
       - consul_data:/data
     logging:
@@ -792,6 +815,10 @@ services:
       - grafana_db:/var/lib/grafana
       - grafana_plugins:/var/lib/grafana/plugins
     # comment "environment" if node doesn't have access to internet
+    healthcheck:
+      test: ["CMD", "curl", "-f", "localhost:3000/api/health"]
+      interval: 10s
+      retries: 30
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -817,6 +844,11 @@ services:
       MONGO_INITDB_DATABASE: noc
       MONGO_INITDB_ROOT_USERNAME: noc
       MONGO_INITDB_ROOT_PASSWORD: $NOC_MONGO_PASSWORD
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -839,6 +871,10 @@ services:
       MONGO_REPL_SET_NAME: noc
       MONGO_REPL_SET_HOSTS: mongo
     entrypoint: sh /rs-init.sh
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0"]
+      interval: 30s
+      retries: 3
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -846,7 +882,6 @@ services:
         max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
-
 
   nginx_openssl:
     image: alpine:latest
@@ -905,6 +940,11 @@ services:
     command: /nsqd --lookupd-tcp-address=nsqlookupd:4160 --mem-queue-size=10000
     volumes:
       - nsq_data:/data
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "localhost:4151/ping"]
+      interval: 30s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -917,6 +957,11 @@ services:
     image: nsqio/nsq:v1.1.0
     hostname: nsqlookupd
     command: /nsqlookupd
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "localhost:4161/ping"]
+      interval: 30s
+      timeout: 3s
+      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -952,6 +997,11 @@ services:
   redis:
     image: redis:5-alpine
     hostname: redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -986,6 +1036,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
