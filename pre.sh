@@ -238,11 +238,10 @@ if [ "$NOC_CODE_PATH" = "dev" ]
         NOC_CODE_PATH=/opt/noc
         # checkout NOC code to ./data/noc/code
         echo "NOC code downloading from code.getnoc.com/noc/noc.git"
+        echo "Please read Readme.develop.md!!!"
         echo "---"
         cd "$TMPPATH2" && git clone -q https://code.getnoc.com/noc/noc.git .
         cp -rf "$TMPPATH2"/. "$INSTALLPATH"/data/noc/code
-        #@TODO generate speedup .so file
-
     else
         NOC_CODE_PATH=/home
 fi

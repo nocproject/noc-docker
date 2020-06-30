@@ -12,8 +12,19 @@ See '.env' file for volume mount path:
 ```shell script
 # NOC_CODE_PATH '/home' for PROD or '/opt/noc' for DEV
 NOC_CODE_PATH=/home
-
 ```  
+For full develop environment:
+```shell script
+# NOC_CODE_PATH '/home' for PROD or '/opt/noc' for DEV
+NOC_CODE_PATH=/opt/noc
+```  
+Generate 'cythonize' file
+----
+After Noc 20.2 you need generate 'cythonize' file. 
+After `./pre.sh -p all -c dev` run:
+```shell script
+docker-compose up noc-code-cythonize
+``` 
 
 Restore database from dump
 ----
