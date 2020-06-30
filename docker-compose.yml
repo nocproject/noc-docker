@@ -911,6 +911,10 @@ services:
       - nginx_ssl:/etc/nginx/ssl:ro
     labels:
       traefik.enable: false
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0"]
+      interval: 10s
+      retries: 3
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
