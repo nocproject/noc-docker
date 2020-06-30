@@ -456,8 +456,6 @@ services:
       && /usr/bin/python3 ./commands/migrate.py
       && ./noc ensure-indexes
       && /usr/bin/python3 ./commands/migrate-ch.py
-      && cp ./requirements/collections.json /tmp/collections.json
-      && /usr/bin/python3 ./scripts/deploy/install-packages /tmp/collections.json
       && ./noc collection sync
       && ./noc sync-perm
       && ./noc sync-mibs
