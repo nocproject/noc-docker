@@ -124,7 +124,7 @@ SETUPENV() {
   if [ ! -f "$INSTALLPATH"/.env ]
       then
           echo "Writed COMPOSEPATH=$INSTALLPATH in $INSTALLPATH/.env"
-          echo "You can change the parameters OC_PG_PASSWORD\NOC_MONGO_PASSWORD if you want"
+          echo "You can change the parameters NOC_PG_PASSWORD\NOC_MONGO_PASSWORD if you want"
           echo "---"
           { echo "COMPOSEPATH=$INSTALLPATH"
             echo "COMPOSE_HTTP_TIMEOUT=300"
