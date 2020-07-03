@@ -20,7 +20,6 @@ NOC_CODE_PATH=/opt/noc
 ```  
 Generate 'cythonize' file
 ----
-After Noc 20.2 you need generate 'cythonize' file. 
 After `./pre.sh -p all -c dev` run:
 ```shell script
 docker-compose up noc-code-cythonize
