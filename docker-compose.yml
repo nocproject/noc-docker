@@ -93,6 +93,7 @@ volumes:
       o: bind
       type: bind
 
+
 services:
   ########## NOC Components ##########
   activator-default:
@@ -111,11 +112,6 @@ services:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
       - noc_beef:/var/lib/noc/beef
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://activator:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -129,9 +125,10 @@ services:
     restart: "always"
     hostname: bi
     depends_on:
-      - consul
-      - clickhouse
-      - mongo
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/bi/service.py
     mem_limit: 100m
     working_dir: /opt/noc
@@ -140,11 +137,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://bi:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -162,11 +154,10 @@ services:
     hostname: card
     restart: "always"
     depends_on:
-      - consul
-      - mongo
-      - nginx
-      - redis
-      - login
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/card/service.py
     mem_limit: 140m
     working_dir: /opt/noc
@@ -175,11 +166,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://card:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -209,11 +195,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://chwriter:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -228,11 +209,12 @@ services:
     restart: "always"
     mem_limit: 120m
     depends_on:
-      - consul
-      - mongo
-      - redis
-      - nsqlookupd
-      - nsqd
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/classifier/service.py
     working_dir: /opt/noc
     env_file:
@@ -240,11 +222,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://classifier:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -259,10 +236,10 @@ services:
     restart: "always"
     mem_limit: 120m
     depends_on:
-      - mongo
-      - redis
-      - nsqlookupd
-      - nsqd
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/correlator/service.py
     working_dir: /opt/noc
     env_file:
@@ -270,11 +247,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://correlator:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -288,7 +260,12 @@ services:
     restart: "always"
     hostname: datasource
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/datasource/service.py
     mem_limit: 300m
     working_dir: /opt/noc
@@ -297,11 +274,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://datasource:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -315,7 +287,12 @@ services:
     restart: "always"
     hostname: datastream
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/datastream/service.py
     mem_limit: 110m
     working_dir: /opt/noc
@@ -324,11 +301,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://datastream:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -341,6 +313,13 @@ services:
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
     hostname: discovery
     restart: "always"
+    depends_on:
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/discovery/service.py
     mem_limit: 150m
     working_dir: /opt/noc
@@ -349,11 +328,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://discovery:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -367,8 +341,12 @@ services:
     hostname: escalator
     restart: "always"
     depends_on:
-      - nsqlookupd
-      - nsqd
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/escalator/service.py
     mem_limit: 90m
     working_dir: /opt/noc
@@ -377,11 +355,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://escalator:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -395,8 +368,10 @@ services:
     restart: "always"
     hostname: grafanads
     depends_on:
-      - consul
-      - mongo
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/grafanads/service.py
     mem_limit: 110m
     working_dir: /opt/noc
@@ -405,11 +380,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://grafanads:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -427,8 +397,12 @@ services:
     hostname: login
     restart: "always"
     depends_on:
-      - consul
-      - mongo
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/login/service.py
     mem_limit: 75m
     working_dir: /opt/noc
@@ -437,11 +411,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://login:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -461,7 +430,8 @@ services:
     restart: "always"
     mem_limit: 52m
     depends_on:
-      - mongo
+      consul:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/mailsender/service.py
     working_dir: /opt/noc
     env_file:
@@ -469,11 +439,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://mailsender:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -488,7 +453,10 @@ services:
     restart: "always"
     mem_limit: 100m
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/mib/service.py
     working_dir: /opt/noc
     env_file:
@@ -496,11 +464,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://mib:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -518,7 +481,7 @@ services:
       mongodb-repl-set-init:
         condition: service_started
       clickhouse:
-        condition: service_started
+        condition: service_healthy
     command: >
       sh -c "set -xe
       && env
@@ -550,8 +513,10 @@ services:
     hostname: mrt
     restart: "always"
     depends_on:
-      - consul
-      - mongo
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/mrt/service.py
     mem_limit: 103m
     working_dir: /opt/noc
@@ -560,11 +525,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://mrt:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -582,12 +542,10 @@ services:
     restart: "always"
     hostname: nbi
     depends_on:
-      - consul
-      - mongo
-      - clickhouse
-      - login
-      - nsqd
-      - nginx
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/nbi/service.py
     mem_limit: 100m
     working_dir: /opt/noc
@@ -596,11 +554,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://nbi:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -624,11 +577,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://ping:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -642,8 +590,12 @@ services:
     restart: "always"
     hostname: sae
     depends_on:
-      - mongo
-      - redis
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/sae/service.py
     mem_limit: 85m
     working_dir: /opt/noc
@@ -652,11 +604,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://sae:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -670,9 +617,12 @@ services:
     hostname: scheduler
     restart: "always"
     depends_on:
-      - consul
-      - mongo
-      - redis
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/scheduler/service.py
     mem_limit: 150m
     working_dir: /opt/noc
@@ -681,11 +631,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://scheduler:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -700,9 +645,12 @@ services:
     restart: "always"
     mem_limit: 110m
     depends_on:
-      - mongo
-      - nsqlookupd
-      - nsqd
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/selfmon/service.py
     working_dir: /opt/noc
     env_file:
@@ -710,11 +658,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://selfmon:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -740,11 +683,6 @@ services:
       - noc_code:/$NOC_CODE_PATH:ro
     ports:
       - 514:514/udp
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://syslogcollector:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -759,7 +697,7 @@ services:
     restart: "always"
     mem_limit: 52m
     depends_on:
-      - mongo
+      - nsqd
     command: /usr/bin/python3 /opt/noc/services/tgsender/service.py
     working_dir: /opt/noc
     env_file:
@@ -767,11 +705,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://tgsender:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -797,11 +730,6 @@ services:
       - noc_code:/$NOC_CODE_PATH:ro
     ports:
       - 162:162/udp
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://trapcollector:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -815,15 +743,12 @@ services:
     hostname: web
     restart: "always"
     depends_on:
-      - clickhouse
-      - consul
-      - redis
-      - login
-      - migrate
-      - mongo
-      - nsqd
-      - nsqlookupd
-      - nginx
+      mongo:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     command: /usr/bin/python3 /opt/noc/services/web/service.py
     mem_limit: 120m
     working_dir: /opt/noc
@@ -832,11 +757,6 @@ services:
     volumes:
       - noc_custom:/opt/noc_custom:ro
       - noc_code:/$NOC_CODE_PATH:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://web:1200/health/"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -851,7 +771,7 @@ services:
 
   ########## External Components #########
   clickhouse:
-    image: yandex/clickhouse-server:latest
+    image: yandex/clickhouse-server:20.3.12.112
     hostname: clickhouse
     ulimits:
       nofile:
@@ -864,9 +784,10 @@ services:
       # "clickhouse", "client", "-u ${CLICKHOUSE_USER}", \
       # "--password ${CLICKHOUSE_PASSWORD}", "-q 'SELECT 1'"
       test: ["CMD", "wget", "--spider", "-q", "localhost:8123/ping"]
-      interval: 30s
-      timeout: 5s
+      interval: 10s
+      timeout: 2s
       retries: 3
+      start_period: 3s
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -877,7 +798,7 @@ services:
 
   consul:
     hostname: consul
-    image: consul:1.6
+    image: consul:latest
     restart: always
     ports:
       - 8500:8500
@@ -892,13 +813,14 @@ services:
       - -bind={{ GetInterfaceIP "eth0" }}
       - -client=0.0.0.0
       - -ui
-    volumes:
-      - consul_data:/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8500"]
-      interval: 1m
-      timeout: 5s
+      interval: 10s
+      timeout: 2s
       retries: 3
+      start_period: 3s
+    volumes:
+      - consul_data:/data
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -926,7 +848,9 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "localhost:3000/api/health"]
       interval: 10s
-      retries: 30
+      timeout: 2s
+      retries: 3
+      start_period: 3s
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -955,8 +879,9 @@ services:
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
       interval: 10s
-      timeout: 10s
-      retries: 5
+      timeout: 2s
+      retries: 3
+      start_period: 3s
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -970,7 +895,7 @@ services:
     restart: "no"
     depends_on:
       mongo:
-        condition: service_started
+        condition: service_healthy
     volumes:
       - ./files/rs-init.sh:/rs-init.sh
     environment:
@@ -986,7 +911,6 @@ services:
         max-file: $COMPOSE_LOG_MAX_FILE
     labels:
       traefik.enable: false
-
 
   nginx_openssl:
     image: alpine:latest
@@ -1033,8 +957,10 @@ services:
       traefik.enable: false
     healthcheck:
       test: ["CMD", "curl", "-f", "http://0.0.0.0"]
-      interval: 30s
+      interval: 10s
+      timeout: 2s
       retries: 3
+      start_period: 3s
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -1046,14 +972,19 @@ services:
     hostname: nsqd
     depends_on:
       - nsqlookupd
-    command: /nsqd --lookupd-tcp-address=nsqlookupd:4160 --mem-queue-size=10000
+    command: >
+             /nsqd
+             --lookupd-tcp-address=nsqlookupd:4160
+             --mem-queue-size=10000
+             --data-path=/data
     volumes:
       - nsq_data:/data
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "localhost:4151/ping"]
-      interval: 30s
-      timeout: 3s
-      retries: 1
+      interval: 10s
+      timeout: 2s
+      retries: 3
+      start_period: 3s
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -1068,9 +999,10 @@ services:
     command: /nsqlookupd
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "localhost:4161/ping"]
-      interval: 30s
-      timeout: 3s
-      retries: 1
+      interval: 10s
+      timeout: 2s
+      retries: 3
+      start_period: 3s
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -1092,9 +1024,10 @@ services:
     healthcheck:
       # TODO need setup username\passwd for check script
       test: ["CMD", "su", "-", "postgres", "-c", "psql -U noc -l | grep noc"]
-      interval: 3s
-      timeout: 3s
-      retries: 100
+      interval: 10s
+      timeout: 2s
+      retries: 3
+      start_period: 3s
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -1109,8 +1042,9 @@ services:
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
-      timeout: 3s
+      timeout: 2s
       retries: 3
+      start_period: 3s
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
@@ -1132,13 +1066,13 @@ services:
     #  - bi
     #  - grafanads
     command: >
-             traefik
-             --web
-             --web.metrics.prometheus
-             --web.metrics.prometheus.buckets="0.1,0.3,1.2,5.0"
-             --docker
-             --entryPoints='Name:noc Address::1200'
-             --accesslog
+      - traefik
+      - --web
+      - --web.metrics.prometheus
+      - --web.metrics.prometheus.buckets="0.1,0.3,1.2,5.0"
+      - --docker
+      - --entryPoints='Name:noc Address::1200'
+      - --accesslog
     ports:
       - 8080:8080
       - 1200:1200
@@ -1147,9 +1081,10 @@ services:
       - /dev/null:/traefik.toml
     healthcheck:
       test: ["CMD", "traefik", "healthcheck", "--ping"]
-      interval: 30s
-      timeout: 3s
+      interval: 10s
+      timeout: 2s
       retries: 3
+      start_period: 3s
     logging:
       driver: $COMPOSE_LOG_DRIVER
       options:
