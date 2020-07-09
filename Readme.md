@@ -125,6 +125,7 @@ docker-compose -f docker-compose-infra.yml up -d
 ```
 Open URL:
 *  Grafana: http://0.0.0.0:3000
+*  VMAlert: http://0.0.0.0:8880
 *  Sentry: https://0.0.0.0:9000
 
 More info about monitoring noc: 

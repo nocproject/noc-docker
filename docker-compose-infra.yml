@@ -129,6 +129,8 @@ services:
       - .env.infra
     volumes:
       - vmalert_etc:/rules:ro
+    ports:
+      - "8880:8880"
     command: >
       -datasource.url=http://vm:8428
       -notifier.url=http://alertmanager:9093
