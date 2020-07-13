@@ -5,7 +5,7 @@ TMPPATH1=$(mktemp -d)
 TMPPATH2=$(mktemp -d)
 
 CHECKWAN() {
-  echo "Check internet connection"
+  echo "Checking internet connection"
   echo "----"
   touch "$INSTALLPATH"/.env.proxy
   if ! ping -c 1 -q google.com > /dev/null 2>&1
@@ -27,41 +27,38 @@ CHECKWAN() {
             echo "https_proxy=$PROXYFORWAN"
           } > "$INSTALLPATH"/.env.proxy
       fi
-    else
-      echo "Proxy not detected."
-      echo "If you have a proxy - configure HTTPS_PROXY parameters"
-      echo "Example: export HTTPS_PROXY=http://<ip>:<port>"
-      echo "and run script again or edit $INSTALLPATH/.env.proxy"
-      echo "----"
   fi
 }
 
 CREATEDIR() {
-  mkdir -p "$INSTALLPATH"/data/clickhouse/data
-  mkdir -p "$INSTALLPATH"/data/consul
-  mkdir -p "$INSTALLPATH"/data/grafana/plugins
-  mkdir -p "$INSTALLPATH"/data/mongo
-  mkdir -p "$INSTALLPATH"/data/mongorestore
-  mkdir -p "$INSTALLPATH"/data/nginx/ssl
-  mkdir -p "$INSTALLPATH"/data/noc/beef
-  mkdir -p "$INSTALLPATH"/data/noc/code
-  mkdir -p "$INSTALLPATH"/data/noc/custom
-  mkdir -p "$INSTALLPATH"/data/noc/etc
-  mkdir -p "$INSTALLPATH"/data/nsq
-  mkdir -p "$INSTALLPATH"/data/postgres
-  mkdir -p "$INSTALLPATH"/data/postgresrestore
-  mkdir -p "$INSTALLPATH"/data/prometheus/etc/rules.d
-  mkdir -p "$INSTALLPATH"/data/prometheus/etc/rules.custom.d
-  mkdir -p "$INSTALLPATH"/data/prometheus/metrics
-  mkdir -p "$INSTALLPATH"/data/promgrafana/db
-  mkdir -p "$INSTALLPATH"/data/promgrafana/etc/dashboards
-  mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/dashboards
-  mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/datasources
-  mkdir -p "$INSTALLPATH"/data/promgrafana/etc/provisioning/notifiers
-  mkdir -p "$INSTALLPATH"/data/promgrafana/plugins
-  mkdir -p "$INSTALLPATH"/data/promvm
-  mkdir -p "$INSTALLPATH"/data/sentry/pg
-  mkdir -p "$INSTALLPATH"/data/sentry/redis
+  echo "Created directory"
+  echo "----"
+  mkdir -p -v "$INSTALLPATH"/data/clickhouse/data
+  mkdir -p -v "$INSTALLPATH"/data/consul
+  mkdir -p -v "$INSTALLPATH"/data/grafana/plugins
+  mkdir -p -v "$INSTALLPATH"/data/mongo
+  mkdir -p -v "$INSTALLPATH"/data/mongorestore
+  mkdir -p -v "$INSTALLPATH"/data/nginx/ssl
+  mkdir -p -v "$INSTALLPATH"/data/noc/beef
+  mkdir -p -v "$INSTALLPATH"/data/noc/code
+  mkdir -p -v "$INSTALLPATH"/data/noc/custom
+  mkdir -p -v "$INSTALLPATH"/data/noc/etc
+  mkdir -p -v "$INSTALLPATH"/data/nsq
+  mkdir -p -v "$INSTALLPATH"/data/postgres
+  mkdir -p -v "$INSTALLPATH"/data/postgresrestore
+  mkdir -p -v "$INSTALLPATH"/data/promgrafana/db
+  mkdir -p -v "$INSTALLPATH"/data/promgrafana/etc/dashboards
+  mkdir -p -v "$INSTALLPATH"/data/promgrafana/etc/provisioning/dashboards
+  mkdir -p -v "$INSTALLPATH"/data/promgrafana/etc/provisioning/datasources
+  mkdir -p -v "$INSTALLPATH"/data/promgrafana/etc/provisioning/notifiers
+  mkdir -p -v "$INSTALLPATH"/data/promgrafana/plugins
+  mkdir -p -v "$INSTALLPATH"/data/vmagent/data
+  mkdir -p -v "$INSTALLPATH"/data/vmalert/etc
+  mkdir -p -v "$INSTALLPATH"/data/vmalert/etc/rules.d
+  mkdir -p -v "$INSTALLPATH"/data/vmalert/etc/rules.custom.d
+  mkdir -p -v "$INSTALLPATH"/data/vmmetrics
+  mkdir -p -v "$INSTALLPATH"/data/sentry/pg
+  mkdir -p -v "$INSTALLPATH"/data/sentry/redis
 }
 
 SETPERMISSION() {
@@ -87,7 +84,7 @@ SETUPPROMRULES() {
   echo "PROMETHEUS alert rules download from code.getnoc.com/noc/noc-prometheus-alerts.git"
   echo "---"
   cd "$TMPPATH1" && git clone -q https://code.getnoc.com/noc/noc-prometheus-alerts.git .
-  cp -f "$TMPPATH1"/*.yml "$INSTALLPATH"/data/prometheus/etc/rules.d
+  cp -f "$TMPPATH1"/*.yml "$INSTALLPATH"/data/vmalert/etc/rules.d
 }
 
 SETUPSENTRY() {
@@ -127,7 +124,7 @@ SETUPENV() {
   if [ ! -f "$INSTALLPATH"/.env ]
       then
           echo "Writed COMPOSEPATH=$INSTALLPATH in $INSTALLPATH/.env"
-          echo "You can change the parameters NOC_PG_PASSWORD\NOC_MONGO_PASSWORD if you want"
+          echo "You can change the parameters OC_PG_PASSWORD\NOC_MONGO_PASSWORD if you want"
           echo "---"
           { echo "COMPOSEPATH=$INSTALLPATH"
             echo "COMPOSE_HTTP_TIMEOUT=300"
@@ -190,6 +187,25 @@ SETUPENV() {
           echo "TZ=Europe/Moscow"
           echo "LC_LANG=en_US.UTF-8"
         } >> "$INSTALLPATH"/data/noc/etc/noc.conf
+  fi
+
+  # make .env.infra
+  if [ ! -f "$INSTALLPATH"/.env.infra ]
+    then
+        echo "Write $INSTALLPATH/.env.infra"
+        echo "You can change the parameters for infra monitoring if you want"
+        echo "---"
+        { echo "### vm metrics ###"
+          echo "vm_retentionPeriod=3"
+          echo "### vmagent ###"
+          echo "vmagent_loggerLevel=INFO"
+          echo "vmagent_promscrape_suppressScrapeErrors=False"
+          echo "vmagent_promscrape_consulSDCheckInterval=10s"
+          echo "### vmalert ###"
+          echo "vmalert_loggerLevel=INFO"
+          echo "vmalert_rule_validateTemplates=True"
+          echo "vmalert_rule=/rules/rules.custom.d/*.rules.yml,/rules/rules.d/*.rules.yml"
+        } >> "$INSTALLPATH"/.env.infra
   fi
 }
 
@@ -285,5 +301,7 @@ if [ -n "$PARAM_P" ]
 else
     echo "No -p parameters found."
     echo "Use one of: all,env,perm,grafana,promrules,sentry"
+    exit
 fi
 
+echo "Configuring NOC-DC finished."
