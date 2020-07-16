@@ -95,13 +95,6 @@ Use ./data/noc/custom if need make custom:
 
 FAQ
 ----
-Q: I want to use default MongoDB cache. What i need do?
-
-A: You need edit './data/noc/etc/noc.conf'
-   ```comment string
-   # NOC_CACHE_CACHE_CLASS=noc.core.cache.redis.RedisCache 
-   ```
-
 Q: I want fix script `/opt/noc/sa/profiles/MikroTik/RouterOS/get_version.py`.
  
 A: Use `./data/noc/custom` directory. This directory is used for priority 
