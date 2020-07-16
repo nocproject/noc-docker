@@ -95,11 +95,11 @@ Use ./data/noc/custom if need make custom:
 
 FAQ
 ----
-Q: I want use Redis server for cache. What i need do?
+Q: I want to use default MongoDB cache. What i need do?
 
 A: You need edit './data/noc/etc/noc.conf'
-   ```shell script
-   NOC_CACHE_CACHE_CLASS=noc.core.cache.redis.RedisCache 
+   ```comment string
+   # NOC_CACHE_CACHE_CLASS=noc.core.cache.redis.RedisCache 
    ```
 
 Q: I want fix script `/opt/noc/sa/profiles/MikroTik/RouterOS/get_version.py`.
