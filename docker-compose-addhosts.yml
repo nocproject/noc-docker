@@ -6,7 +6,7 @@ services:
     image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
     restart: "no"
     command: >
-      python ./commands/csv-import.py -r update sa.managedobject /tmp/sa.mo.csv
+      python3 ./commands/csv-import.py -r update sa.managedobject /tmp/sa.mo.csv
     working_dir: /opt/noc
     env_file:
       - ./data/noc/etc/noc.conf
