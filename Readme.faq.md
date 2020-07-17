@@ -141,3 +141,9 @@ A: Edit `./data/noc/etc/noc.conf`
    NOC_WEB_LANGUAGE=ru
    NOC_LANGUAGE_CODE=ru
    ```
+Q: I want to use default MongoDB cache. What i need do?
+
+A: You need edit './data/noc/etc/noc.conf'
+   ```comment string
+   # NOC_CACHE_CACHE_CLASS=noc.core.cache.redis.RedisCache 
+   ```
