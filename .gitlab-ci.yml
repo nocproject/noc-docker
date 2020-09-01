@@ -49,10 +49,10 @@ lint_yaml:
 lint_prometheus:
   stage: lint
   image:
-    name: prom/prometheus:$PROMETHEUS_VERSION
+    name: prom/prometheus:${PROMETHEUS_VERSION}
     entrypoint: [""]
   script:
-    - promtool check config ./data/prometheus/etc/prometheus.yml
+    - promtool check config ./data/vmagent/etc/prometheus.yml
   rules:
     - changes:
       - "./data/prometheus/etc/prometheus.yml"
