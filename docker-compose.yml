@@ -97,7 +97,7 @@ volumes:
 services:
   ########## NOC Components ##########
   activator-default:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: activator
     depends_on:
       - consul
@@ -121,7 +121,7 @@ services:
       traefik.enable: false
 
   bi:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     restart: "always"
     hostname: bi
     depends_on:
@@ -150,7 +150,7 @@ services:
       traefik.frontend.entryPoints: noc
 
   card:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: card
     restart: "always"
     depends_on:
@@ -179,7 +179,7 @@ services:
       traefik.frontend.entryPoints: noc
 
   chwriter:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: chwriter
     restart: "always"
     depends_on:
@@ -204,7 +204,7 @@ services:
       traefik.enable: false
 
   classifier-default:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: classifier
     restart: "always"
     mem_limit: 120m
@@ -231,7 +231,7 @@ services:
       traefik.enable: false
 
   correlator-default:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: correlator
     restart: "always"
     mem_limit: 120m
@@ -256,7 +256,7 @@ services:
       traefik.enable: false
 
   datasource:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     restart: "always"
     hostname: datasource
     depends_on:
@@ -283,7 +283,7 @@ services:
       traefik.enable: false
 
   datastream:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     restart: "always"
     hostname: datastream
     depends_on:
@@ -310,7 +310,7 @@ services:
       traefik.enable: false
 
   discovery-default:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: discovery
     restart: "always"
     depends_on:
@@ -337,7 +337,7 @@ services:
       traefik.enable: false
 
   escalator:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: escalator
     restart: "always"
     depends_on:
@@ -364,7 +364,7 @@ services:
       traefik.enable: false
 
   grafanads:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     restart: "always"
     hostname: grafanads
     depends_on:
@@ -393,7 +393,7 @@ services:
       traefik.frontend.entryPoints: noc
 
   login:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: login
     restart: "always"
     depends_on:
@@ -425,7 +425,7 @@ services:
       traefik.frontend.entryPoints: noc
 
   mailsender:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: mailsender
     restart: "always"
     mem_limit: 52m
@@ -448,7 +448,7 @@ services:
       traefik.enable: false
 
   mib:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: mib
     restart: "always"
     mem_limit: 100m
@@ -473,7 +473,7 @@ services:
       traefik.enable: false
 
   migrate:
-    image: registry.getnoc.com/noc/noc/dev:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/dev:${NOC_VERSION_TAG}
     working_dir: /opt/noc
     depends_on:
       postgres:
@@ -509,7 +509,7 @@ services:
       traefik.enable: false
 
   mrt:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: mrt
     restart: "always"
     depends_on:
@@ -538,7 +538,7 @@ services:
       traefik.frontend.entryPoints: noc
 
   nbi:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     restart: "always"
     hostname: nbi
     depends_on:
@@ -563,7 +563,7 @@ services:
       traefik.enable: false
 
   noc-code-cythonize:
-    image: registry.getnoc.com/noc/noc/dev:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/dev:${NOC_VERSION_TAG}
     restart: "no"
     hostname: noc-code-cythonize
     # command: /usr/bin/cythonize -i speedup/*.pyx
@@ -590,7 +590,7 @@ services:
       traefik.enable: false
 
   ping-default:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: ping
     restart: "always"
     command: /usr/bin/python3 /opt/noc/services/ping/service.py
@@ -613,7 +613,7 @@ services:
       traefik.enable: false
 
   sae:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     restart: "always"
     hostname: sae
     depends_on:
@@ -640,7 +640,7 @@ services:
       traefik.enable: false
 
   scheduler:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: scheduler
     restart: "always"
     depends_on:
@@ -667,7 +667,7 @@ services:
       traefik.enable: false
 
   selfmon:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: selfmon
     restart: "always"
     mem_limit: 110m
@@ -694,7 +694,7 @@ services:
       traefik.enable: false
 
   syslogcollector-default:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: syslogcollector
     restart: "always"
     depends_on:
@@ -719,7 +719,7 @@ services:
       traefik.enable: false
 
   tgsender:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: tgsender
     restart: "always"
     mem_limit: 52m
@@ -741,7 +741,7 @@ services:
       traefik.enable: false
 
   trapcollector-default:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: trapcollector
     restart: "always"
     depends_on:
@@ -766,7 +766,7 @@ services:
       traefik.enable: false
 
   web:
-    image: registry.getnoc.com/noc/noc/code:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/code:${NOC_VERSION_TAG}
     hostname: web
     restart: "always"
     depends_on:
@@ -967,7 +967,7 @@ services:
       traefik.enable: false
 
   nginx:
-    image: registry.getnoc.com/noc/noc/static:$NOC_VERSION_TAG
+    image: registry.getnoc.com/noc/noc/static:${NOC_VERSION_TAG}
     hostname: nginx
     restart: "always"
     mem_limit: 30m
