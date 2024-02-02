@@ -825,7 +825,7 @@ services:
 
   consul:
     hostname: consul
-    image: consul:latest
+    image: hashicorp/consul:latest
     restart: always
     ports:
       - 8500:8500
